@@ -10,13 +10,13 @@ import presentacion.reportes.ReporteAgenda;
 import presentacion.vista.VentanaPersona;
 import presentacion.vista.VentanaTipoContacto;
 import presentacion.vista.Vista;
-import dto.PersonaDTO;
+import dto.ContactoDTO;
 import dto.TipoContactoDTO;
 
 public class Controlador implements ActionListener
 {
 	private Vista vista;
-	private List<PersonaDTO> personas_en_tabla;
+	private List<ContactoDTO> personas_en_tabla;
 	private List<TipoContactoDTO> tipoContactos_en_tabla;
 	private VentanaPersona ventanaPersona;
 	private VentanaTipoContacto ventanaTipoContacto;
@@ -44,7 +44,7 @@ public class Controlador implements ActionListener
 	}
 
 	private void guardarPersona(ActionEvent p) {
-		PersonaDTO nuevaPersona = new PersonaDTO(0,
+		ContactoDTO nuevaPersona = new ContactoDTO(0,
 				ventanaPersona.getTxtNombre().getText(),
 				ventanaPersona.getTxtTelefono().getText(),
 				ventanaPersona.getTxtCalle().getText(),
