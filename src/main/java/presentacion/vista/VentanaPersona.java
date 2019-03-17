@@ -69,7 +69,7 @@ public class VentanaPersona extends JFrame
 		lblTipoDeContacto.setBounds(10, 200, 137, 14);
 		panel.add(lblTipoDeContacto);
 
-		JLabel lblDomicilio = new JLabel("Domicilio");
+		JLabel lblDomicilio = new JLabel("DomicilioDTO");
 		lblDomicilio.setBounds(10, 92, 72, 14);
 		panel.add(lblDomicilio);
 

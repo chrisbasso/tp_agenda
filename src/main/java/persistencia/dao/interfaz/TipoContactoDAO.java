@@ -1,8 +1,8 @@
 package persistencia.dao.interfaz;
 
-import java.util.List;
-
 import dto.TipoContactoDTO;
+
+import java.util.List;
 
 public interface TipoContactoDAO {
 	public boolean insert(TipoContactoDTO tipoContacto);
@@ -12,6 +12,5 @@ public interface TipoContactoDAO {
 	public boolean edit(TipoContactoDTO tipoContacto);
 	
 	public List<TipoContactoDTO> readAll();
-	
 
 }

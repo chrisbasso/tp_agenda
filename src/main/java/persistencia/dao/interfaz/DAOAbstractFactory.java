@@ -3,7 +3,9 @@ package persistencia.dao.interfaz;
 
 public interface DAOAbstractFactory
 {
-	public ContactoDAO createPersonaDAO();
+	public PersonaDAO listarContactos();
+
+	public PersonaDAO createPersonaDAO();
 
 	public TipoContactoDAO createTipoContactoDAO();
 }

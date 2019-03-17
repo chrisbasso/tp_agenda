@@ -16,10 +16,10 @@ public class TipoContactoDAOSQL implements TipoContactoDAO {
 	
 	private static final Logger LOGGER = Logger.getLogger(Conexion.class);
 
-	private static final String insert = "INSERT INTO tipo_contactos(idTipoContacto, tipoContacto) VALUES(?, ?)";
-	private static final String delete = "DELETE FROM tipo_contactos WHERE idtipoContacto = ?";
-	private static final String update = "UPDATE tipo_contactos SET tipoContacto = ? WHERE idtipoContacto = ?";
-	private static final String readall = "SELECT * FROM tipo_contactos";
+	private static final String insert = "INSERT INTO tipo_persona(idTipoPersona, tipo) VALUES(?, ?)";
+	private static final String delete = "DELETE FROM tipo_persona WHERE idTipoPersona = ?";
+	private static final String update = "UPDATE tipo_persona SET tipo = ? WHERE idTipoPersona = ?";
+	private static final String readall = "SELECT * FROM tipo_persona";
 	
 	@Override
 	public boolean insert(TipoContactoDTO tipoContacto) {
@@ -30,7 +30,7 @@ public class TipoContactoDAOSQL implements TipoContactoDAO {
 		{
 			statement = conexion.getSQLConexion().prepareStatement(insert);
 			statement.setInt(1, tipoContacto.getIdTipoContacto());
-			statement.setString(2, tipoContacto.getTipo_contacto());
+			statement.setString(2, tipoContacto.getTipoContacto());
 			if(statement.executeUpdate() > 0){
 				LOGGER.info(statement.toString());
 				return true;
@@ -72,8 +72,8 @@ public class TipoContactoDAOSQL implements TipoContactoDAO {
 			
 			while(resultSet.next())
 			{
-				tipoContactos.add(new TipoContactoDTO(resultSet.getInt("idTipoContacto"),
-						resultSet.getString("tipoContacto")));
+				tipoContactos.add(new TipoContactoDTO(resultSet.getInt("idTipoPersona"),
+						resultSet.getString("tipo")));
 			}
 		} 
 		catch (SQLException e) 

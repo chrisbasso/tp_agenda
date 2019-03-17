@@ -1,20 +1,13 @@
 package dto;
 
 public class TipoContactoDTO {
-	private int    idTipoContacto;
-	private String tipo_contacto;
+	private int idTipoContacto;
+	private String tipoContacto;
 	
-	public TipoContactoDTO() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	public TipoContactoDTO(String tipoContacto) {
-		// TODO Auto-generated constructor stub
-	}
+
 	public TipoContactoDTO(int idTipoContacto, String tipoContacto) {
 		this.idTipoContacto = idTipoContacto;
-		this.tipo_contacto 	= tipoContacto;
-		
+		this.tipoContacto = tipoContacto;
 	}
 
 	public int getIdTipoContacto() {
@@ -25,12 +18,12 @@ public class TipoContactoDTO {
 		this.idTipoContacto = idTipoContacto;
 	}
 
-	public String getTipo_contacto() {
-		return tipo_contacto;
+	public String getTipoContacto() {
+		return tipoContacto;
 	}
 
-	public void setTipo_contacto(String tipo_contacto) {
-		this.tipo_contacto = tipo_contacto;
+	public void setTipoContacto(String tipoContacto) {
+		this.tipoContacto = tipoContacto;
 	}
 
 }

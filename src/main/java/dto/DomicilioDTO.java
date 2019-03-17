@@ -1,15 +1,15 @@
-package modelo;
+package dto;
 
-public class Domicilio{
+public class DomicilioDTO {
 
 	private int idDomicilio;
 	private String calle;
 	private String altura;
 	private String piso;
 	private String depto;
-	private String localidad;
+	private LocalidadDTO localidad;
 
-	public Domicilio(int idDomicilio, String calle, String altura, String piso, String depto, String localidad) {
+	public DomicilioDTO(int idDomicilio, String calle, String altura, String piso, String depto, LocalidadDTO localidad) {
 		this.idDomicilio = idDomicilio;
 		this.calle = calle;
 		this.altura = altura;
@@ -58,11 +58,11 @@ public class Domicilio{
 		this.depto = depto;
 	}
 
-	public String getLocalidad() {
+	public LocalidadDTO getLocalidad() {
 		return localidad;
 	}
 
-	public void setLocalidad(String localidad) {
+	public void setLocalidad(LocalidadDTO localidad) {
 		this.localidad = localidad;
 	}
 }

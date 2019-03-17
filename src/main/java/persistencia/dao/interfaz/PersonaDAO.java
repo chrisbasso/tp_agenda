@@ -1,16 +1,16 @@
 package persistencia.dao.interfaz;
 
-import dto.ContactoDTO;
-import modelo.Persona;
+import dto.PersonaDTO;
 
 import java.util.List;
 
 public interface PersonaDAO
 {
+	public boolean insert(PersonaDTO persona);
 
-	public boolean insert(Persona persona);
+	public boolean delete(PersonaDTO persona_a_eliminar);
 
-	public boolean delete(Persona persona_a_eliminar);
+	public List<PersonaDTO> readAll();
 
-	public List<Persona> readAll();
+	boolean editar(PersonaDTO nuevaPersona);
 }
