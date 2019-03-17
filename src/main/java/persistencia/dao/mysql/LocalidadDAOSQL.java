@@ -13,7 +13,7 @@ import java.util.List;
 public class LocalidadDAOSQL implements LocalidadDAO {
 
 	private static final String insert = "INSERT INTO localidad(nombre_localidad) VALUES(?)";
-	private static final String readall = "SELECT * FROM localidades";
+	private static final String readall = "SELECT * FROM localidad";
 	private static final String delete = " ";
 	private static final String edit = "UPDATE localidad SET nombre_localidad = ? WHERE idLocalidad = ?;";
 	private static final Conexion conexion = Conexion.getConexion();
@@ -34,9 +34,6 @@ public class LocalidadDAOSQL implements LocalidadDAO {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally
-		{
-			conexion.cerrarConexion();
 		}
 		return localidades;
 	}
@@ -82,14 +79,10 @@ public class LocalidadDAOSQL implements LocalidadDAO {
 		return false;
 	}
 
-
-
-
 	public int getIdLocalidad(String localidad) {
 		String query = "SELECT idLocalidad "
-				+ "FROM localidades "
-				+ "WHERE Nombre_Localidad = (?) "
-				+ "AND Fecha_Baja IS NULL";
+				+ "FROM localidad "
+				+ "WHERE nombre_localidad = ? ";
 
 		PreparedStatement statement;
 		ResultSet resultSet; //Guarda el resultado de la query
@@ -110,14 +103,10 @@ public class LocalidadDAOSQL implements LocalidadDAO {
 
 			if (resultado != -1)
 				return resultado;
-
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally
-		{
-			conexion.cerrarConexion();
 		}
-		return -1; // Fallo la consulta
+		return -1;
 
 	}
 
@@ -135,9 +124,6 @@ public class LocalidadDAOSQL implements LocalidadDAO {
 					return true;
 			} catch (SQLException e) {
 				e.printStackTrace();
-			} finally
-			{
-				conexion.cerrarConexion();
 			}
 		}
 		return false;
