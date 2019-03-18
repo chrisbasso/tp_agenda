@@ -1,5 +1,6 @@
 package main;
 
+import deployment.Mysql;
 import modelo.Agenda;
 import persistencia.dao.mysql.DAOSQLFactory;
 import presentacion.controlador.Controlador;
@@ -11,9 +12,11 @@ public class Main
 
 	public static void main(String[] args) 
 	{
+		Mysql.start();
 		Vista vista = new Vista();
 		Agenda modelo = new Agenda(new DAOSQLFactory());
 		Controlador controlador = new Controlador(vista, modelo);
 		controlador.inicializar();
+		
 	}
 }
