@@ -34,6 +34,7 @@ public class Controlador implements ActionListener
 		this.vista.getBtnBorrar().addActionListener(s->borrarPersona(s));
 		this.vista.getBtnReporte().addActionListener(r->mostrarReporte(r));
 		this.vista.getBtnAbmTipoDeContacto().addActionListener(t->ventanaABMTipoContacto(t));
+		this.vista.getBtnAbmLocalidad().addActionListener(t->ventanaABMLocalidad(t));
 		
 		this.ventanaPersona = VentanaPersona.getInstance();
 		this.ventanaTipoContacto = VentanaTipoContacto.getInstance();
@@ -41,7 +42,7 @@ public class Controlador implements ActionListener
 		
 		this.ventanaPersona.getBtnAgregarPersona().addActionListener(p-> guardarContacto(p));
 		this.ventanaTipoContacto.getBtnAgregarTipoContacto().addActionListener(q->guardarTipoContacto(q));
-		this.ventanaLocalidad.getBtnAgregarLocalidad().addActionListener(r->guardarTipoContacto(r));
+		this.ventanaLocalidad.getBtnAgregarLocalidad().addActionListener(z->guardarLocalidad(z));
 				
 		this.agenda = agenda;
 		this.personas_en_tabla = null;
@@ -188,6 +189,35 @@ public class Controlador implements ActionListener
 		}
 
 	}
+	
+	private void ventanaABMLocalidad(ActionEvent t) {
+		this.ventanaLocalidad.mostrarVentana();
+	}
+
+	private void guardarLocalidad(ActionEvent z) {
+		int idTipoContacto = getIdTipoContacto(this.ventanaPersona.getComboTipoContacto().getSelectedItem().toString());
+		TipoContactoDTO tipoContactoDTO = new TipoContactoDTO(idTipoContacto, Optional.ofNullable((String) ventanaPersona.getComboTipoContacto().getSelectedItem()).orElse(""));
+
+		int idLocalidad = getIdLocalidad(this.ventanaPersona.getComboTipoContacto().getSelectedItem().toString());
+		LocalidadDTO localidad = new LocalidadDTO(idLocalidad, Optional.ofNullable((String) ventanaPersona.getComboLocalidad().getSelectedItem()).orElse(""));
+
+		DomicilioDTO nuevoDomicilio = new DomicilioDTO(0,
+				ventanaPersona.getTxtCalle().getText(),
+				ventanaPersona.getTextAltura().getText(),
+				ventanaPersona.getTextPiso().getText(),
+				ventanaPersona.getTextDepto().getText(),
+				localidad);
+
+		PersonaDTO nuevaPersona = new PersonaDTO(0,
+				ventanaPersona.getTxtNombre().getText(),
+				ventanaPersona.getTxtTelefono().getText(),nuevoDomicilio, tipoContactoDTO);
+
+
+		this.agenda.agregarPersona(nuevaPersona);
+		this.llenarTabla();
+		this.ventanaPersona.cerrar();
+	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

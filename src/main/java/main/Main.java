@@ -12,7 +12,7 @@ public class Main
 
 	public static void main(String[] args) 
 	{
-		Mysql.start();
+		//Mysql.start();
 		Vista vista = new Vista();
 		Agenda modelo = new Agenda(new DAOSQLFactory());
 		Controlador controlador = new Controlador(vista, modelo);
