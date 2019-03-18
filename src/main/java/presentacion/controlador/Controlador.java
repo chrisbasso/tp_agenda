@@ -20,7 +20,8 @@ public class Controlador implements ActionListener
 {
 	private Vista vista;
 	private List<PersonaDTO> personas_en_tabla;
-	private List<TipoContactoDTO> tipoContactos_en_tabla;
+	private List<TipoContactoDTO> tipoContactos;
+	private List<LocalidadDTO> localidades;
 	private VentanaPersona ventanaPersona;
 	private VentanaTipoContacto ventanaTipoContacto;
 	private VentanaLocalidad ventanaLocalidad;
@@ -44,7 +45,29 @@ public class Controlador implements ActionListener
 				
 		this.agenda = agenda;
 		this.personas_en_tabla = null;
-		this.tipoContactos_en_tabla = null;
+		this.tipoContactos = null;
+
+		cargarComboLocalidades();
+		cargarComboTipoContacto();
+	}
+
+	private void cargarComboTipoContacto() {
+
+		tipoContactos = agenda.obtenerTiposContactos();
+
+		for(TipoContactoDTO tipo : tipoContactos){
+			this.ventanaPersona.getComboTipoContacto().addItem(tipo.getTipoContacto());
+		}
+
+	}
+
+	private void cargarComboLocalidades() {
+
+		localidades = agenda.obtenerLocalidades();
+
+		for(LocalidadDTO localidad : localidades){
+			this.ventanaPersona.getComboLocalidad().addItem(localidad.getNombreLocalidad());
+		}
 	}
 
 	private void ventanaAgregarPersona(ActionEvent a) {
@@ -54,9 +77,12 @@ public class Controlador implements ActionListener
 
 	private void guardarContacto(ActionEvent p) {
 
-		TipoContactoDTO tipoContactoDTO = new TipoContactoDTO(0, Optional.ofNullable((String) ventanaPersona.getComboTipoContacto().getSelectedItem()).orElse(""));
 
-		LocalidadDTO localidad = new LocalidadDTO(0, 		Optional.ofNullable((String) ventanaPersona.getComboLocalidad().getSelectedItem()).orElse(""));
+		int idTipoContacto = getIdTipoContacto(this.ventanaPersona.getComboTipoContacto().getSelectedItem().toString());
+		TipoContactoDTO tipoContactoDTO = new TipoContactoDTO(idTipoContacto, Optional.ofNullable((String) ventanaPersona.getComboTipoContacto().getSelectedItem()).orElse(""));
+
+		int idLocalidad = getIdLocalidad(this.ventanaPersona.getComboTipoContacto().getSelectedItem().toString());
+		LocalidadDTO localidad = new LocalidadDTO(idLocalidad, Optional.ofNullable((String) ventanaPersona.getComboLocalidad().getSelectedItem()).orElse(""));
 
 		DomicilioDTO nuevoDomicilio = new DomicilioDTO(0,
 				ventanaPersona.getTxtCalle().getText(),
@@ -73,6 +99,27 @@ public class Controlador implements ActionListener
 		this.agenda.agregarPersona(nuevaPersona);
 		this.llenarTabla();
 		this.ventanaPersona.cerrar();
+	}
+
+	private int getIdLocalidad(String nombreLocalidad) {
+
+		for(LocalidadDTO localidad : localidades){
+			if(localidad.getNombreLocalidad().equals(nombreLocalidad)){
+				return localidad.getIdLocalidad();
+			}
+		}
+		return -1;
+	}
+
+	private int getIdTipoContacto(String nombreTipo) {
+
+		for(TipoContactoDTO tipo : tipoContactos){
+			if(tipo.getTipoContacto().equals(nombreTipo)){
+				return tipo.getIdTipoContacto();
+			}
+		}
+		return -1;
+
 	}
 
 	private void mostrarReporte(ActionEvent r) {
@@ -134,9 +181,9 @@ public class Controlador implements ActionListener
 		this.ventanaTipoContacto.getModelTipoContactos().setColumnCount(0);
 		this.ventanaTipoContacto.getModelTipoContactos().setColumnIdentifiers(this.ventanaTipoContacto.getNombreColumnas());
 
-		this.tipoContactos_en_tabla = agenda.obtenerTiposContactos();//hacer readall en daosql
-		for(int i = 0; i < this.tipoContactos_en_tabla.size(); i++) {
-			Object[] fila = { this.tipoContactos_en_tabla.get(i).getTipoContacto()};
+		this.tipoContactos = agenda.obtenerTiposContactos();//hacer readall en daosql
+		for(int i = 0; i < this.tipoContactos.size(); i++) {
+			Object[] fila = { this.tipoContactos.get(i).getTipoContacto()};
 			this.ventanaTipoContacto.getModelTipoContactos().addRow(fila);
 		}
 

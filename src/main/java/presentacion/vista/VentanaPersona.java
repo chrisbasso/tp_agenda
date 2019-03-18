@@ -18,6 +18,8 @@ public class VentanaPersona extends JFrame
 	private JComboBox<String> comboTipoContacto;
 	private static VentanaPersona INSTANCE;
 
+
+
 	public static VentanaPersona getInstance()
 	{
 		if(INSTANCE == null)
