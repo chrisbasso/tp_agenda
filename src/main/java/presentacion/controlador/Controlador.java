@@ -5,15 +5,16 @@ import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Optional;
 
+import dto.DomicilioDTO;
 import dto.LocalidadDTO;
+import dto.PersonaDTO;
 import dto.TipoContactoDTO;
 import modelo.Agenda;
-import dto.DomicilioDTO;
 import presentacion.reportes.ReporteAgenda;
+import presentacion.vista.VentanaLocalidad;
 import presentacion.vista.VentanaPersona;
 import presentacion.vista.VentanaTipoContacto;
 import presentacion.vista.Vista;
-import dto.PersonaDTO;
 
 public class Controlador implements ActionListener
 {
@@ -22,6 +23,7 @@ public class Controlador implements ActionListener
 	private List<TipoContactoDTO> tipoContactos_en_tabla;
 	private VentanaPersona ventanaPersona;
 	private VentanaTipoContacto ventanaTipoContacto;
+	private VentanaLocalidad ventanaLocalidad;
 	private Agenda agenda;
 
 	public Controlador(Vista vista, Agenda agenda)
@@ -31,10 +33,15 @@ public class Controlador implements ActionListener
 		this.vista.getBtnBorrar().addActionListener(s->borrarPersona(s));
 		this.vista.getBtnReporte().addActionListener(r->mostrarReporte(r));
 		this.vista.getBtnAbmTipoDeContacto().addActionListener(t->ventanaABMTipoContacto(t));
+		
 		this.ventanaPersona = VentanaPersona.getInstance();
 		this.ventanaTipoContacto = VentanaTipoContacto.getInstance();
+		this.ventanaLocalidad = VentanaLocalidad.getInstance();
+		
 		this.ventanaPersona.getBtnAgregarPersona().addActionListener(p-> guardarContacto(p));
-		this.ventanaTipoContacto.getBtnAgregarTipoContacto().addActionListener(q->guardarTipoContacto(q));;
+		this.ventanaTipoContacto.getBtnAgregarTipoContacto().addActionListener(q->guardarTipoContacto(q));
+		this.ventanaLocalidad.getBtnAgregarLocalidad().addActionListener(r->guardarTipoContacto(r));
+				
 		this.agenda = agenda;
 		this.personas_en_tabla = null;
 		this.tipoContactos_en_tabla = null;
