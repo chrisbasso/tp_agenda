@@ -1,5 +1,6 @@
 package presentacion.vista;
 
+import dto.PersonaDTO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -17,8 +18,7 @@ public class VentanaPersona extends JFrame
 	private JComboBox<String> comboLocalidad;
 	private JComboBox<String> comboTipoContacto;
 	private static VentanaPersona INSTANCE;
-
-
+	private PersonaDTO persona;
 
 	public static VentanaPersona getInstance()
 	{
@@ -175,6 +175,29 @@ public class VentanaPersona extends JFrame
 	public JButton getBtnAgregarPersona()
 	{
 		return btnAgregarPersona;
+	}
+
+	public PersonaDTO getPersona() {
+		return persona;
+	}
+
+	public void setPersona(PersonaDTO persona) {
+		this.persona = persona;
+		if (persona != null) {
+			this.txtNombre.setText(persona.getNombre());
+			this.txtTelefono.setText(persona.getTelefono());
+			this.textCalle.setText(persona.getDomicilio().getCalle());
+			this.textAltura.setText(persona.getDomicilio().getAltura());
+			this.textPiso.setText(persona.getDomicilio().getPiso());
+			btnAgregarPersona.setText("Editar");
+		}else{
+			this.txtNombre.setText("");
+			this.txtTelefono.setText("");
+			this.textCalle.setText("");
+			this.textAltura.setText("");
+			this.textPiso.setText("");
+			btnAgregarPersona.setText("Agregar");
+		}
 	}
 
 	public void cerrar()
