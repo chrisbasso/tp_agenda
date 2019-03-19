@@ -8,10 +8,10 @@ public class VentanaLocalidad extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private static VentanaLocalidad INSTANCE;
-	private DefaultTableModel modelTipoContactos;
-	private  String[] nombreColumnas = {"Nombre de Tipo de Contacto"};
-	private JTable tablaTipoContactos;
-	private JTextField txtAgregarTipoContacto;
+	private DefaultTableModel modelLocalidades;
+	private  String[] nombreColumnas = {"Localidad"};
+	private JTable tablaLocalidades;
+	private JTextField txtAgregarLocalidad;
 	private JButton btnAgregarLocalidad;
 	private JButton btnEditarLocalidad;
 	private JButton btnBorrar;
@@ -25,7 +25,7 @@ public class VentanaLocalidad extends JFrame {
 
 	private VentanaLocalidad() {
 		super();
-		setTitle("ABM Tipo de Contacto");
+		setTitle("ABM Localidades");
 		this.setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 364, 236);
@@ -39,17 +39,17 @@ public class VentanaLocalidad extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JScrollPane spTipoContactos = new JScrollPane();
-		spTipoContactos.setBounds(10, 11, 200, 151);
-		panel.add(spTipoContactos);
+		JScrollPane spLocalidades = new JScrollPane();
+		spLocalidades.setBounds(10, 11, 200, 151);
+		panel.add(spLocalidades);
 
-		modelTipoContactos = new DefaultTableModel(null,nombreColumnas);
-		tablaTipoContactos = new JTable(modelTipoContactos);
+		modelLocalidades = new DefaultTableModel(null,nombreColumnas);
+		tablaLocalidades = new JTable(modelLocalidades);
 
-		tablaTipoContactos.getColumnModel().getColumn(0).setPreferredWidth(103);
-		tablaTipoContactos.getColumnModel().getColumn(0).setResizable(false);
+		tablaLocalidades.getColumnModel().getColumn(0).setPreferredWidth(103);
+		tablaLocalidades.getColumnModel().getColumn(0).setResizable(false);
 
-		spTipoContactos.setViewportView(tablaTipoContactos);
+		spLocalidades.setViewportView(tablaLocalidades);
 		
 		btnAgregarLocalidad = new JButton("Agregar");
 		btnAgregarLocalidad.setBounds(220, 44, 89, 23);
@@ -63,10 +63,10 @@ public class VentanaLocalidad extends JFrame {
 		btnBorrar.setBounds(220, 78, 89, 23);
 		panel.add(btnBorrar);
 		
-		txtAgregarTipoContacto = new JTextField();
-		txtAgregarTipoContacto.setBounds(220, 15, 89, 20);
-		panel.add(txtAgregarTipoContacto);
-		txtAgregarTipoContacto.setColumns(10);
+		txtAgregarLocalidad = new JTextField();
+		txtAgregarLocalidad.setBounds(220, 15, 89, 20);
+		panel.add(txtAgregarLocalidad);
+		txtAgregarLocalidad.setColumns(10);
 		
 	}
 
@@ -76,11 +76,11 @@ public class VentanaLocalidad extends JFrame {
 	}
 
 	public JTextField getTxtAgregarLocalidad() {
-		return txtAgregarTipoContacto;
+		return txtAgregarLocalidad;
 	}
 
 	public void setTxtAgregarLocalidad(JTextField txtAgregarTipoContacto) {
-		this.txtAgregarTipoContacto = txtAgregarTipoContacto;
+		this.txtAgregarLocalidad = txtAgregarTipoContacto;
 	}
 
 	public JButton getBtnAgregarLocalidad() {
@@ -95,14 +95,14 @@ public class VentanaLocalidad extends JFrame {
 		return btnBorrar;
 	}
 
-	public DefaultTableModel getModelTipoContactos() 
+	public DefaultTableModel getModelLocalidades() 
 	{
-		return modelTipoContactos;
+		return modelLocalidades;
 	}
 	
-	public JTable getTablaTipoContactos()
+	public JTable getTablaLocalidades()
 	{
-		return tablaTipoContactos;
+		return tablaLocalidades;
 	}
 
 	public String[] getNombreColumnas() 
@@ -112,7 +112,7 @@ public class VentanaLocalidad extends JFrame {
 	
 	public void cerrar()
 	{
-		this.txtAgregarTipoContacto.setText(null);
+		this.txtAgregarLocalidad.setText(null);
 		this.dispose();
 	}
 }

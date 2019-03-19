@@ -1,5 +1,6 @@
 package presentacion.vista;
 
+import dto.PersonaDTO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -17,8 +18,7 @@ public class VentanaPersona extends JFrame
 	private JComboBox<String> comboLocalidad;
 	private JComboBox<String> comboTipoContacto;
 	private static VentanaPersona INSTANCE;
-
-
+	private PersonaDTO persona;
 
 	public static VentanaPersona getInstance()
 	{
@@ -101,13 +101,33 @@ public class VentanaPersona extends JFrame
 		textCalle.setColumns(10);
 
 		textAltura = new JTextField();
+		textAltura.addKeyListener(new java.awt.event.KeyAdapter() {
 
+			public void keyReleased(java.awt.event.KeyEvent evt) {
+				try {
+					long number = Long.parseLong(textAltura.getText());
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(rootPane, "Solo acepta numeros");
+					textAltura.setText("");
+				}
+			}
+		});
 		textAltura.setBounds(305, 89, 46, 20);
 		panel.add(textAltura);
 		textAltura.setColumns(10);
 
 		textPiso = new JTextField();
+		textPiso.addKeyListener(new java.awt.event.KeyAdapter() {
 
+			public void keyReleased(java.awt.event.KeyEvent evt) {
+				try {
+					long number = Long.parseLong(textPiso.getText());
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(rootPane, "Solo Acepta Numeros");
+					textPiso.setText("");
+				}
+			}
+		});
 		textPiso.setBounds(149, 117, 89, 20);
 		panel.add(textPiso);
 		textPiso.setColumns(10);
@@ -175,6 +195,30 @@ public class VentanaPersona extends JFrame
 	public JButton getBtnAgregarPersona()
 	{
 		return btnAgregarPersona;
+	}
+
+	public PersonaDTO getPersona() {
+		return persona;
+	}
+
+	public void setPersona(PersonaDTO persona) {
+		this.persona = persona;
+		if (persona != null) {
+			this.txtNombre.setText(persona.getNombre());
+			this.txtTelefono.setText(persona.getTelefono());
+			this.textCalle.setText(persona.getDomicilio().getCalle());
+			this.textAltura.setText(persona.getDomicilio().getAltura());
+			this.textPiso.setText(persona.getDomicilio().getPiso());
+			this.textDepto.setText(persona.getDomicilio().getDepto());
+			btnAgregarPersona.setText("Editar");
+		}else{
+			this.txtNombre.setText("");
+			this.txtTelefono.setText("");
+			this.textCalle.setText("");
+			this.textAltura.setText("");
+			this.textPiso.setText("");
+			btnAgregarPersona.setText("Agregar");
+		}
 	}
 
 	public void cerrar()

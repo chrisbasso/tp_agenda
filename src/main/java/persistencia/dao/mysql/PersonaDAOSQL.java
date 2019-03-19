@@ -49,13 +49,11 @@ public class PersonaDAOSQL implements PersonaDAO{
 				LOGGER.info(statement.toString());
 				return true;
 			}
-
 		}
 		catch (SQLException e)
 		{
 			e.printStackTrace();
 		}
-
 		return false;
 	}
 
@@ -210,14 +208,13 @@ public class PersonaDAOSQL implements PersonaDAO{
 		int idLocalidad = persona.getDomicilio().getLocalidad().getIdLocalidad();
 		int idDomicilio = persona.getDomicilio().getIdDomicilio();
 
-
-		String query1 = "UPDATE domicilios SET Calle = ?, Altura = ?, Piso = ?,"
-				+ " Depto = ?, idLocalidad = ? WHERE idDomicilio = ?;";
-		String query2 = "UPDATE personas SET Nombre = ?, Telefono = ?, idDomicilio = ?, Email = ?,"
-				+ " Fecha_Nacimiento = ?, idTipoPersona = ? WHERE idPersona = ?;";
+		String queryDomicilio = "UPDATE domicilio SET calle = ?, altura = ?, piso = ?,"
+				+ " depto = ?, idLocalidad = ? WHERE idDomicilio = ?;";
+		String queryPersona = "UPDATE persona SET nombre = ?, telefono = ?, idDomicilio = ?," +
+				"idTipoPersona = ? WHERE idPersona = ?;";
 		PreparedStatement statement;
 		try {
-			statement = conexion.getSQLConexion().prepareStatement(query1);
+			statement = conexion.getSQLConexion().prepareStatement(queryDomicilio);
 			statement.setString(1, persona.getDomicilio().getCalle());
 			statement.setString(2, persona.getDomicilio().getAltura());
 			statement.setString(3, persona.getDomicilio().getPiso());
@@ -225,18 +222,20 @@ public class PersonaDAOSQL implements PersonaDAO{
 			statement.setInt(5, idLocalidad);
 			statement.setInt(6, idDomicilio);
 			statement.executeUpdate();
+			LOGGER.info(statement.toString());
 
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 		try {
-			statement = conexion.getSQLConexion().prepareStatement(query2);
+			statement = conexion.getSQLConexion().prepareStatement(queryPersona);
 			statement.setString(1, persona.getNombre());
 			statement.setString(2, persona.getTelefono());
 			statement.setInt(3, idDomicilio);
-			statement.setInt(6, persona.getTipo_Persona().getIdTipoContacto());
-			statement.setInt(7, persona.getIdPersona());
+			statement.setInt(4, persona.getTipo_Persona().getIdTipoContacto());
+			statement.setInt(5, persona.getIdPersona());
+			LOGGER.info(statement.toString());
 			if (statement.executeUpdate() > 0)
 				return true;
 		} catch (SQLException e) {
