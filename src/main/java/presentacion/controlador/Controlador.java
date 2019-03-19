@@ -119,30 +119,31 @@ public class Controlador implements ActionListener
 			setPersonaValues(persona);
 			this.agenda.editarPersona(persona);
 		}else{
-
-			int idTipoContacto = getIdTipoContacto(this.ventanaPersona.getComboTipoContacto().getSelectedItem().toString());
-			TipoContactoDTO tipoContactoDTO = new TipoContactoDTO(idTipoContacto, Optional.ofNullable((String) ventanaPersona.getComboTipoContacto().getSelectedItem()).orElse(""));
-
-			int idLocalidad = getIdLocalidad(this.ventanaPersona.getComboLocalidad().getSelectedItem().toString());
-			LocalidadDTO localidad = new LocalidadDTO(idLocalidad, Optional.ofNullable((String) ventanaPersona.getComboLocalidad().getSelectedItem()).orElse(""));
-
-			DomicilioDTO nuevoDomicilio = new DomicilioDTO(0,
-					ventanaPersona.getTxtCalle().getText(),
-					ventanaPersona.getTextAltura().getText(),
-					ventanaPersona.getTextPiso().getText(),
-					ventanaPersona.getTextDepto().getText(),
-					localidad);
-
-			PersonaDTO nuevaPersona = new PersonaDTO(0,
-					ventanaPersona.getTxtNombre().getText(),
-					ventanaPersona.getTxtTelefono().getText(),nuevoDomicilio, tipoContactoDTO);
-
+			PersonaDTO nuevaPersona = setNuevaPersonaValues();
 			this.agenda.agregarPersona(nuevaPersona);
-
 		}
 
 		this.llenarTabla();
 		this.ventanaPersona.cerrar();
+	}
+
+	private PersonaDTO setNuevaPersonaValues() {
+		int idTipoContacto = getIdTipoContacto(this.ventanaPersona.getComboTipoContacto().getSelectedItem().toString());
+		TipoContactoDTO tipoContactoDTO = new TipoContactoDTO(idTipoContacto, Optional.ofNullable((String) ventanaPersona.getComboTipoContacto().getSelectedItem()).orElse(""));
+
+		int idLocalidad = getIdLocalidad(this.ventanaPersona.getComboLocalidad().getSelectedItem().toString());
+		LocalidadDTO localidad = new LocalidadDTO(idLocalidad, Optional.ofNullable((String) ventanaPersona.getComboLocalidad().getSelectedItem()).orElse(""));
+
+		DomicilioDTO nuevoDomicilio = new DomicilioDTO(0,
+				ventanaPersona.getTxtCalle().getText(),
+				ventanaPersona.getTextAltura().getText(),
+				ventanaPersona.getTextPiso().getText(),
+				ventanaPersona.getTextDepto().getText(),
+				localidad);
+
+		return new PersonaDTO(0,
+				ventanaPersona.getTxtNombre().getText(),
+				ventanaPersona.getTxtTelefono().getText(), nuevoDomicilio, tipoContactoDTO);
 	}
 
 	private void setPersonaValues(PersonaDTO persona) {
