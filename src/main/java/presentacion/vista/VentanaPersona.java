@@ -1,8 +1,13 @@
 package presentacion.vista;
 
+import com.toedter.calendar.JDateChooser;
 import dto.PersonaDTO;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+
+
+
 
 public class VentanaPersona extends JFrame
 {
@@ -15,6 +20,8 @@ public class VentanaPersona extends JFrame
 	private JTextField textAltura;
 	private JTextField textPiso;
 	private JTextField textDepto;
+	private JTextField textEmail;
+	private JDateChooser fechaNac;
 	private JComboBox<String> comboLocalidad;
 	private JComboBox<String> comboTipoContacto;
 	private static VentanaPersona INSTANCE;
@@ -75,6 +82,14 @@ public class VentanaPersona extends JFrame
 		lblDomicilio.setBounds(10, 92, 72, 14);
 		panel.add(lblDomicilio);
 
+		JLabel lblFechaDeNacimiento = new JLabel("Fecha de nacimiento");
+		lblFechaDeNacimiento.setBounds(10, 270, 137, 14);
+		panel.add(lblFechaDeNacimiento);
+
+		JLabel lblEmail = new JLabel("Email");
+		lblEmail.setBounds(10, 240, 89, 14);
+		panel.add(lblEmail);
+
 		JLabel lblCalle = new JLabel("Calle");
 		lblCalle.setBounds(114, 92, 46, 14);
 		panel.add(lblCalle);
@@ -94,6 +109,15 @@ public class VentanaPersona extends JFrame
 		JLabel lblLocalidad = new JLabel("Localidad");
 		lblLocalidad.setBounds(10, 164, 89, 14);
 		panel.add(lblLocalidad);
+
+		fechaNac = new JDateChooser();
+		fechaNac.setBounds(149, 270, 89, 20);
+		panel.add(fechaNac);
+
+		textEmail = new JTextField();
+		textEmail.setBounds(149, 240, 89, 20);
+		panel.add(textEmail);
+		textEmail.setColumns(10);
 
 		textCalle = new JTextField();
 		textCalle.setBounds(149, 89, 89, 20);
@@ -138,7 +162,7 @@ public class VentanaPersona extends JFrame
 		textDepto.setColumns(10);
 
 		comboLocalidad = new JComboBox<>();
-		comboLocalidad.setBounds(149, 161, 89, 20);
+		comboLocalidad.setBounds(149, 160, 89, 20);
 		panel.add(comboLocalidad);
 
 		comboTipoContacto = new JComboBox<>();
@@ -201,6 +225,16 @@ public class VentanaPersona extends JFrame
 		return persona;
 	}
 
+	public JTextField getTxtEmail()
+	{
+		return textEmail;
+	}
+
+	public JDateChooser getFechaNac()
+	{
+		return fechaNac;
+	}
+
 	public void setPersona(PersonaDTO persona) {
 		this.persona = persona;
 		if (persona != null) {
@@ -210,6 +244,8 @@ public class VentanaPersona extends JFrame
 			this.textAltura.setText(persona.getDomicilio().getAltura());
 			this.textPiso.setText(persona.getDomicilio().getPiso());
 			this.textDepto.setText(persona.getDomicilio().getDepto());
+			this.textEmail.setText(persona.getEmail());
+			this.fechaNac.setDate(persona.getFechaNacimiento());
 			btnAgregarPersona.setText("Editar");
 		}else{
 			this.txtNombre.setText("");
@@ -217,6 +253,7 @@ public class VentanaPersona extends JFrame
 			this.textCalle.setText("");
 			this.textAltura.setText("");
 			this.textPiso.setText("");
+			this.textEmail.setText("");
 			btnAgregarPersona.setText("Agregar");
 		}
 	}
@@ -229,6 +266,7 @@ public class VentanaPersona extends JFrame
 		this.textAltura.setText(null);
 		this.textDepto.setText(null);
 		this.textPiso.setText(null);
+		this.textEmail.setText(null);
 		this.dispose();
 	}
 

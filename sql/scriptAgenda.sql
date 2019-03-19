@@ -37,6 +37,8 @@ CREATE TABLE persona
   PRIMARY KEY (idPersona),
   idDomicilio int(10),
   idTipoContacto int(10),
-  FOREIGN KEY (idTipoContacto) REFERENCES tipo_contacto  (idTipoContacto),
-  FOREIGN KEY (idDomicilio) REFERENCES domicilio   (idDomicilio)
+  email varchar(80),
+  fecha_nacimiento DATE,
+  FOREIGN KEY (idTipoContacto) REFERENCES tipo_contacto (idTipoContacto),
+  FOREIGN KEY (idDomicilio) REFERENCES domicilio (idDomicilio)
 );

@@ -196,7 +196,8 @@ public class Controlador implements ActionListener
 
 		return new PersonaDTO(0,
 				ventanaPersona.getTxtNombre().getText(),
-				ventanaPersona.getTxtTelefono().getText(), nuevoDomicilio, tipoContactoDTO);
+				ventanaPersona.getTxtTelefono().getText(), nuevoDomicilio, tipoContactoDTO,
+				ventanaPersona.getTxtEmail().getText(), ventanaPersona.getFechaNac().getDate());
 	}
 
 	private void setPersonaValues(PersonaDTO persona) {
@@ -208,6 +209,8 @@ public class Controlador implements ActionListener
 		persona.getDomicilio().setDepto(ventanaPersona.getTextDepto().getText());
 		persona.getDomicilio().getLocalidad().setIdLocalidad(getIdLocalidad(ventanaPersona.getComboLocalidad().getSelectedItem().toString()));
 		persona.getTipoContacto().setIdTipoContacto(getIdTipoContacto(ventanaPersona.getComboTipoContacto().getSelectedItem().toString()));
+		persona.setEmail(ventanaPersona.getTxtEmail().getText());
+		persona.setFechaNacimiento(ventanaPersona.getFechaNac().getDate());
 	}
 
 	private int getIdLocalidad(String nombreLocalidad) {
@@ -376,7 +379,9 @@ public class Controlador implements ActionListener
 					this.personas.get(i).getDomicilio().getPiso(),
 					this.personas.get(i).getDomicilio().getDepto(),
 					this.personas.get(i).getDomicilio().getLocalidad().getNombreLocalidad(),
-					this.personas.get(i).getTipoContacto().getTipoContacto()};
+					this.personas.get(i).getTipoContacto().getTipoContacto(),
+					this.personas.get(i).getEmail(),
+					this.personas.get(i).getFechaNacimiento()};
 			this.vista.getModelPersonas().addRow(fila);
 		}
 	}

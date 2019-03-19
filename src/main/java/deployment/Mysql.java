@@ -2,6 +2,7 @@ package deployment;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Date;
 
 import dto.DomicilioDTO;
 import dto.LocalidadDTO;
@@ -29,7 +30,7 @@ public class Mysql {
 		LocalidadDTO localidad = new LocalidadDTO(1, "San Miguel");
 		DomicilioDTO domicilio = new DomicilioDTO(1, "Callao", "456","0","",localidad);
 		TipoContactoDTO tipoContacto = new TipoContactoDTO(1, "Cliente");
-		PersonaDTO persona = new PersonaDTO("Ricardo", "113434", domicilio, tipoContacto);
+		PersonaDTO persona = new PersonaDTO("Ricardo", "113434", domicilio, tipoContacto, "e@a.com", new Date());
 		
 		LocalidadDAO localidadDao = new LocalidadDAOSQL();
 		localidadDao.insert(localidad.getNombreLocalidad());

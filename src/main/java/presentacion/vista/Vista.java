@@ -25,7 +25,7 @@ public class Vista
 	private JButton btnAbmLocalidad;
 	private DefaultTableModel modelPersonas;
 	private  String[] nombreColumnas = {"Nombre y apellido","Teléfono",
-			"Calle","Altura","Piso","Depto","Localidad","Tipo Contacto"};
+			"Calle","Altura","Piso","Depto","Localidad","Tipo Contacto", "Email","Fecha de Nacimiento"};
 
 	public Vista()
 	{

@@ -1,51 +1,59 @@
 package dto;
 
-public class PersonaDTO {
-		private int idPersona;
-		private String nombre;
-		private String telefono;
-		private DomicilioDTO domicilio;
-		private TipoContactoDTO tipoContacto;
+import java.util.Date;
 
-	public PersonaDTO(String nombre, String telefono, DomicilioDTO domicilio, TipoContactoDTO tipoContacto)
+public class PersonaDTO {
+	private int idPersona;
+	private String nombre;
+	private String telefono;
+	private DomicilioDTO domicilio;
+	private TipoContactoDTO tipoContacto;
+	private String email;
+	private Date fechaNacimiento;
+
+	public PersonaDTO(String nombre, String telefono, DomicilioDTO domicilio, TipoContactoDTO tipoContacto, String email,Date fechaNacimiento)
 	{
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.domicilio = domicilio;
 		this.tipoContacto = tipoContacto;
+		this.email = email;
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public PersonaDTO(int idPersona, String nombre, String telefono, DomicilioDTO domicilio, TipoContactoDTO tipoContacto) {
+	public PersonaDTO(int idPersona, String nombre, String telefono, DomicilioDTO domicilio, TipoContactoDTO tipoContacto,  String email,Date fechaNacimiento) {
 		this.idPersona = idPersona;
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.domicilio = domicilio;
 		this.tipoContacto = tipoContacto;
+		this.email = email;
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
-		public int getIdPersona() {
+	public int getIdPersona() {
 		return idPersona;
 	}
-		public void setIdPersona(int idPersona) {
+	public void setIdPersona(int idPersona) {
 		this.idPersona = idPersona;
 	}
-		public String getNombre() {
+	public String getNombre() {
 		return nombre;
 	}
-		public void setNombre(String nombre) {
+	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-		public String getTelefono() {
+	public String getTelefono() {
 		return telefono;
 	}
-		public void setTelefono(String telefono) {
+	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
-		public TipoContactoDTO getTipoPersona() {
+	public TipoContactoDTO getTipoPersona() {
 		return tipoContacto;
 	}
 
-		public DomicilioDTO getDomicilio() {
+	public DomicilioDTO getDomicilio() {
 		return this.domicilio;
 	}
 
@@ -64,5 +72,21 @@ public class PersonaDTO {
 
 	public TipoContactoDTO getTipoContacto() {
 		return tipoContacto;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}
 }
