@@ -3,7 +3,17 @@ package deployment;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import dto.DomicilioDTO;
+import dto.LocalidadDTO;
+import dto.PersonaDTO;
+import dto.TipoContactoDTO;
 import persistencia.conexion.Conexion;
+import persistencia.dao.interfaz.LocalidadDAO;
+import persistencia.dao.interfaz.PersonaDAO;
+import persistencia.dao.interfaz.TipoContactoDAO;
+import persistencia.dao.mysql.LocalidadDAOSQL;
+import persistencia.dao.mysql.PersonaDAOSQL;
+import persistencia.dao.mysql.TipoContactoDAOSQL;
 
 public class Mysql {
 	
@@ -12,6 +22,25 @@ public class Mysql {
 	
 	public static void start() {
 		createTables();
+	}
+	
+	public static void loadInitialData() {
+		
+		LocalidadDTO localidad = new LocalidadDTO(1, "San Miguel");
+		DomicilioDTO domicilio = new DomicilioDTO(1, "Callao", "456","0","",localidad);
+		TipoContactoDTO tipoContacto = new TipoContactoDTO(1, "Cliente");
+		PersonaDTO persona = new PersonaDTO("Ricardo", "113434", domicilio, tipoContacto);
+		
+		LocalidadDAO localidadDao = new LocalidadDAOSQL();
+		localidadDao.insert(localidad.getNombreLocalidad());
+		
+				
+		TipoContactoDAO tipoContactoDao = new TipoContactoDAOSQL();
+		tipoContactoDao.insert(tipoContacto);
+				
+		PersonaDAO personaDao = new PersonaDAOSQL();
+		personaDao.insert(persona);
+		
 	}
 	
 	private static void createTables() {
@@ -36,6 +65,7 @@ public class Mysql {
 			e.printStackTrace();
 		}		
 	}
+	
 	private static void createTableLocalidad() {
 		String instruction = "CREATE TABLE localidad("
 		+ "idLocalidad int(10) NOT NULL AUTO_INCREMENT,"  
@@ -93,5 +123,4 @@ public class Mysql {
 			e.printStackTrace();
 		}		
 	}
-	
 }
