@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import dto.DomicilioDTO;
 import dto.LocalidadDTO;
 import dto.PersonaDTO;
@@ -20,6 +21,8 @@ import presentacion.vista.VentanaLocalidad;
 import presentacion.vista.VentanaPersona;
 import presentacion.vista.VentanaTipoContacto;
 import presentacion.vista.Vista;
+
+import javax.swing.*;
 
 public class Controlador implements ActionListener
 {
@@ -57,7 +60,13 @@ public class Controlador implements ActionListener
 		});
 		this.ventanaLocalidad.getBtnAgregarLocalidad().addActionListener(e->guardarLocalidad());
 		this.ventanaTipoContacto.getBtnAgregarTipoContacto().addActionListener(q->guardarTipoContacto(q));
-		this.ventanaTipoContacto.getBtnBorrar().addActionListener(w-> borrarTipoContacto(w));
+		this.ventanaTipoContacto.getBtnBorrar().addActionListener(w-> {
+			try {
+				borrarTipoContacto(w);
+			} catch (MySQLIntegrityConstraintViolationException e) {
+				JOptionPane.showMessageDialog(null, "El tipo de contacto que intenta eliminar esta relacionado a un contacto, debe eliminar primero el contacto");
+			}
+		});
 		this.ventanaTipoContacto.getBtnEditarTipoContacto().addActionListener(x-> editarTipoContacto(x));
 		this.ventanaTipoContacto.getTablaTipoContactos().addMouseListener(new MouseAdapter() {
 			@Override
@@ -99,15 +108,10 @@ public class Controlador implements ActionListener
 
 		localidades = agenda.obtenerLocalidades();
 
+		this.ventanaPersona.getComboLocalidad().removeAllItems();
+
 		for(LocalidadDTO localidad : localidades){
 			this.ventanaPersona.getComboLocalidad().addItem(localidad.getNombreLocalidad());
-
-			this.ventanaLocalidad.getModelLocalidades().setRowCount(0); //Para vaciar la tabla
-			this.ventanaLocalidad.getModelLocalidades().setColumnCount(0);
-			this.ventanaLocalidad.getModelLocalidades().setColumnIdentifiers(this.ventanaLocalidad.getNombreColumnas());
-
-			Object[] fila = {localidad.getNombreLocalidad()};
-			this.ventanaLocalidad.getModelLocalidades().addRow(fila);
 		}
 	}
 
@@ -224,7 +228,7 @@ public class Controlador implements ActionListener
 		}
 	}
 
-	private void borrarTipoContacto(ActionEvent w) {
+	private void borrarTipoContacto(ActionEvent w) throws MySQLIntegrityConstraintViolationException {
 		int[] filas_seleccionadas = this.ventanaTipoContacto.getTablaTipoContactos().getSelectedRows();
 		for(int fila: filas_seleccionadas) {
 			this.agenda.eliminarTContacto(this.tipoContactos.get(fila));
@@ -336,13 +340,11 @@ public class Controlador implements ActionListener
 	private void guardarLocalidad()  {
 
 		String localidad = this.ventanaLocalidad.getTxtAgregarLocalidad().getText();
-		if (!localidad.isEmpty()) {
-			LocalidadDTO nuevaLocalidad = new LocalidadDTO(0, localidad);
-			this.agenda.agregarLocalidad(nuevaLocalidad);
-			this.llenarTablaLocalidades();
-			this.ventanaLocalidad.getTxtAgregarLocalidad().setText(null);
-			this.cargarComboLocalidades();
-		}
+		LocalidadDTO nuevaLocalidad = new LocalidadDTO(0, localidad);
+		this.agenda.agregarLocalidad(nuevaLocalidad);
+		this.llenarTablaLocalidades();
+		this.ventanaLocalidad.getTxtAgregarLocalidad().setText(null);
+		this.cargarComboLocalidades();
 
 	}
 

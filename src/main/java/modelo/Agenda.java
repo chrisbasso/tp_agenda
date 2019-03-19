@@ -1,5 +1,6 @@
 package modelo;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import dto.LocalidadDTO;
 import dto.PersonaDTO;
 import dto.TipoContactoDTO;
@@ -62,7 +63,7 @@ public class Agenda
 		localidades.delete(localidadDTO.getIdLocalidad());
 	}
 
-	public void eliminarTContacto (TipoContactoDTO tipoContactoDTO) {
+	public void eliminarTContacto (TipoContactoDTO tipoContactoDTO) throws MySQLIntegrityConstraintViolationException {
 		tipos_contactos.delete(tipoContactoDTO);
 	}
 

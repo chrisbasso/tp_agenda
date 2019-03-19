@@ -6,11 +6,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.apache.log4j.Logger;
 
 import dto.TipoContactoDTO;
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.TipoContactoDAO;
+
+import javax.swing.*;
 
 public class TipoContactoDAOSQL implements TipoContactoDAO {
 	
@@ -46,7 +49,7 @@ public class TipoContactoDAOSQL implements TipoContactoDAO {
 	}
 
 	@Override
-	public boolean delete(TipoContactoDTO tipoContacto_a_eliminar) {
+	public boolean delete(TipoContactoDTO tipoContacto_a_eliminar){
 		PreparedStatement statement;
 		Conexion conexion = Conexion.getConexion();
 		try {
@@ -54,6 +57,8 @@ public class TipoContactoDAOSQL implements TipoContactoDAO {
 			statement.setString(1, Integer.toString(tipoContacto_a_eliminar.getIdTipoContacto()));
 			if (statement.executeUpdate() > 0)
 				return true;
+		} catch (MySQLIntegrityConstraintViolationException e){
+			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
