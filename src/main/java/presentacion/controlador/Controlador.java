@@ -108,32 +108,45 @@ public class Controlador implements ActionListener
 
 	private void guardarContacto(PersonaDTO persona) {
 
-		if(persona != null){
+		if(ventanaPersona.getPersona() != null){
+			setPersonaValues(persona);
 			this.agenda.editarPersona(persona);
 		}else{
 
+			int idTipoContacto = getIdTipoContacto(this.ventanaPersona.getComboTipoContacto().getSelectedItem().toString());
+			TipoContactoDTO tipoContactoDTO = new TipoContactoDTO(idTipoContacto, Optional.ofNullable((String) ventanaPersona.getComboTipoContacto().getSelectedItem()).orElse(""));
+
+			int idLocalidad = getIdLocalidad(this.ventanaPersona.getComboLocalidad().getSelectedItem().toString());
+			LocalidadDTO localidad = new LocalidadDTO(idLocalidad, Optional.ofNullable((String) ventanaPersona.getComboLocalidad().getSelectedItem()).orElse(""));
+
+			DomicilioDTO nuevoDomicilio = new DomicilioDTO(0,
+					ventanaPersona.getTxtCalle().getText(),
+					ventanaPersona.getTextAltura().getText(),
+					ventanaPersona.getTextPiso().getText(),
+					ventanaPersona.getTextDepto().getText(),
+					localidad);
+
+			PersonaDTO nuevaPersona = new PersonaDTO(0,
+					ventanaPersona.getTxtNombre().getText(),
+					ventanaPersona.getTxtTelefono().getText(),nuevoDomicilio, tipoContactoDTO);
+
+			this.agenda.agregarPersona(nuevaPersona);
+
 		}
 
-		int idTipoContacto = getIdTipoContacto(this.ventanaPersona.getComboTipoContacto().getSelectedItem().toString());
-		TipoContactoDTO tipoContactoDTO = new TipoContactoDTO(idTipoContacto, Optional.ofNullable((String) ventanaPersona.getComboTipoContacto().getSelectedItem()).orElse(""));
-
-		int idLocalidad = getIdLocalidad(this.ventanaPersona.getComboTipoContacto().getSelectedItem().toString());
-		LocalidadDTO localidad = new LocalidadDTO(idLocalidad, Optional.ofNullable((String) ventanaPersona.getComboLocalidad().getSelectedItem()).orElse(""));
-
-		DomicilioDTO nuevoDomicilio = new DomicilioDTO(0,
-				ventanaPersona.getTxtCalle().getText(),
-				ventanaPersona.getTextAltura().getText(),
-				ventanaPersona.getTextPiso().getText(),
-				ventanaPersona.getTextDepto().getText(),
-				localidad);
-
-		PersonaDTO nuevaPersona = new PersonaDTO(0,
-				ventanaPersona.getTxtNombre().getText(),
-				ventanaPersona.getTxtTelefono().getText(),nuevoDomicilio, tipoContactoDTO);
-
-		this.agenda.agregarPersona(nuevaPersona);
 		this.llenarTabla();
 		this.ventanaPersona.cerrar();
+	}
+
+	private void setPersonaValues(PersonaDTO persona) {
+		persona.setNombre(ventanaPersona.getTxtNombre().getText());
+		persona.setTelefono(ventanaPersona.getTxtTelefono().getText());
+		persona.getDomicilio().setCalle(ventanaPersona.getTxtCalle().getText());
+		persona.getDomicilio().setAltura(ventanaPersona.getTextAltura().getText());
+		persona.getDomicilio().setPiso(ventanaPersona.getTextPiso().getText());
+		persona.getDomicilio().setDepto(ventanaPersona.getTextDepto().getText());
+		persona.getDomicilio().getLocalidad().setIdLocalidad(getIdLocalidad(ventanaPersona.getComboLocalidad().getSelectedItem().toString()));
+		persona.getTipoContacto().setIdTipoContacto(getIdTipoContacto(ventanaPersona.getComboTipoContacto().getSelectedItem().toString()));
 	}
 
 	private int getIdLocalidad(String nombreLocalidad) {
@@ -260,7 +273,7 @@ public class Controlador implements ActionListener
 		int idTipoContacto = getIdTipoContacto(this.ventanaPersona.getComboTipoContacto().getSelectedItem().toString());
 		TipoContactoDTO tipoContactoDTO = new TipoContactoDTO(idTipoContacto, Optional.ofNullable((String) ventanaPersona.getComboTipoContacto().getSelectedItem()).orElse(""));
 
-		int idLocalidad = getIdLocalidad(this.ventanaPersona.getComboTipoContacto().getSelectedItem().toString());
+		int idLocalidad = getIdLocalidad(this.ventanaPersona.getComboLocalidad().getSelectedItem().toString());
 		LocalidadDTO localidad = new LocalidadDTO(idLocalidad, Optional.ofNullable((String) ventanaPersona.getComboLocalidad().getSelectedItem()).orElse(""));
 
 		DomicilioDTO nuevoDomicilio = new DomicilioDTO(0,

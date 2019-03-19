@@ -189,6 +189,7 @@ public class VentanaPersona extends JFrame
 			this.textCalle.setText(persona.getDomicilio().getCalle());
 			this.textAltura.setText(persona.getDomicilio().getAltura());
 			this.textPiso.setText(persona.getDomicilio().getPiso());
+			this.textDepto.setText(persona.getDomicilio().getDepto());
 			btnAgregarPersona.setText("Editar");
 		}else{
 			this.txtNombre.setText("");
