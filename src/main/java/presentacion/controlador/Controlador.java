@@ -2,6 +2,8 @@ package presentacion.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +14,7 @@ import dto.TipoContactoDTO;
 import modelo.Agenda;
 import persistencia.dao.interfaz.PersonaDAO;
 import presentacion.reportes.ReporteAgenda;
+import presentacion.vista.MensajesDeDialogo;
 import presentacion.vista.VentanaLocalidad;
 import presentacion.vista.VentanaPersona;
 import presentacion.vista.VentanaTipoContacto;
@@ -27,6 +30,7 @@ public class Controlador implements ActionListener
 	private VentanaTipoContacto ventanaTipoContacto;
 	private VentanaLocalidad ventanaLocalidad;
 	private Agenda agenda;
+	private MensajesDeDialogo mensaje;
 
 	public Controlador(Vista vista, Agenda agenda)
 	{
@@ -41,14 +45,28 @@ public class Controlador implements ActionListener
 		this.ventanaPersona = VentanaPersona.getInstance();
 		this.ventanaTipoContacto = VentanaTipoContacto.getInstance();
 		this.ventanaLocalidad = VentanaLocalidad.getInstance();
-		
+		this.mensaje = MensajesDeDialogo.getInstance();
+
 		this.ventanaPersona.getBtnAgregarPersona().addActionListener(e-> guardarContacto(getSelectItemTable()));
 		this.ventanaTipoContacto.getBtnAgregarTipoContacto().addActionListener(e->guardarTipoContacto(e));
 		this.ventanaLocalidad.getBtnAgregarLocalidad().addActionListener(e->guardarLocalidad(e));
 				
+		this.ventanaPersona.getBtnAgregarPersona().addActionListener(p-> guardarContacto(p));
+		this.ventanaTipoContacto.getBtnAgregarTipoContacto().addActionListener(q->guardarTipoContacto(q));
+		this.ventanaLocalidad.getBtnAgregarLocalidad().addActionListener(z->guardarLocalidad(z));
+		this.ventanaTipoContacto.getBtnBorrar().addActionListener(w-> borrarTipoContacto(w));
+		this.ventanaTipoContacto.getBtnEditarTipoContacto().addActionListener(x-> editarTipoContacto(x));
+		this.ventanaTipoContacto.getTablaTipoContactos().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				editarFilaSeleccionada();
+			}
+		});
+
 		this.agenda = agenda;
 		this.personas = null;
 		this.tipoContactos = null;
+
 
 		cargarComboLocalidades();
 		cargarComboTipoContacto();
@@ -161,13 +179,41 @@ public class Controlador implements ActionListener
 
 	private void ventanaABMTipoContacto(ActionEvent t) {
 		this.ventanaTipoContacto.mostrarVentana();
+		this.llenarTablaTipoContacto();
 	}
 
 	private void guardarTipoContacto(ActionEvent q) {
 		TipoContactoDTO nuevoTipoContacto =  new TipoContactoDTO(0, ventanaTipoContacto.getTxtAgregarTipoContacto().getText());
 		this.agenda.agregarTContacto(nuevoTipoContacto);
 		this.llenarTablaTipoContacto();
-		//mensaje que diga TipoContacto guardado
+		this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(null);
+		this.mensaje.msgTipocontactoOK();
+	}
+
+	private void borrarTipoContacto(ActionEvent w) {
+		int[] filas_seleccionadas = this.ventanaTipoContacto.getTablaTipoContactos().getSelectedRows();
+		for(int fila: filas_seleccionadas) {
+			this.agenda.eliminarTContacto(this.tipoContactos.get(fila));
+		}
+		this.llenarTablaTipoContacto();
+		this.mensaje.msgTipocontactoBorrado();
+	}
+
+	private void editarTipoContacto(ActionEvent x) {
+		int[] filas_seleccionadas = this.ventanaTipoContacto.getTablaTipoContactos().getSelectedRows();
+		for(int fila: filas_seleccionadas) {
+			this.tipoContactos.get(fila).setTipoContacto(this.ventanaTipoContacto.getTxtAgregarTipoContacto().getText());
+			this.agenda.editarTContacto(tipoContactos.get(fila));
+		}
+		this.llenarTablaTipoContacto();
+		this.mensaje.msgTipocontactoEditado();
+		this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(null);
+	}
+
+	private void editarFilaSeleccionada() {
+		int fila_seleccionada = this.ventanaTipoContacto.getTablaTipoContactos().getSelectedRow();
+		String fila_seleccionada_deno = this.tipoContactos.get(fila_seleccionada).getTipoContacto();
+		this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(fila_seleccionada_deno);
 	}
 
 	public void inicializar()
