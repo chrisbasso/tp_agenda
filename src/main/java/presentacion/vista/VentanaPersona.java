@@ -101,13 +101,33 @@ public class VentanaPersona extends JFrame
 		textCalle.setColumns(10);
 
 		textAltura = new JTextField();
+		textAltura.addKeyListener(new java.awt.event.KeyAdapter() {
 
+			public void keyReleased(java.awt.event.KeyEvent evt) {
+				try {
+					long number = Long.parseLong(textAltura.getText());
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(rootPane, "Solo acepta numeros");
+					textAltura.setText("");
+				}
+			}
+		});
 		textAltura.setBounds(305, 89, 46, 20);
 		panel.add(textAltura);
 		textAltura.setColumns(10);
 
 		textPiso = new JTextField();
+		textPiso.addKeyListener(new java.awt.event.KeyAdapter() {
 
+			public void keyReleased(java.awt.event.KeyEvent evt) {
+				try {
+					long number = Long.parseLong(textPiso.getText());
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(rootPane, "Solo Acepta Numeros");
+					textPiso.setText("");
+				}
+			}
+		});
 		textPiso.setBounds(149, 117, 89, 20);
 		panel.add(textPiso);
 		textPiso.setColumns(10);
