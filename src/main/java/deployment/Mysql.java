@@ -24,7 +24,7 @@ public class Mysql {
 		createTables();
 	}
 	
-	public static void loadInitialData() {
+	public static void loadInitialData() throws SQLException {
 		
 		LocalidadDTO localidad = new LocalidadDTO(1, "San Miguel");
 		DomicilioDTO domicilio = new DomicilioDTO(1, "Callao", "456","0","",localidad);

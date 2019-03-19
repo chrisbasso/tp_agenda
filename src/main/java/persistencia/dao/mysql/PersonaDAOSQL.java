@@ -30,13 +30,17 @@ public class PersonaDAOSQL implements PersonaDAO{
 	private static final String delete = "DELETE FROM persona WHERE idPersona = ?";
 	private static final Conexion conexion = Conexion.getConexion();
 
-	public boolean insert(PersonaDTO persona) {
+	public boolean insert(PersonaDTO persona) throws SQLException {
 
 		PreparedStatement statement;
 		Conexion conexion = Conexion.getConexion();
 
 		try
 		{
+			conexion.getConnection().setAutoCommit(false);
+
+			conexion.getConnection().commit();
+
 			int idDomicilio = this.insertarDomicilio(persona.getDomicilio());
 			persona.getDomicilio().setIdDomicilio(idDomicilio);
 
@@ -52,6 +56,7 @@ public class PersonaDAOSQL implements PersonaDAO{
 		}
 		catch (SQLException e)
 		{
+			conexion.getConnection().rollback();
 			e.printStackTrace();
 		}
 		return false;
@@ -88,8 +93,8 @@ public class PersonaDAOSQL implements PersonaDAO{
 	}
 
 	public int getIdLocalidad(String localidad) {
-		String query = "SELECT idLocalidad " + "FROM localidades "
-				+ "WHERE Nombre_Localidad = (?)";
+		String query = "SELECT idLocalidad " + "FROM localidad "
+				+ "WHERE nombre_localidad = (?)";
 
 		PreparedStatement statement;
 		ResultSet resultSet;
@@ -204,7 +209,7 @@ public class PersonaDAOSQL implements PersonaDAO{
 		return personas;
 	}
 
-	public boolean editar(PersonaDTO persona) {
+	public boolean editar(PersonaDTO persona) throws SQLException {
 		int idLocalidad = persona.getDomicilio().getLocalidad().getIdLocalidad();
 		int idDomicilio = persona.getDomicilio().getIdDomicilio();
 
@@ -213,7 +218,12 @@ public class PersonaDAOSQL implements PersonaDAO{
 		String queryPersona = "UPDATE persona SET nombre = ?, telefono = ?, idDomicilio = ?," +
 				"idTipoPersona = ? WHERE idPersona = ?;";
 		PreparedStatement statement;
+
+		conexion.getConnection().setAutoCommit(false);
+		conexion.getConnection().commit();
+
 		try {
+
 			statement = conexion.getSQLConexion().prepareStatement(queryDomicilio);
 			statement.setString(1, persona.getDomicilio().getCalle());
 			statement.setString(2, persona.getDomicilio().getAltura());
@@ -240,8 +250,8 @@ public class PersonaDAOSQL implements PersonaDAO{
 				return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
+			conexion.getConnection().rollback();
 		}
-
 		return false;
 	}
 }

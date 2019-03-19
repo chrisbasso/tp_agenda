@@ -14,7 +14,7 @@ public class LocalidadDAOSQL implements LocalidadDAO {
 
 	private static final String insert = "INSERT INTO localidad(nombre_localidad) VALUES(?)";
 	private static final String readall = "SELECT * FROM localidad";
-	private static final String delete = " ";
+	private static final String delete = " DELETE FROM localidad WHERE idLocalidad = ? ";
 	private static final String edit = "UPDATE localidad SET nombre_localidad = ? WHERE idLocalidad = ?;";
 	private static final Conexion conexion = Conexion.getConexion();
 
@@ -38,31 +38,20 @@ public class LocalidadDAOSQL implements LocalidadDAO {
 		return localidades;
 	}
 
-	public boolean existe(String localidad) {
-		List<LocalidadDTO> localidades = this.readAll();
 
-		for(LocalidadDTO localidad2 : localidades)
-		{
-			if (localidad2.getNombreLocalidad() == localidad){
-				return true;
-			}
-		}
-		return false;
-	}
 
 	public boolean insert(String localidad) {
-		if (!this.existe(localidad)) {
-			PreparedStatement statement;
-			try {
-				statement = conexion.getSQLConexion().prepareStatement(insert);
-				statement.setString(1, localidad);
-				if (statement.executeUpdate() > 0)
-					// true
-					return true;
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+
+		PreparedStatement statement;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(insert);
+			statement.setString(1, localidad);
+			if (statement.executeUpdate() > 0)
+				return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+
 		return false;
 	}
 
@@ -111,21 +100,21 @@ public class LocalidadDAOSQL implements LocalidadDAO {
 	}
 
 	public boolean editar(LocalidadDTO localidadDTO) {
-		if (!this.existe(localidadDTO.getNombreLocalidad()))
-		{
-			int id1 = this.getIdLocalidad(String.valueOf(localidadDTO.getIdLocalidad()));
 
-			PreparedStatement statement;
-			try {
-				statement = conexion.getSQLConexion().prepareStatement(edit);
-				statement.setString(1, localidadDTO.getNombreLocalidad());
-				statement.setInt(2, localidadDTO.getIdLocalidad());
-				if (statement.executeUpdate() > 0)
-					return true;
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+
+		int id1 = this.getIdLocalidad(String.valueOf(localidadDTO.getIdLocalidad()));
+
+		PreparedStatement statement;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(edit);
+			statement.setString(1, localidadDTO.getNombreLocalidad());
+			statement.setInt(2, localidadDTO.getIdLocalidad());
+			if (statement.executeUpdate() > 0)
+				return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+
 		return false;
 
 	}

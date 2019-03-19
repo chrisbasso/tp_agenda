@@ -20,7 +20,6 @@ public class TipoContactoDAOSQL implements TipoContactoDAO {
 	private static final String delete = "DELETE FROM tipo_persona WHERE idTipoPersona = ?";
 	private static final String update = "UPDATE tipo_persona SET tipo = ? WHERE idTipoPersona = ?";
 	private static final String readall = "SELECT * FROM tipo_persona";
-	//private static final String readbyid = "SELECT";
 	
 	@Override
 	public boolean insert(TipoContactoDTO tipoContacto) {

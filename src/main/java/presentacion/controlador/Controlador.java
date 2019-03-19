@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,8 +48,14 @@ public class Controlador implements ActionListener
 		this.ventanaLocalidad = VentanaLocalidad.getInstance();
 		this.mensaje = MensajesDeDialogo.getInstance();
 
-		this.ventanaPersona.getBtnAgregarPersona().addActionListener(e-> guardarContacto(getSelectItemTable()));
-		this.ventanaLocalidad.getBtnAgregarLocalidad().addActionListener(e->guardarLocalidad(e));
+		this.ventanaPersona.getBtnAgregarPersona().addActionListener(e-> {
+			try {
+				guardarContacto(getSelectItemTable());
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+		});
+		this.ventanaLocalidad.getBtnAgregarLocalidad().addActionListener(e->guardarLocalidad());
 		this.ventanaTipoContacto.getBtnAgregarTipoContacto().addActionListener(q->guardarTipoContacto(q));
 		this.ventanaTipoContacto.getBtnBorrar().addActionListener(w-> borrarTipoContacto(w));
 		this.ventanaTipoContacto.getBtnEditarTipoContacto().addActionListener(x-> editarTipoContacto(x));
@@ -78,7 +85,7 @@ public class Controlador implements ActionListener
 	}
 
 	private void cargarComboTipoContacto() {
-		this.tipoContactos = null; // se agrego esto para cuando vayan haciendo modificaciones en el ABM de tipode contacto no se sobrecargue y no actualize cuando se borra
+		this.tipoContactos = null;
 		this.tipoContactos = agenda.obtenerTiposContactos();
 		this.ventanaPersona.getComboTipoContacto().removeAllItems();
 
@@ -94,11 +101,11 @@ public class Controlador implements ActionListener
 
 		for(LocalidadDTO localidad : localidades){
 			this.ventanaPersona.getComboLocalidad().addItem(localidad.getNombreLocalidad());
-			
+
 			this.ventanaLocalidad.getModelLocalidades().setRowCount(0); //Para vaciar la tabla
-			this.ventanaLocalidad.getModelLocalidades().setColumnCount(0); 
+			this.ventanaLocalidad.getModelLocalidades().setColumnCount(0);
 			this.ventanaLocalidad.getModelLocalidades().setColumnIdentifiers(this.ventanaLocalidad.getNombreColumnas());
-			
+
 			Object[] fila = {localidad.getNombreLocalidad()};
 			this.ventanaLocalidad.getModelLocalidades().addRow(fila);
 		}
@@ -114,7 +121,7 @@ public class Controlador implements ActionListener
 		this.ventanaPersona.mostrarVentana();
 	}
 
-	private void guardarContacto(PersonaDTO persona) {
+	private void guardarContacto(PersonaDTO persona) throws SQLException {
 
 		if(ventanaPersona.getPersona() != null){
 			setPersonaValues(persona);
@@ -263,7 +270,6 @@ public class Controlador implements ActionListener
 	private void editarFilaSeleccionada() {
 		int[] filas_seleccionadas = this.ventanaTipoContacto.getTablaTipoContactos().getSelectedRows();
 		if (filas_seleccionadas.length == 1) {
-			this.ventanaTipoContacto.getBtnAgregarTipoContacto().setEnabled(false);
 			this.ventanaTipoContacto.getBtnEditarTipoContacto().setEnabled(true);
 			this.ventanaTipoContacto.getBtnBorrar().setEnabled(true);
 			
@@ -276,7 +282,6 @@ public class Controlador implements ActionListener
 			this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(null);
 		}
 		else {
-			this.ventanaTipoContacto.getBtnAgregarTipoContacto().setEnabled(false);
 			this.ventanaTipoContacto.getBtnBorrar().setEnabled(true);
 			this.ventanaTipoContacto.getBtnEditarTipoContacto().setEnabled(false);
 			this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(null);
@@ -325,32 +330,34 @@ public class Controlador implements ActionListener
 	
 	private void ventanaABMLocalidad(ActionEvent t) {
 		this.ventanaLocalidad.mostrarVentana();
+		this.llenarTablaLocalidades();
 	}
 
-	private void guardarLocalidad(ActionEvent z) {
-		int idTipoContacto = getIdTipoContacto(this.ventanaPersona.getComboTipoContacto().getSelectedItem().toString());
-		TipoContactoDTO tipoContactoDTO = new TipoContactoDTO(idTipoContacto, Optional.ofNullable((String) ventanaPersona.getComboTipoContacto().getSelectedItem()).orElse(""));
+	private void guardarLocalidad()  {
 
-		int idLocalidad = getIdLocalidad(this.ventanaPersona.getComboLocalidad().getSelectedItem().toString());
-		LocalidadDTO localidad = new LocalidadDTO(idLocalidad, Optional.ofNullable((String) ventanaPersona.getComboLocalidad().getSelectedItem()).orElse(""));
+		String localidad = this.ventanaLocalidad.getTxtAgregarLocalidad().getText();
+		if (!localidad.isEmpty()) {
+			LocalidadDTO nuevaLocalidad = new LocalidadDTO(0, localidad);
+			this.agenda.agregarLocalidad(nuevaLocalidad);
+			this.llenarTablaLocalidades();
+			this.ventanaLocalidad.getTxtAgregarLocalidad().setText(null);
+			this.cargarComboLocalidades();
+		}
 
-		DomicilioDTO nuevoDomicilio = new DomicilioDTO(0,
-				ventanaPersona.getTxtCalle().getText(),
-				ventanaPersona.getTextAltura().getText(),
-				ventanaPersona.getTextPiso().getText(),
-				ventanaPersona.getTextDepto().getText(),
-				localidad);
-
-		PersonaDTO nuevaPersona = new PersonaDTO(0,
-				ventanaPersona.getTxtNombre().getText(),
-				ventanaPersona.getTxtTelefono().getText(),nuevoDomicilio, tipoContactoDTO);
-
-
-		this.agenda.agregarPersona(nuevaPersona);
-		this.llenarTabla();
-		this.ventanaPersona.cerrar();
 	}
 
+	private void llenarTablaLocalidades() {
+
+		this.ventanaLocalidad.getModelLocalidades().setRowCount(0);
+		this.ventanaLocalidad.getModelLocalidades().setColumnCount(0);
+		this.ventanaLocalidad.getModelLocalidades().setColumnIdentifiers(this.ventanaLocalidad.getNombreColumnas());
+
+		this.localidades = agenda.obtenerLocalidades();//hacer readall en daosql
+		for(int i = 0; i < this.localidades.size(); i++) {
+			Object[] fila = { this.localidades.get(i).getNombreLocalidad()};
+			this.ventanaLocalidad.getModelLocalidades().addRow(fila);
+		}
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

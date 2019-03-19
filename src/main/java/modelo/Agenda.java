@@ -11,6 +11,7 @@ import persistencia.dao.mysql.LocalidadDAOSQL;
 import persistencia.dao.mysql.PersonaDAOSQL;
 import persistencia.dao.mysql.TipoContactoDAOSQL;
 
+import java.sql.SQLException;
 import java.util.List;
 
 
@@ -28,8 +29,7 @@ public class Agenda
 
 	}
 
-	public void agregarPersona(PersonaDTO nuevaPersona)
-	{
+	public void agregarPersona(PersonaDTO nuevaPersona) throws SQLException {
 		persona.insert(nuevaPersona);
 	}
 
@@ -74,8 +74,12 @@ public class Agenda
 		return tipos_contactos.edit(tipoContactoDTO);
 	}
 
-	public boolean editarPersona(PersonaDTO nuevaPersona) {
+	public boolean editarPersona(PersonaDTO nuevaPersona) throws SQLException {
 		return persona.editar(nuevaPersona);
 
+	}
+
+	public boolean agregarLocalidad(LocalidadDTO localidadDTO) {
+		return localidades.insert(localidadDTO.getNombreLocalidad());
 	}
 }
