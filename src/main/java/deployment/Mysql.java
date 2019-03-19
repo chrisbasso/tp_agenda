@@ -51,10 +51,10 @@ public class Mysql {
 	}
 
 	private static void createTableTipoPersona() {
-		String instruction = "CREATE TABLE tipo_persona("
-		+ "idTipoPersona int(10) NOT NULL AUTO_INCREMENT,"
+		String instruction = "CREATE TABLE tipo_contacto("
+		+ "idTipoContacto int(10) NOT NULL AUTO_INCREMENT,"
 		+ "tipo varchar(20),"
-		+ "PRIMARY KEY (idTipoPersona)"
+		+ "PRIMARY KEY (idTipoContacto)"
 		+ ");";
 		
 		try {
@@ -110,8 +110,8 @@ public class Mysql {
 		  + "telefono varchar(20) NOT NULL,"
 		  + "PRIMARY KEY (idPersona),"
 		  + "idDomicilio int(10),"
-		  + "idTipoPersona int(10),"
-		  + "FOREIGN KEY (idTipoPersona) REFERENCES tipo_persona  (idTipoPersona),"
+		  + "idTipoContacto int(10),"
+		  + "FOREIGN KEY (idTipoContacto) REFERENCES tipo_contacto  (idTipoContacto),"
 		  + "FOREIGN KEY (idDomicilio) REFERENCES domicilio   (idDomicilio)"
 		  + ");";
 

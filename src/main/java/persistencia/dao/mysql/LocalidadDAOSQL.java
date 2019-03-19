@@ -1,14 +1,18 @@
 package persistencia.dao.mysql;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import dto.LocalidadDTO;
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.LocalidadDAO;
 
+import javax.swing.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 public class LocalidadDAOSQL implements LocalidadDAO {
 
@@ -62,53 +66,23 @@ public class LocalidadDAOSQL implements LocalidadDAO {
 			statement.setInt(1, idLocalidad);
 			if (statement.executeUpdate() > 0)
 				return true;
+		} catch (MySQLIntegrityConstraintViolationException e) {
+			JOptionPane.showMessageDialog(null, "La Localidad que intenta eliminar esta relacionada a un contacto, debe eliminar primero el contacto");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return false;
 	}
 
-	public int getIdLocalidad(String localidad) {
-		String query = "SELECT idLocalidad "
-				+ "FROM localidad "
-				+ "WHERE nombre_localidad = ? ";
-
-		PreparedStatement statement;
-		ResultSet resultSet; //Guarda el resultado de la query
-		try {
-
-			statement = conexion.getSQLConexion().prepareStatement(query);
-			statement.setString(1, localidad);
-
-			System.out.println(statement.toString());
-
-			resultSet = statement.executeQuery();
-			int resultado = -1;
-
-			while(resultSet.next())
-			{
-				resultado = resultSet.getInt("IdLocalidad");
-			}
-
-			if (resultado != -1)
-				return resultado;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return -1;
-
-	}
 
 	public boolean editar(LocalidadDTO localidadDTO) {
-
-
-		int id1 = this.getIdLocalidad(String.valueOf(localidadDTO.getIdLocalidad()));
 
 		PreparedStatement statement;
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(edit);
 			statement.setString(1, localidadDTO.getNombreLocalidad());
 			statement.setInt(2, localidadDTO.getIdLocalidad());
+			LOGGER.info(statement.toString());
 			if (statement.executeUpdate() > 0)
 				return true;
 		} catch (SQLException e) {

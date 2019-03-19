@@ -19,13 +19,13 @@ public class PersonaDAOSQL implements PersonaDAO{
 	private static final Logger LOGGER = Logger.getLogger(Conexion.class);
 
 	private static final String readall = "SELECT p.idPersona,p.nombre,p.telefono,dom.idDomicilio,dom.calle," +
-			"dom.altura,dom.piso, dom.depto,loc.idLocalidad,loc.nombre_localidad,tipo.idTipoPersona,tipo.tipo " +
+			"dom.altura,dom.piso, dom.depto,loc.idLocalidad,loc.nombre_localidad,tipo.idTipoContacto,tipo.tipo " +
 			"FROM persona p " +
 			"JOIN domicilio dom ON p.idDomicilio = dom.idDomicilio " +
-			"JOIN tipo_persona tipo ON p.idTipoPersona = tipo.idTipoPersona " +
+			"JOIN tipo_contacto tipo ON p.idTipoContacto = tipo.idTipoContacto " +
 			"JOIN localidad loc ON dom.idLocalidad = loc.idLocalidad";
 	private static final String insert = "INSERT INTO persona"
-			+ "(nombre, telefono, idDomicilio, idTipoPersona) "
+			+ "(nombre, telefono, idDomicilio, idTipoContacto) "
 			+ "VALUES( ?, ?, ?, ?)";
 	private static final String delete = "DELETE FROM persona WHERE idPersona = ?";
 	private static final Conexion conexion = Conexion.getConexion();
@@ -193,7 +193,7 @@ public class PersonaDAOSQL implements PersonaDAO{
 						localidad);
 
 				TipoContactoDTO tipoContacto = new TipoContactoDTO(
-						resultSet.getInt("idTipoPersona"),
+						resultSet.getInt("idTipoContacto"),
 						resultSet.getString("tipo"));
 
 				personas.add(new PersonaDTO(
@@ -216,7 +216,7 @@ public class PersonaDAOSQL implements PersonaDAO{
 		String queryDomicilio = "UPDATE domicilio SET calle = ?, altura = ?, piso = ?,"
 				+ " depto = ?, idLocalidad = ? WHERE idDomicilio = ?;";
 		String queryPersona = "UPDATE persona SET nombre = ?, telefono = ?, idDomicilio = ?," +
-				"idTipoPersona = ? WHERE idPersona = ?;";
+				"idTipoContacto = ? WHERE idPersona = ?;";
 		PreparedStatement statement;
 
 		conexion.getConnection().setAutoCommit(false);

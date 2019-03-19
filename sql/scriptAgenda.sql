@@ -3,11 +3,11 @@ CREATE DATABASE agenda;
 USE agenda;
 
 
-CREATE TABLE tipo_persona
+CREATE TABLE tipo_contacto
 (
-  idTipoPersona int(10) NOT NULL AUTO_INCREMENT,
+  idTipoContacto int(10) NOT NULL AUTO_INCREMENT,
   tipo varchar(20),
-  PRIMARY KEY (idTipoPersona)
+  PRIMARY KEY (idTipoContacto)
 );
 
 CREATE TABLE localidad
@@ -36,7 +36,7 @@ CREATE TABLE persona
   telefono varchar(20) NOT NULL,
   PRIMARY KEY (idPersona),
   idDomicilio int(10),
-  idTipoPersona int(10),
-  FOREIGN KEY (idTipoPersona) REFERENCES tipo_persona  (idTipoPersona),
+  idTipoContacto int(10),
+  FOREIGN KEY (idTipoContacto) REFERENCES tipo_contacto  (idTipoContacto),
   FOREIGN KEY (idDomicilio) REFERENCES domicilio   (idDomicilio)
 );

@@ -14,7 +14,6 @@ import dto.LocalidadDTO;
 import dto.PersonaDTO;
 import dto.TipoContactoDTO;
 import modelo.Agenda;
-import persistencia.dao.interfaz.PersonaDAO;
 import presentacion.reportes.ReporteAgenda;
 import presentacion.vista.MensajesDeDialogo;
 import presentacion.vista.VentanaLocalidad;
@@ -59,6 +58,21 @@ public class Controlador implements ActionListener
 			}
 		});
 		this.ventanaLocalidad.getBtnAgregarLocalidad().addActionListener(e->guardarLocalidad());
+		this.ventanaLocalidad.getBtnEditarLocalidad().addActionListener(e->editarLocalidad());
+		this.ventanaLocalidad.getBtnBorrar().addActionListener(e-> {
+			try {
+				borrarLocalidad();
+			} catch (MySQLIntegrityConstraintViolationException e1) {
+				JOptionPane.showMessageDialog(null, "La Localidad que intenta eliminar esta relacionada a un contacto, debe eliminar primero el contacto");
+			}
+		});
+		this.ventanaLocalidad.getTablaLocalidades().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				editarFilaLocalidadSeleccionada();
+			}
+		});
+
 		this.ventanaTipoContacto.getBtnAgregarTipoContacto().addActionListener(q->guardarTipoContacto(q));
 		this.ventanaTipoContacto.getBtnBorrar().addActionListener(w-> {
 			try {
@@ -71,7 +85,7 @@ public class Controlador implements ActionListener
 		this.ventanaTipoContacto.getTablaTipoContactos().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				editarFilaSeleccionada();
+				editarFilaTipoContactoSeleccionada();
 			}
 		});
 
@@ -79,9 +93,36 @@ public class Controlador implements ActionListener
 		this.personas = null;
 		this.tipoContactos = null;
 
-
 		cargarComboLocalidades();
 		cargarComboTipoContacto();
+	}
+
+	private void borrarLocalidad() throws MySQLIntegrityConstraintViolationException{
+
+		int[] filas_seleccionadas = this.ventanaLocalidad.getTablaLocalidades().getSelectedRows();
+		for(int fila: filas_seleccionadas) {
+			this.agenda.eliminarLocalidad(this.localidades.get(fila));
+		}
+		this.llenarTablaLocalidades();
+		this.ventanaLocalidad.getTxtAgregarLocalidad().setText(null);
+		this.cargarComboLocalidades();
+	}
+
+	private void editarLocalidad() {
+
+		int[] filas_seleccionadas = this.ventanaLocalidad.getTablaLocalidades().getSelectedRows();
+		String localidad = this.ventanaLocalidad.getTxtAgregarLocalidad().getText();
+		if (!localidad.isEmpty()) {
+			this.localidades.get(filas_seleccionadas[0]).setNombreLocalidad(localidad);
+
+			this.agenda.editarLocalidad(localidades.get(filas_seleccionadas[0]));
+
+			this.llenarTablaLocalidades();
+			this.cargarComboLocalidades();
+		}
+
+		this.ventanaLocalidad.getTxtAgregarLocalidad().setText(null);
+		this.llenarTabla();
 	}
 
 	private PersonaDTO getSelectItemTable(){
@@ -262,6 +303,7 @@ public class Controlador implements ActionListener
 			this.mensaje.msgSeleccionarFila();
 		}
 		this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(null);
+		this.llenarTabla();
 		
 	}
 	
@@ -271,7 +313,27 @@ public class Controlador implements ActionListener
 		this.ventanaTipoContacto.getBtnAgregarTipoContacto().setEnabled(true);
 	}
 
-	private void editarFilaSeleccionada() {
+	private void editarFilaLocalidadSeleccionada() {
+		int[] filas_seleccionadas = this.ventanaLocalidad.getTablaLocalidades().getSelectedRows();
+		if (filas_seleccionadas.length == 1) {
+			this.ventanaLocalidad.getBtnEditarLocalidad().setEnabled(true);
+			this.ventanaLocalidad.getBtnBorrar().setEnabled(true);
+
+			String fila_seleccionada_deno = this.localidades.get(filas_seleccionadas[0]).getNombreLocalidad();
+			this.ventanaLocalidad.getTxtAgregarLocalidad().setText(fila_seleccionada_deno);
+
+		}
+		else if (filas_seleccionadas.length == 0) {
+			this.ventanaLocalidad.getTxtAgregarLocalidad().setText(null);
+		}
+		else {
+			this.ventanaLocalidad.getBtnBorrar().setEnabled(true);
+			this.ventanaLocalidad.getBtnEditarLocalidad().setEnabled(false);
+			this.ventanaLocalidad.getTxtAgregarLocalidad().setText(null);
+		}
+	}
+
+	private void editarFilaTipoContactoSeleccionada() {
 		int[] filas_seleccionadas = this.ventanaTipoContacto.getTablaTipoContactos().getSelectedRows();
 		if (filas_seleccionadas.length == 1) {
 			this.ventanaTipoContacto.getBtnEditarTipoContacto().setEnabled(true);

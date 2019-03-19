@@ -59,7 +59,7 @@ public class Agenda
 		tipos_contactos.insert(tipo);
 	}
 
-	public void eliminarLocalidad(LocalidadDTO localidadDTO) {
+	public void eliminarLocalidad(LocalidadDTO localidadDTO) throws MySQLIntegrityConstraintViolationException{
 		localidades.delete(localidadDTO.getIdLocalidad());
 	}
 
