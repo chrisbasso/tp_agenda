@@ -48,12 +48,8 @@ public class Controlador implements ActionListener
 		this.mensaje = MensajesDeDialogo.getInstance();
 
 		this.ventanaPersona.getBtnAgregarPersona().addActionListener(e-> guardarContacto(getSelectItemTable()));
-		this.ventanaTipoContacto.getBtnAgregarTipoContacto().addActionListener(e->guardarTipoContacto(e));
 		this.ventanaLocalidad.getBtnAgregarLocalidad().addActionListener(e->guardarLocalidad(e));
-				
-		this.ventanaPersona.getBtnAgregarPersona().addActionListener(p-> guardarContacto(p));
 		this.ventanaTipoContacto.getBtnAgregarTipoContacto().addActionListener(q->guardarTipoContacto(q));
-		this.ventanaLocalidad.getBtnAgregarLocalidad().addActionListener(z->guardarLocalidad(z));
 		this.ventanaTipoContacto.getBtnBorrar().addActionListener(w-> borrarTipoContacto(w));
 		this.ventanaTipoContacto.getBtnEditarTipoContacto().addActionListener(x-> editarTipoContacto(x));
 		this.ventanaTipoContacto.getTablaTipoContactos().addMouseListener(new MouseAdapter() {
