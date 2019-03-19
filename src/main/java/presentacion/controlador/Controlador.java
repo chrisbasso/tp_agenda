@@ -67,8 +67,9 @@ public class Controlador implements ActionListener
 	}
 
 	private void cargarComboTipoContacto() {
-
-		tipoContactos = agenda.obtenerTiposContactos();
+		this.tipoContactos = null; // se agrego esto para cuando vayan haciendo modificaciones en el ABM de tipode contacto no se sobrecargue y no actualize cuando se borra
+		this.tipoContactos = agenda.obtenerTiposContactos();
+		this.ventanaPersona.getComboTipoContacto().removeAllItems();
 
 		for(TipoContactoDTO tipo : tipoContactos){
 			this.ventanaPersona.getComboTipoContacto().addItem(tipo.getTipoContacto());
@@ -154,16 +155,25 @@ public class Controlador implements ActionListener
 	}
 
 	private void ventanaABMTipoContacto(ActionEvent t) {
+		this.ventanaTipoContacto.cerrar();
 		this.ventanaTipoContacto.mostrarVentana();
+		this.restablecerBotones();
 		this.llenarTablaTipoContacto();
 	}
 
 	private void guardarTipoContacto(ActionEvent q) {
-		TipoContactoDTO nuevoTipoContacto =  new TipoContactoDTO(0, ventanaTipoContacto.getTxtAgregarTipoContacto().getText());
-		this.agenda.agregarTContacto(nuevoTipoContacto);
-		this.llenarTablaTipoContacto();
-		this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(null);
-		this.mensaje.msgTipocontactoOK();
+		String tipoContacto = this.ventanaTipoContacto.getTxtAgregarTipoContacto().getText();
+		if (!tipoContacto.isEmpty()) {
+			TipoContactoDTO nuevoTipoContacto =  new TipoContactoDTO(0, tipoContacto);
+			this.agenda.agregarTContacto(nuevoTipoContacto);
+			this.llenarTablaTipoContacto();
+			this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(null);
+			this.mensaje.msgAgregado();
+			this.cargarComboTipoContacto();
+		}
+		else {
+			this.mensaje.msgCampoVacio();
+		}
 	}
 
 	private void borrarTipoContacto(ActionEvent w) {
@@ -172,24 +182,64 @@ public class Controlador implements ActionListener
 			this.agenda.eliminarTContacto(this.tipoContactos.get(fila));
 		}
 		this.llenarTablaTipoContacto();
-		this.mensaje.msgTipocontactoBorrado();
+		this.mensaje.msgBorrado();
+		this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(null);
+		this.cargarComboTipoContacto();
+		this.restablecerBotones();
 	}
 	
 	private void editarTipoContacto(ActionEvent x) {
 		int[] filas_seleccionadas = this.ventanaTipoContacto.getTablaTipoContactos().getSelectedRows();
-		for(int fila: filas_seleccionadas) {
-			this.tipoContactos.get(fila).setTipoContacto(this.ventanaTipoContacto.getTxtAgregarTipoContacto().getText());
-			this.agenda.editarTContacto(tipoContactos.get(fila));
+		if(filas_seleccionadas.length == 1) {
+			String tipoContacto = this.ventanaTipoContacto.getTxtAgregarTipoContacto().getText();
+			if (!tipoContacto.isEmpty()) {
+				this.tipoContactos.get(filas_seleccionadas[0]).setTipoContacto(tipoContacto);
+				
+				this.agenda.editarTContacto(tipoContactos.get(filas_seleccionadas[0]));
+				
+				this.llenarTablaTipoContacto();
+				this.mensaje.msgEditado();
+				this.cargarComboTipoContacto();
+				this.restablecerBotones();
+			}
+			else {
+				this.mensaje.msgCampoVacio();
+			}
 		}
-		this.llenarTablaTipoContacto();
-		this.mensaje.msgTipocontactoEditado();
+		else {
+			this.mensaje.msgSeleccionarFila();
+		}
 		this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(null);
+		
 	}
 	
+	private void restablecerBotones() {
+		this.ventanaTipoContacto.getBtnBorrar().setEnabled(false);
+		this.ventanaTipoContacto.getBtnEditarTipoContacto().setEnabled(false);
+		this.ventanaTipoContacto.getBtnAgregarTipoContacto().setEnabled(true);
+	}
+
 	private void editarFilaSeleccionada() {
-		int fila_seleccionada = this.ventanaTipoContacto.getTablaTipoContactos().getSelectedRow();
-		String fila_seleccionada_deno = this.tipoContactos.get(fila_seleccionada).getTipoContacto();
-		this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(fila_seleccionada_deno);
+		int[] filas_seleccionadas = this.ventanaTipoContacto.getTablaTipoContactos().getSelectedRows();
+		if (filas_seleccionadas.length == 1) {
+			this.ventanaTipoContacto.getBtnAgregarTipoContacto().setEnabled(false);
+			this.ventanaTipoContacto.getBtnEditarTipoContacto().setEnabled(true);
+			this.ventanaTipoContacto.getBtnBorrar().setEnabled(true);
+			
+			String fila_seleccionada_deno = this.tipoContactos.get(filas_seleccionadas[0]).getTipoContacto();
+			this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(fila_seleccionada_deno);
+			
+		}
+		else if (filas_seleccionadas.length == 0) {
+			this.restablecerBotones();
+			this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(null);
+		}
+		else {
+			this.ventanaTipoContacto.getBtnAgregarTipoContacto().setEnabled(false);
+			this.ventanaTipoContacto.getBtnBorrar().setEnabled(true);
+			this.ventanaTipoContacto.getBtnEditarTipoContacto().setEnabled(false);
+			this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(null);
+		}
 	}
 	
 	public void inicializar()

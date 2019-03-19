@@ -16,15 +16,23 @@ public class MensajesDeDialogo extends JFrame{
 			return INSTANCE;
 	}
 		
-	public void msgTipocontactoOK() {
-		JOptionPane.showMessageDialog(null, "Tipo de Contacto agregado correctamente.");	
+	public void msgAgregado() {
+		JOptionPane.showMessageDialog(null, "Agregado correctamente.");	
 	}
 	
-	public void msgTipocontactoBorrado() {
-		JOptionPane.showMessageDialog(null, "Tipo de Contacto borrado correctamente.");	
+	public void msgBorrado() {
+		JOptionPane.showMessageDialog(null, "Borrado correctamente.");	
 	}
 	
-	public void msgTipocontactoEditado() {
-		JOptionPane.showMessageDialog(null, "Tipo de Contacto editado correctamente.");	
+	public void msgEditado() {
+		JOptionPane.showMessageDialog(null, "Editado correctamente.");	
+	}
+	
+	public void msgSeleccionarFila() {
+		JOptionPane.showMessageDialog(null, "Debe Seleccionar una fila");	
+	}
+	
+	public void msgCampoVacio() {
+		JOptionPane.showMessageDialog(null, "Campo vacio no aceptado");	
 	}
 }

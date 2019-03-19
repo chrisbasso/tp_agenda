@@ -57,10 +57,12 @@ public class VentanaTipoContacto extends JFrame {
 		panel.add(btnAgregarTipoContacto);
 		
 		btnEditarTipoContacto = new JButton("Editar");
+		btnEditarTipoContacto.setEnabled(false);
 		btnEditarTipoContacto.setBounds(220, 112, 89, 23);
 		panel.add(btnEditarTipoContacto);
 		
 		btnBorrar = new JButton("Borrar");
+		btnBorrar.setEnabled(false);
 		btnBorrar.setBounds(220, 78, 89, 23);
 		panel.add(btnBorrar);
 		
@@ -68,6 +70,7 @@ public class VentanaTipoContacto extends JFrame {
 		txtAgregarTipoContacto.setBounds(220, 15, 89, 20);
 		panel.add(txtAgregarTipoContacto);
 		txtAgregarTipoContacto.setColumns(10);
+		this.txtAgregarTipoContacto.setText(null);
 		
 	}
 
