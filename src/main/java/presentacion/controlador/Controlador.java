@@ -93,6 +93,13 @@ public class Controlador implements ActionListener
 
 		for(LocalidadDTO localidad : localidades){
 			this.ventanaPersona.getComboLocalidad().addItem(localidad.getNombreLocalidad());
+			
+			this.ventanaLocalidad.getModelLocalidades().setRowCount(0); //Para vaciar la tabla
+			this.ventanaLocalidad.getModelLocalidades().setColumnCount(0); 
+			this.ventanaLocalidad.getModelLocalidades().setColumnIdentifiers(this.ventanaLocalidad.getNombreColumnas());
+			
+			Object[] fila = {localidad.getNombreLocalidad()};
+			this.ventanaLocalidad.getModelLocalidades().addRow(fila);
 		}
 	}
 
