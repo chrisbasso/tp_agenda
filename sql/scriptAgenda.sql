@@ -21,8 +21,8 @@ CREATE TABLE domicilio
 (
   idDomicilio int(10) NOT NULL AUTO_INCREMENT,
   calle varchar(20),
-  altura int(10),
-  piso int(10),
+  altura varchar(10),
+  piso varchar(10),
   depto varchar(20),
   idLocalidad int(10),
   PRIMARY KEY (idDomicilio),
