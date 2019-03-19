@@ -111,6 +111,11 @@ public class Vista
 		return btnAgregar;
 	}
 
+	public JButton getBtnEditar()
+	{
+		return btnEditar;
+	}
+
 	public JButton getBtnBorrar()
 	{
 		return btnBorrar;
@@ -143,4 +148,6 @@ public class Vista
 	{
 		return nombreColumnas;
 	}
+
+
 }

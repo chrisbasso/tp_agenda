@@ -20,6 +20,7 @@ public class TipoContactoDAOSQL implements TipoContactoDAO {
 	private static final String delete = "DELETE FROM tipo_persona WHERE idTipoPersona = ?";
 	private static final String update = "UPDATE tipo_persona SET tipo = ? WHERE idTipoPersona = ?";
 	private static final String readall = "SELECT * FROM tipo_persona";
+	//private static final String readbyid = "SELECT";
 	
 	@Override
 	public boolean insert(TipoContactoDTO tipoContacto) {
@@ -47,13 +48,34 @@ public class TipoContactoDAOSQL implements TipoContactoDAO {
 
 	@Override
 	public boolean delete(TipoContactoDTO tipoContacto_a_eliminar) {
-		// TODO Auto-generated method stub
+		PreparedStatement statement;
+		Conexion conexion = Conexion.getConexion();
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(delete);
+			statement.setString(1, Integer.toString(tipoContacto_a_eliminar.getIdTipoContacto()));
+			if (statement.executeUpdate() > 0)
+				return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 
 	@Override
-	public boolean edit(TipoContactoDTO tipoContacto) {
-		// TODO Auto-generated method stub
+	public boolean edit(TipoContactoDTO tipoContacto_a_editar) {
+		PreparedStatement statement;
+		Conexion conexion = Conexion.getConexion();
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(update);
+			statement.setString(1, tipoContacto_a_editar.getTipoContacto());
+			statement.setString(2, Integer.toString(tipoContacto_a_editar.getIdTipoContacto()));
+			if(statement.executeUpdate() > 0) {
+				return true;
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
 		return false;
 	}
 

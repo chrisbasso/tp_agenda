@@ -3,6 +3,8 @@ package presentacion.vista;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 public class VentanaTipoContacto extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -45,7 +47,6 @@ public class VentanaTipoContacto extends JFrame {
 
 		modelTipoContactos = new DefaultTableModel(null,nombreColumnas);
 		tablaTipoContactos = new JTable(modelTipoContactos);
-
 		tablaTipoContactos.getColumnModel().getColumn(0).setPreferredWidth(103);
 		tablaTipoContactos.getColumnModel().getColumn(0).setResizable(false);
 
@@ -70,8 +71,7 @@ public class VentanaTipoContacto extends JFrame {
 		
 	}
 
-	public void mostrarVentana()
-	{
+	public void mostrarVentana(){
 		this.setVisible(true);
 	}
 
@@ -95,24 +95,25 @@ public class VentanaTipoContacto extends JFrame {
 		return btnBorrar;
 	}
 
-	public DefaultTableModel getModelTipoContactos() 
-	{
+	public DefaultTableModel getModelTipoContactos() {
 		return modelTipoContactos;
 	}
 	
-	public JTable getTablaTipoContactos()
-	{
+	public JTable getTablaTipoContactos(){
 		return tablaTipoContactos;
 	}
 
-	public String[] getNombreColumnas() 
-	{
+	public String[] getNombreColumnas() {
 		return nombreColumnas;
 	}
 	
-	public void cerrar()
-	{
+	public void cerrar() {
 		this.txtAgregarTipoContacto.setText(null);
 		this.dispose();
 	}
+	
+	/*
+	 * public void centrarVentana( JFrame ventanaPadre) {
+	 * this.setLocationRelativeTo(ventanaPadre); }
+	 */
 }

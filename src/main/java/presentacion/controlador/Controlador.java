@@ -2,6 +2,8 @@ package presentacion.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,7 +12,9 @@ import dto.LocalidadDTO;
 import dto.PersonaDTO;
 import dto.TipoContactoDTO;
 import modelo.Agenda;
+import persistencia.dao.interfaz.PersonaDAO;
 import presentacion.reportes.ReporteAgenda;
+import presentacion.vista.MensajesDeDialogo;
 import presentacion.vista.VentanaLocalidad;
 import presentacion.vista.VentanaPersona;
 import presentacion.vista.VentanaTipoContacto;
@@ -19,18 +23,20 @@ import presentacion.vista.Vista;
 public class Controlador implements ActionListener
 {
 	private Vista vista;
-	private List<PersonaDTO> personas_en_tabla;
+	private List<PersonaDTO> personas;
 	private List<TipoContactoDTO> tipoContactos;
 	private List<LocalidadDTO> localidades;
 	private VentanaPersona ventanaPersona;
 	private VentanaTipoContacto ventanaTipoContacto;
 	private VentanaLocalidad ventanaLocalidad;
 	private Agenda agenda;
+	private MensajesDeDialogo mensaje;
 
 	public Controlador(Vista vista, Agenda agenda)
 	{
 		this.vista = vista;
-		this.vista.getBtnAgregar().addActionListener(a->ventanaAgregarPersona(a));
+		this.vista.getBtnAgregar().addActionListener(a->ventanaAgregarPersona());
+		this.vista.getBtnEditar().addActionListener(e-> ventanaEditarPersona());
 		this.vista.getBtnBorrar().addActionListener(s->borrarPersona(s));
 		this.vista.getBtnReporte().addActionListener(r->mostrarReporte(r));
 		this.vista.getBtnAbmTipoDeContacto().addActionListener(t->ventanaABMTipoContacto(t));
@@ -39,17 +45,40 @@ public class Controlador implements ActionListener
 		this.ventanaPersona = VentanaPersona.getInstance();
 		this.ventanaTipoContacto = VentanaTipoContacto.getInstance();
 		this.ventanaLocalidad = VentanaLocalidad.getInstance();
-		
+		this.mensaje = MensajesDeDialogo.getInstance();
+
+		this.ventanaPersona.getBtnAgregarPersona().addActionListener(e-> guardarContacto(getSelectItemTable()));
+		this.ventanaTipoContacto.getBtnAgregarTipoContacto().addActionListener(e->guardarTipoContacto(e));
+		this.ventanaLocalidad.getBtnAgregarLocalidad().addActionListener(e->guardarLocalidad(e));
+				
 		this.ventanaPersona.getBtnAgregarPersona().addActionListener(p-> guardarContacto(p));
 		this.ventanaTipoContacto.getBtnAgregarTipoContacto().addActionListener(q->guardarTipoContacto(q));
 		this.ventanaLocalidad.getBtnAgregarLocalidad().addActionListener(z->guardarLocalidad(z));
-				
+		this.ventanaTipoContacto.getBtnBorrar().addActionListener(w-> borrarTipoContacto(w));
+		this.ventanaTipoContacto.getBtnEditarTipoContacto().addActionListener(x-> editarTipoContacto(x));
+		this.ventanaTipoContacto.getTablaTipoContactos().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				editarFilaSeleccionada();
+			}
+		});
+
 		this.agenda = agenda;
-		this.personas_en_tabla = null;
+		this.personas = null;
 		this.tipoContactos = null;
+
 
 		cargarComboLocalidades();
 		cargarComboTipoContacto();
+	}
+
+	private PersonaDTO getSelectItemTable(){
+		for (int i = 0; i < personas.size(); i++) {
+			if(i == this.vista.getTablaPersonas().getSelectedRow()){
+				return personas.get(i);
+			}
+		}
+		return null;
 	}
 
 	private void cargarComboTipoContacto() {
@@ -71,13 +100,23 @@ public class Controlador implements ActionListener
 		}
 	}
 
-	private void ventanaAgregarPersona(ActionEvent a) {
+	private void ventanaAgregarPersona() {
+		this.ventanaPersona.setPersona(null);
 		this.ventanaPersona.mostrarVentana();
-
+	}
+	private void ventanaEditarPersona(){
+		PersonaDTO personaAEditar = getSelectItemTable();
+		this.ventanaPersona.setPersona(personaAEditar);
+		this.ventanaPersona.mostrarVentana();
 	}
 
-	private void guardarContacto(ActionEvent p) {
+	private void guardarContacto(PersonaDTO persona) {
 
+		if(persona != null){
+			this.agenda.editarPersona(persona);
+		}else{
+
+		}
 
 		int idTipoContacto = getIdTipoContacto(this.ventanaPersona.getComboTipoContacto().getSelectedItem().toString());
 		TipoContactoDTO tipoContactoDTO = new TipoContactoDTO(idTipoContacto, Optional.ofNullable((String) ventanaPersona.getComboTipoContacto().getSelectedItem()).orElse(""));
@@ -95,7 +134,6 @@ public class Controlador implements ActionListener
 		PersonaDTO nuevaPersona = new PersonaDTO(0,
 				ventanaPersona.getTxtNombre().getText(),
 				ventanaPersona.getTxtTelefono().getText(),nuevoDomicilio, tipoContactoDTO);
-
 
 		this.agenda.agregarPersona(nuevaPersona);
 		this.llenarTabla();
@@ -133,7 +171,7 @@ public class Controlador implements ActionListener
 		int[] filas_seleccionadas = this.vista.getTablaPersonas().getSelectedRows();
 		for (int fila:filas_seleccionadas)
 		{
-			this.agenda.borrarPersona(this.personas_en_tabla.get(fila));
+			this.agenda.borrarPersona(this.personas.get(fila));
 		}
 
 		this.llenarTabla();
@@ -141,13 +179,41 @@ public class Controlador implements ActionListener
 
 	private void ventanaABMTipoContacto(ActionEvent t) {
 		this.ventanaTipoContacto.mostrarVentana();
+		this.llenarTablaTipoContacto();
 	}
 
 	private void guardarTipoContacto(ActionEvent q) {
 		TipoContactoDTO nuevoTipoContacto =  new TipoContactoDTO(0, ventanaTipoContacto.getTxtAgregarTipoContacto().getText());
 		this.agenda.agregarTContacto(nuevoTipoContacto);
 		this.llenarTablaTipoContacto();
-		//mensaje que diga TipoContacto guardado
+		this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(null);
+		this.mensaje.msgTipocontactoOK();
+	}
+
+	private void borrarTipoContacto(ActionEvent w) {
+		int[] filas_seleccionadas = this.ventanaTipoContacto.getTablaTipoContactos().getSelectedRows();
+		for(int fila: filas_seleccionadas) {
+			this.agenda.eliminarTContacto(this.tipoContactos.get(fila));
+		}
+		this.llenarTablaTipoContacto();
+		this.mensaje.msgTipocontactoBorrado();
+	}
+
+	private void editarTipoContacto(ActionEvent x) {
+		int[] filas_seleccionadas = this.ventanaTipoContacto.getTablaTipoContactos().getSelectedRows();
+		for(int fila: filas_seleccionadas) {
+			this.tipoContactos.get(fila).setTipoContacto(this.ventanaTipoContacto.getTxtAgregarTipoContacto().getText());
+			this.agenda.editarTContacto(tipoContactos.get(fila));
+		}
+		this.llenarTablaTipoContacto();
+		this.mensaje.msgTipocontactoEditado();
+		this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(null);
+	}
+
+	private void editarFilaSeleccionada() {
+		int fila_seleccionada = this.ventanaTipoContacto.getTablaTipoContactos().getSelectedRow();
+		String fila_seleccionada_deno = this.tipoContactos.get(fila_seleccionada).getTipoContacto();
+		this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(fila_seleccionada_deno);
 	}
 
 	public void inicializar()
@@ -162,17 +228,17 @@ public class Controlador implements ActionListener
 		this.vista.getModelPersonas().setColumnCount(0);
 		this.vista.getModelPersonas().setColumnIdentifiers(this.vista.getNombreColumnas());
 
-		this.personas_en_tabla = agenda.obtenerPersonas();
-		for (int i = 0; i < this.personas_en_tabla.size(); i ++)
+		this.personas = agenda.obtenerPersonas();
+		for (int i = 0; i < this.personas.size(); i ++)
 		{
-			Object[] fila = {this.personas_en_tabla.get(i).getNombre(),
-					this.personas_en_tabla.get(i).getTelefono(),
-					this.personas_en_tabla.get(i).getDomicilio().getCalle(),
-					this.personas_en_tabla.get(i).getDomicilio().getAltura(),
-					this.personas_en_tabla.get(i).getDomicilio().getPiso(),
-					this.personas_en_tabla.get(i).getDomicilio().getDepto(),
-					this.personas_en_tabla.get(i).getDomicilio().getLocalidad().getNombreLocalidad(),
-					this.personas_en_tabla.get(i).getTipoContacto().getTipoContacto()};
+			Object[] fila = {this.personas.get(i).getNombre(),
+					this.personas.get(i).getTelefono(),
+					this.personas.get(i).getDomicilio().getCalle(),
+					this.personas.get(i).getDomicilio().getAltura(),
+					this.personas.get(i).getDomicilio().getPiso(),
+					this.personas.get(i).getDomicilio().getDepto(),
+					this.personas.get(i).getDomicilio().getLocalidad().getNombreLocalidad(),
+					this.personas.get(i).getTipoContacto().getTipoContacto()};
 			this.vista.getModelPersonas().addRow(fila);
 		}
 	}

@@ -9,7 +9,7 @@ public interface TipoContactoDAO {
 	
 	public boolean delete(TipoContactoDTO tipoContacto_a_eliminar);
 	
-	public boolean edit(TipoContactoDTO tipoContacto);
+	public boolean edit(TipoContactoDTO tipoContacto_a_editar);
 	
 	public List<TipoContactoDTO> readAll();
 
