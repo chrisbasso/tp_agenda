@@ -38,9 +38,9 @@ public class PersonaDAOSQL implements PersonaDAO{
 
 		try
 		{
-			conexion.getConnection().setAutoCommit(false);
-
-			conexion.getConnection().commit();
+//			conexion.getConnection().setAutoCommit(false);
+//
+//			conexion.getConnection().commit();
 
 			int idDomicilio = this.insertarDomicilio(persona.getDomicilio());
 			persona.getDomicilio().setIdDomicilio(idDomicilio);
@@ -59,7 +59,7 @@ public class PersonaDAOSQL implements PersonaDAO{
 		}
 		catch (SQLException e)
 		{
-			conexion.getConnection().rollback();
+//			conexion.getConnection().rollback();
 			e.printStackTrace();
 		}
 		return false;
@@ -224,8 +224,8 @@ public class PersonaDAOSQL implements PersonaDAO{
 				"idTipoContacto = ?,email = ?, fecha_nacimiento = ? WHERE idPersona = ?;";
 		PreparedStatement statement;
 
-		conexion.getConnection().setAutoCommit(false);
-		conexion.getConnection().commit();
+//		conexion.getConnection().setAutoCommit(false);
+//		conexion.getConnection().commit();
 
 		try {
 
@@ -258,7 +258,7 @@ public class PersonaDAOSQL implements PersonaDAO{
 				return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
-			conexion.getConnection().rollback();
+//			conexion.getConnection().rollback();
 		}
 		return false;
 	}
