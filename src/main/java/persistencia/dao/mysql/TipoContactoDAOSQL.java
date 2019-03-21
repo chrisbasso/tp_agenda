@@ -58,7 +58,7 @@ public class TipoContactoDAOSQL implements TipoContactoDAO {
 			if (statement.executeUpdate() > 0)
 				return true;
 		} catch (MySQLIntegrityConstraintViolationException e){
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "El tipo de contacto que intenta eliminar esta relacionado a un contacto, debe eliminar primero el contacto");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

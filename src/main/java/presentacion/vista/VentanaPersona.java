@@ -5,9 +5,7 @@ import dto.PersonaDTO;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
-
-
+import java.util.Date;
 
 public class VentanaPersona extends JFrame
 {
@@ -110,7 +108,7 @@ public class VentanaPersona extends JFrame
 		lblLocalidad.setBounds(10, 164, 89, 14);
 		panel.add(lblLocalidad);
 
-		fechaNac = new JDateChooser();
+		fechaNac = new JDateChooser(new Date());
 		fechaNac.setBounds(149, 270, 89, 20);
 		panel.add(fechaNac);
 
@@ -118,6 +116,7 @@ public class VentanaPersona extends JFrame
 		textEmail.setBounds(149, 240, 89, 20);
 		panel.add(textEmail);
 		textEmail.setColumns(10);
+
 
 		textCalle = new JTextField();
 		textCalle.setBounds(149, 89, 89, 20);
@@ -129,7 +128,7 @@ public class VentanaPersona extends JFrame
 
 			public void keyReleased(java.awt.event.KeyEvent evt) {
 				try {
-					long number = Long.parseLong(textAltura.getText());
+					Long.parseLong(textAltura.getText());
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(rootPane, "Solo acepta numeros");
 					textAltura.setText("");

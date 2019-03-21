@@ -20,6 +20,7 @@ import presentacion.vista.VentanaLocalidad;
 import presentacion.vista.VentanaPersona;
 import presentacion.vista.VentanaTipoContacto;
 import presentacion.vista.Vista;
+import utils.EmailValidator;
 
 import javax.swing.*;
 
@@ -50,13 +51,7 @@ public class Controlador implements ActionListener
 		this.ventanaLocalidad = VentanaLocalidad.getInstance();
 		this.mensaje = MensajesDeDialogo.getInstance();
 
-		this.ventanaPersona.getBtnAgregarPersona().addActionListener(e-> {
-			try {
-				guardarContacto(getSelectItemTable());
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
-		});
+		this.ventanaPersona.getBtnAgregarPersona().addActionListener(e-> validarProcesarGuardado());
 		this.ventanaLocalidad.getBtnAgregarLocalidad().addActionListener(e->guardarLocalidad());
 		this.ventanaLocalidad.getBtnEditarLocalidad().addActionListener(e->editarLocalidad());
 		this.ventanaLocalidad.getBtnBorrar().addActionListener(e-> {
@@ -97,6 +92,33 @@ public class Controlador implements ActionListener
 		cargarComboTipoContacto();
 	}
 
+	private void validarProcesarGuardado() {
+
+		if(ventanaPersona.getTxtNombre().getText().isEmpty()){
+			JOptionPane.showMessageDialog(null, "Debe completar el nombre");
+			return;
+		}
+		if(ventanaPersona.getTxtTelefono().getText().isEmpty()){
+			JOptionPane.showMessageDialog(null, "Debe completar el telefono");
+			return;
+		}
+		if(ventanaPersona.getTxtEmail().getText().isEmpty()){
+			JOptionPane.showMessageDialog(null, "Debe completar el email");
+			return;
+		}
+
+		if(!EmailValidator.validate(ventanaPersona.getTxtEmail().getText().trim())) {
+			JOptionPane.showMessageDialog(null, "Email inválido");
+			return;
+		}
+
+		try {
+			guardarContacto(getSelectItemTable());
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+	}
+
 	private void borrarLocalidad() throws MySQLIntegrityConstraintViolationException{
 
 		int[] filas_seleccionadas = this.ventanaLocalidad.getTablaLocalidades().getSelectedRows();
@@ -135,7 +157,7 @@ public class Controlador implements ActionListener
 	}
 
 	private void cargarComboTipoContacto() {
-		this.tipoContactos = null;
+
 		this.tipoContactos = agenda.obtenerTiposContactos();
 		this.ventanaPersona.getComboTipoContacto().removeAllItems();
 
@@ -264,7 +286,6 @@ public class Controlador implements ActionListener
 			this.agenda.agregarTContacto(nuevoTipoContacto);
 			this.llenarTablaTipoContacto();
 			this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(null);
-			this.mensaje.msgAgregado();
 			this.cargarComboTipoContacto();
 		}
 		else {
@@ -278,7 +299,7 @@ public class Controlador implements ActionListener
 			this.agenda.eliminarTContacto(this.tipoContactos.get(fila));
 		}
 		this.llenarTablaTipoContacto();
-		this.mensaje.msgBorrado();
+		//this.mensaje.msgBorrado();
 		this.ventanaTipoContacto.getTxtAgregarTipoContacto().setText(null);
 		this.cargarComboTipoContacto();
 		this.restablecerBotones();
@@ -294,7 +315,6 @@ public class Controlador implements ActionListener
 				this.agenda.editarTContacto(tipoContactos.get(filas_seleccionadas[0]));
 				
 				this.llenarTablaTipoContacto();
-				this.mensaje.msgEditado();
 				this.cargarComboTipoContacto();
 				this.restablecerBotones();
 			}
