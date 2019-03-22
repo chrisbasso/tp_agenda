@@ -11,10 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
+import org.apache.log4j.Logger;
 
 public class LocalidadDAOSQL implements LocalidadDAO {
+	private static final Logger LOGGER = Logger.getLogger(Conexion.class);
 
 	private static final String insert = "INSERT INTO localidad(nombre_localidad) VALUES(?)";
 	private static final String readall = "SELECT * FROM localidad";
