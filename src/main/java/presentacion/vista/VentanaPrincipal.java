@@ -18,7 +18,14 @@ import javax.swing.JMenuItem;
 
 public class VentanaPrincipal{
 	private JFrame frame;
-	private JMenuBar menuBar; 
+	private JMenuBar menuBar;
+	private JMenuItem mntmAgregar;
+	private JMenuItem mntmEditar;	
+	private JMenuItem mntmBorrar;	
+	private JMenuItem mntmReporte;
+	private JMenuItem mntmAbmLocalidad; 
+	private JMenuItem mntmAbmTipoDeContacto;
+	
 	private JPanel panel;
 	private JScrollPane scrollPersonas; 
 	private JTable tablaPersonas;
@@ -67,22 +74,22 @@ public class VentanaPrincipal{
 		JMenu mnArchivo = new JMenu("Archivo");
 		menuBar.add(mnArchivo);
 		
-		JMenuItem mntmAgregar = new JMenuItem("Agregar contacto");
+		mntmAgregar = new JMenuItem("Agregar contacto");
 		mnArchivo.add(mntmAgregar);		
-		JMenuItem mntmEditar = new JMenuItem("Editar contacto");
+		mntmEditar = new JMenuItem("Editar contacto");
 		mnArchivo.add(mntmEditar);
-		JMenuItem mntmBorrar = new JMenuItem("Borrar contacto");
+		mntmBorrar = new JMenuItem("Borrar contacto");
 		mnArchivo.add(mntmBorrar);
-		JMenuItem mntmReporte = new JMenuItem("Reporte");
+		mntmReporte = new JMenuItem("Reporte");
 		mnArchivo.add(mntmReporte);
 		
 		JMenu mnConfiguracion = new JMenu("Configuración");
 		menuBar.add(mnConfiguracion);
 		
-		JMenuItem mntmAbmTipoDeContacto = new JMenuItem("ABM Tipo de Contacto");
+		mntmAbmTipoDeContacto = new JMenuItem("ABM Tipo de Contacto");
 		mnConfiguracion.add(mntmAbmTipoDeContacto);
 		
-		JMenuItem mntmAbmLocalidad = new JMenuItem("ABM de Localidades");
+		mntmAbmLocalidad = new JMenuItem("ABM de Localidades");
 		mnConfiguracion.add(mntmAbmLocalidad);
 	}
 
@@ -111,5 +118,52 @@ public class VentanaPrincipal{
 	public void setTablaPersonas(JTable tablaPersonas) {
 		this.tablaPersonas = tablaPersonas;
 	}
-	
+
+	public JMenuItem getMntmAgregar() {
+		return mntmAgregar;
+	}
+
+	public void setMntmAgregar(JMenuItem mntmAgregar) {
+		this.mntmAgregar = mntmAgregar;
+	}
+
+	public JMenuItem getMntmEditar() {
+		return mntmEditar;
+	}
+
+	public void setMntmEditar(JMenuItem mntmEditar) {
+		this.mntmEditar = mntmEditar;
+	}
+
+	public JMenuItem getMntmBorrar() {
+		return mntmBorrar;
+	}
+
+	public void setMntmBorrar(JMenuItem mntmBorrar) {
+		this.mntmBorrar = mntmBorrar;
+	}
+
+	public JMenuItem getMntmAbmLocalidad() {
+		return mntmAbmLocalidad;
+	}
+
+	public void setMntmAbmLocalidad(JMenuItem mntmAbmLocalidad) {
+		this.mntmAbmLocalidad = mntmAbmLocalidad;
+	}
+
+	public JMenuItem getMntmAbmTipoDeContacto() {
+		return mntmAbmTipoDeContacto;
+	}
+
+	public void setMntmAbmTipoDeContacto(JMenuItem mntmAbmTipoDeContacto) {
+		this.mntmAbmTipoDeContacto = mntmAbmTipoDeContacto;
+	}
+
+	public JMenuItem getMntmReporte() {
+		return mntmReporte;
+	}
+
+	public void setMntmReporte(JMenuItem mntmReporte) {
+		this.mntmReporte = mntmReporte;
+	}
 }

@@ -17,7 +17,7 @@ public class Main
 		VentanaPrincipal vista = new VentanaPrincipal();
 		Agenda modelo = new Agenda();
 		Controlador controlador = new Controlador(vista, modelo);
-		controlador.inicializar();
+		
 	
 	}
 }
