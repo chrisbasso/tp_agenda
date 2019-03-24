@@ -7,9 +7,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.util.Date;
 
-public class VentanaPersona extends JFrame
-{
+public class VentanaPersona extends JFrame{
 	private static final long serialVersionUID = 1L;
+	private static VentanaPersona INSTANCIA;
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JTextField txtTelefono;
@@ -21,21 +21,17 @@ public class VentanaPersona extends JFrame
 	private JTextField textEmail;
 	private JDateChooser fechaNac;
 	private JComboBox<String> comboLocalidad;
-	private JComboBox<String> comboTipoContacto;
-	private static VentanaPersona INSTANCE;
+	private JComboBox<String> comboTipoContacto;	
 	private PersonaDTO persona;
 
-	public static VentanaPersona getInstance()
-	{
-		if(INSTANCE == null)
+	public static VentanaPersona getInstance(){
+		if(INSTANCIA == null)
 			return new VentanaPersona();
 		else
-			return INSTANCE;
+			return INSTANCIA;
 	}
 
-	private VentanaPersona()
-	{
-		super();
+	private VentanaPersona(){
 		setTitle("Agregar contacto");
 		this.setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -171,23 +167,19 @@ public class VentanaPersona extends JFrame
 		this.setVisible(false);
 	}
 
-	public void mostrarVentana()
-	{
+	public void mostrarVentana()	{
 		this.setVisible(true);
 	}
 
-	public JTextField getTxtNombre()
-	{
+	public JTextField getTxtNombre()	{
 		return txtNombre;
 	}
 
-	public JTextField getTxtTelefono()
-	{
+	public JTextField getTxtTelefono()	{
 		return txtTelefono;
 	}
 
-	public JTextField getTxtCalle()
-	{
+	public JTextField getTxtCalle()	{
 		return textCalle;
 	}
 
@@ -215,8 +207,7 @@ public class VentanaPersona extends JFrame
 		return comboTipoContacto;
 	}
 
-	public JButton getBtnAgregarPersona()
-	{
+	public JButton getBtnAgregarPersona()	{
 		return btnAgregarPersona;
 	}
 
@@ -224,13 +215,11 @@ public class VentanaPersona extends JFrame
 		return persona;
 	}
 
-	public JTextField getTxtEmail()
-	{
+	public JTextField getTxtEmail()	{
 		return textEmail;
 	}
 
-	public JDateChooser getFechaNac()
-	{
+	public JDateChooser getFechaNac()	{
 		return fechaNac;
 	}
 
@@ -257,8 +246,7 @@ public class VentanaPersona extends JFrame
 		}
 	}
 
-	public void cerrar()
-	{
+	public void cerrar()	{
 		this.txtNombre.setText(null);
 		this.txtTelefono.setText(null);
 		this.textCalle.setText(null);
@@ -268,5 +256,4 @@ public class VentanaPersona extends JFrame
 		this.textEmail.setText(null);
 		this.dispose();
 	}
-
 }

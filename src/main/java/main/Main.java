@@ -4,7 +4,7 @@ import deployment.Mysql;
 import modelo.Agenda;
 import persistencia.dao.mysql.DAOSQLFactory;
 import presentacion.controlador.Controlador;
-import presentacion.vista.Vista;
+import presentacion.vista.VentanaPrincipal;
 
 
 public class Main 
@@ -14,8 +14,8 @@ public class Main
 	{
 		//Mysql.start();
 		//Mysql.loadInitialData();
-		Vista vista = new Vista();
-		Agenda modelo = new Agenda(new DAOSQLFactory());
+		VentanaPrincipal vista = new VentanaPrincipal();
+		Agenda modelo = new Agenda();
 		Controlador controlador = new Controlador(vista, modelo);
 		controlador.inicializar();
 	

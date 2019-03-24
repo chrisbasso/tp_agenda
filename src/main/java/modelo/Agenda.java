@@ -16,42 +16,34 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-public class Agenda
-{
+public class Agenda{	
 	private PersonaDAO persona;
 	private LocalidadDAO localidades;
 	private TipoContactoDAO tipos_contactos;
 
-	public Agenda(DAOSQLFactory daosqlFactory)
-	{
+	public Agenda()	{
 		persona = new PersonaDAOSQL();
 		localidades = new LocalidadDAOSQL();
 		tipos_contactos = new TipoContactoDAOSQL();
-
 	}
 
 	public void agregarPersona(PersonaDTO nuevaPersona) throws SQLException {
 		persona.insert(nuevaPersona);
 	}
 
-	public void borrarPersona(PersonaDTO persona_a_eliminar)
-	{
+	public void borrarPersona(PersonaDTO persona_a_eliminar){
 		persona.delete(persona_a_eliminar);
 	}
 
-	public List<PersonaDTO> obtenerPersonas()
-	{
+	public List<PersonaDTO> obtenerPersonas(){
 		return persona.readAll();
 	}
 
-
-	public List<LocalidadDTO> obtenerLocalidades()
-	{
+	public List<LocalidadDTO> obtenerLocalidades(){
 		return localidades.readAll();
 	}
 
-	public List<TipoContactoDTO> obtenerTiposContactos()
-	{
+	public List<TipoContactoDTO> obtenerTiposContactos()	{
 		return tipos_contactos.readAll();
 	}
 
@@ -77,7 +69,6 @@ public class Agenda
 
 	public boolean editarPersona(PersonaDTO nuevaPersona) throws SQLException {
 		return persona.editar(nuevaPersona);
-
 	}
 
 	public boolean agregarLocalidad(LocalidadDTO localidadDTO) {
