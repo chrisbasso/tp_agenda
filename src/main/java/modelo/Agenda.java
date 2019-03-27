@@ -1,77 +1,128 @@
 package modelo;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
-
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-
-import dto.LocalidadDTO;
-import dto.PersonaDTO;
-import dto.TipoContactoDTO;
-import persistencia.dao.interfaz.LocalidadDAO;
-import persistencia.dao.interfaz.PersonaDAO;
-import persistencia.dao.interfaz.TipoContactoDAO;
-import persistencia.dao.mysql.LocalidadDAOSQL;
-import persistencia.dao.mysql.PersonaDAOSQL;
-import persistencia.dao.mysql.TipoContactoDAOSQL;
 
 
 public class Agenda{	
-	private PersonaDAO personas;
-	private LocalidadDAO localidades;
-	private TipoContactoDAO tiposDeContactos;
+	private List <Persona> personas;
+	private List <Localidad> localidades;
+	private List <TipoContacto> tipoContactos;
 
 	public Agenda()	{
-		personas = new PersonaDAOSQL();
-		localidades = new LocalidadDAOSQL();
-		tiposDeContactos = new TipoContactoDAOSQL();
+		personas = new ArrayList<Persona>();
+		localidades = new ArrayList<Localidad>();
+		tipoContactos = new ArrayList<TipoContacto>();
 	}
 
-	public void agregarPersona(PersonaDTO nuevaPersona) throws SQLException {
-		personas.insert(nuevaPersona);
-	}
-
-	public void borrarPersona(PersonaDTO persona_a_eliminar){
-		personas.delete(persona_a_eliminar);
-	}
-
-	public boolean editarPersona(PersonaDTO nuevaPersona) throws SQLException {
-		return personas.editar(nuevaPersona);
-	}
-
-	public List<PersonaDTO> obtenerPersonas(){
-		return personas.readAll();
+	public void agregarPersona(Persona persona) {		
+		int posicion = existe(persona); 
+		if(posicion != -1) {
+			personas.add(persona);
+		}
 	}
 	
-	public boolean agregarLocalidad(LocalidadDTO localidadDTO) {
-		return localidades.insert(localidadDTO.getNombreLocalidad());
-	}
-
-	public void borrarLocalidad(LocalidadDTO localidadDTO) throws MySQLIntegrityConstraintViolationException{
-		localidades.delete(localidadDTO.getIdLocalidad());
-	}
-	
-	public boolean editarLocalidad(LocalidadDTO localidadDTO) {
-		return localidades.editar(localidadDTO);
+	public boolean borrarPersona(Persona persona){
+		int posicion = existe(persona); 
+		if(posicion != -1) {
+			personas.remove(posicion);
+			return true;
+		}
+		return false;
 	}
 	
-	public List<LocalidadDTO> obtenerLocalidades(){
-		return localidades.readAll();
+	public int existe(Persona persona){
+		int indexOfPersona = 0;
+		for(Persona per : personas) {
+			if (per.equals(persona)) {
+				return indexOfPersona;
+			}
+			indexOfPersona++;
+		}
+		return -1;
 	}
 
-	public void agregarTipoDeContacto(TipoContactoDTO tipo) {
-		tiposDeContactos.insert(tipo);
+	public void editarPersona(Persona personaOriginal, Persona personaModificada){
+		if (borrarPersona(personaOriginal)) {
+			agregarPersona(personaModificada);
+		}		
 	}
 
-	public void borrarTipoDeContacto (TipoContactoDTO tipoContactoDTO) throws MySQLIntegrityConstraintViolationException {
-		tiposDeContactos.delete(tipoContactoDTO);
+	public List<Persona> obtenerPersonas(){
+		return personas;
+	}
+	
+	public void agregarLocalidad(Localidad localidad) {		
+		int posicion = existe(localidad); 
+		if(posicion != -1) {
+			localidades.add(localidad);
+		}
+	}
+	
+	public boolean borrarLocalidad(Localidad localidad){
+		int posicion = existe(localidad); 
+		if(posicion != -1) {
+			localidades.remove(posicion);
+			return true;
+		}
+		return false;
+	}
+	
+	public int existe(Localidad localidad){
+		int indexOfLocalidad = 0;
+		for(Localidad loc : localidades) {
+			if (loc.equals(localidad)) {
+				return indexOfLocalidad;
+			}
+			indexOfLocalidad++;
+		}
+		return -1;
 	}
 
-	public boolean editarTContacto(TipoContactoDTO tipoContactoDTO) {
-		return tiposDeContactos.edit(tipoContactoDTO);
+	public void editarLocalidad(Localidad localidadOriginal, Localidad localidadModificada){
+		if (borrarLocalidad(localidadOriginal)) {
+			agregarLocalidad(localidadModificada);
+		}		
 	}
 
-	public List<TipoContactoDTO> obtenerTiposContactos()	{
-		return tiposDeContactos.readAll();
+	public List<Localidad> obtenerLocalidades(){
+		return localidades;
+	}	
+	
+	public void agregarTipoContacto(TipoContacto tipoContacto) {		
+		int posicion = existe(tipoContacto); 
+		if(posicion != -1) {
+			tipoContactos.add(tipoContacto);
+		}
+	}
+	
+	public boolean borrarTipoContacto(TipoContacto tipoContacto){
+		int posicion = existe(tipoContacto); 
+		if(posicion != -1) {
+			tipoContactos.remove(posicion);
+			return true;
+		}
+		return false;
+	}
+	
+	public int existe(TipoContacto tipoContacto){
+		int indexOfTipoContacto = 0;
+		for(TipoContacto loc : tipoContactos) {
+			if (loc.equals(tipoContacto)) {
+				return indexOfTipoContacto;
+			}
+			indexOfTipoContacto++;
+		}
+		return -1;
+	}
+
+	public void editarTipoContacto(TipoContacto tipoContactoOriginal, TipoContacto tipoContactoModificada){
+		if (borrarTipoContacto(tipoContactoOriginal)) {
+			agregarTipoContacto(tipoContactoModificada);
+		}		
+	}
+
+	public List<TipoContacto> obtenerTipoContactoes(){
+		return tipoContactos;
 	}
 }

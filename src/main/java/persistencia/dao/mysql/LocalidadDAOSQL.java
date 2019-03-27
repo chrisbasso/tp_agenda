@@ -1,17 +1,20 @@
 package persistencia.dao.mysql;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-import dto.LocalidadDTO;
-import persistencia.conexion.Conexion;
-import persistencia.dao.interfaz.LocalidadDAO;
-
-import javax.swing.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.JOptionPane;
+
 import org.apache.log4j.Logger;
+
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
+import dto.LocalidadDTO;
+import persistencia.conexion.Conexion;
+import persistencia.dao.interfaz.LocalidadDAO;
 
 public class LocalidadDAOSQL implements LocalidadDAO {
 	private static final Logger LOGGER = Logger.getLogger(Conexion.class);

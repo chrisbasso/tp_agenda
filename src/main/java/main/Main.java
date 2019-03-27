@@ -10,14 +10,7 @@ import presentacion.vista.VentanaPrincipal;
 public class Main 
 {
 
-	public static void main(String[] args) 
-	{
-		//Mysql.start();
-		//Mysql.loadInitialData();
-		VentanaPrincipal vista = new VentanaPrincipal();
-		Agenda modelo = new Agenda();
-		Controlador controlador = new Controlador(vista, modelo);
-		
-	
+	public static void main(String[] args) 	{
+		Controlador controladorPrincipal = new Controlador();
 	}
 }

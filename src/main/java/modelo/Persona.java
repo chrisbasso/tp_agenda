@@ -2,9 +2,7 @@ package modelo;
 
 import java.util.Date;
 
-
 public class Persona {
-	private int idPersona;
 	private String nombre;
 	private String telefono;
 	private Domicilio domicilio;
@@ -12,9 +10,8 @@ public class Persona {
 	private String email;
 	private Date fechaNacimiento;
 	
-	public Persona(int idPersona, String nombre, String telefono, Domicilio domicilio, TipoContacto tipoContacto,
+	public Persona(String nombre, String telefono, Domicilio domicilio, TipoContacto tipoContacto,
 			String email, Date fechaNacimiento) {
-		this.idPersona = idPersona;
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.domicilio = domicilio;
@@ -26,12 +23,6 @@ public class Persona {
 	public Persona() {
 	}
 	
-	public int getIdPersona() {
-		return idPersona;
-	}
-	public void setIdPersona(int idPersona) {
-		this.idPersona = idPersona;
-	}
 	public String getNombre() {
 		return nombre;
 	}
@@ -67,5 +58,24 @@ public class Persona {
 	}
 	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {		
+		if(this == obj) { 
+            return true; 
+		}
+          
+        if(obj == null || obj.getClass()!= this.getClass()) {
+        	return false;
+        }
+        Persona comparable = (Persona)obj;
+		
+        return (this.nombre == comparable.nombre &&
+				this.telefono == comparable.telefono &&
+				this.domicilio == comparable.domicilio &&
+				this.tipoContacto == comparable.tipoContacto &&
+				this.email == comparable.email &&
+				this.fechaNacimiento == comparable.fechaNacimiento ); 
 	}
 }

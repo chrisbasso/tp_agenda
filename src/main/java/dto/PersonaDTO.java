@@ -67,7 +67,6 @@ public class PersonaDTO {
 
 	public TipoContactoDTO getTipo_Persona() {
 		return tipoContacto;
-
 	}
 
 	public TipoContactoDTO getTipoContacto() {

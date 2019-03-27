@@ -4,19 +4,19 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JButton;
 
 import persistencia.conexion.Conexion;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
 
 public class VentanaPrincipal{
+	private static VentanaPrincipal INSTANCIA;
 	private JFrame frame;
 	private JMenuBar menuBar;
 	private JMenuItem mntmAgregar;
@@ -24,20 +24,24 @@ public class VentanaPrincipal{
 	private JMenuItem mntmBorrar;	
 	private JMenuItem mntmReporte;
 	private JMenuItem mntmAbmLocalidad; 
-	private JMenuItem mntmAbmTipoDeContacto;
-	
+	private JMenuItem mntmAbmTipoDeContacto;	
 	private JPanel panel;
 	private JScrollPane scrollPersonas; 
 	private JTable tablaPersonas;
 	private DefaultTableModel modelPersonas;
 	private  String[] nombreColumnas = {"Nombre y apellido","Teléfono",
-			"Calle","Altura","Piso","Depto","Localidad","Tipo Contacto", "Email","Fecha de Nacimiento"};
+			"Calle","Altura","Piso","Depto","Localidad","Tipo Contacto", "Email","Fecha de Nacimiento","ID"};
 
-	public VentanaPrincipal()	{
-		initialize();
+	public static VentanaPrincipal getInstance(){
+		if(INSTANCIA == null) {
+			INSTANCIA = new VentanaPrincipal(); 
+			return INSTANCIA;
+		}else {
+			return INSTANCIA;
+		}
 	}
-
-	private void initialize(){
+	
+	private VentanaPrincipal()	{
 		frame = new JFrame();
 		frame.setTitle("Agenda");
 		frame.setResizable(false);
@@ -61,13 +65,14 @@ public class VentanaPrincipal{
 		tablaPersonas.getColumnModel().getColumn(0).setResizable(false);
 		tablaPersonas.getColumnModel().getColumn(1).setPreferredWidth(100);
 		tablaPersonas.getColumnModel().getColumn(1).setResizable(false);
+		tablaPersonas.getColumnModel().getColumn(11).setMaxWidth(0);
+		tablaPersonas.getColumnModel().getColumn(11).setResizable(false);
 
-		scrollPersonas.setViewportView(tablaPersonas);
-		
-		initializeMenus();		
+		scrollPersonas.setViewportView(tablaPersonas);		
+		cargarMenues();		
 	}
 
-	private void initializeMenus() {
+	private void cargarMenues() {
 		menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
 		
@@ -123,47 +128,23 @@ public class VentanaPrincipal{
 		return mntmAgregar;
 	}
 
-	public void setMntmAgregar(JMenuItem mntmAgregar) {
-		this.mntmAgregar = mntmAgregar;
-	}
-
 	public JMenuItem getMntmEditar() {
 		return mntmEditar;
-	}
-
-	public void setMntmEditar(JMenuItem mntmEditar) {
-		this.mntmEditar = mntmEditar;
 	}
 
 	public JMenuItem getMntmBorrar() {
 		return mntmBorrar;
 	}
 
-	public void setMntmBorrar(JMenuItem mntmBorrar) {
-		this.mntmBorrar = mntmBorrar;
-	}
-
 	public JMenuItem getMntmAbmLocalidad() {
 		return mntmAbmLocalidad;
-	}
-
-	public void setMntmAbmLocalidad(JMenuItem mntmAbmLocalidad) {
-		this.mntmAbmLocalidad = mntmAbmLocalidad;
 	}
 
 	public JMenuItem getMntmAbmTipoDeContacto() {
 		return mntmAbmTipoDeContacto;
 	}
 
-	public void setMntmAbmTipoDeContacto(JMenuItem mntmAbmTipoDeContacto) {
-		this.mntmAbmTipoDeContacto = mntmAbmTipoDeContacto;
-	}
-
 	public JMenuItem getMntmReporte() {
 		return mntmReporte;
-	}
-
-	public void setMntmReporte(JMenuItem mntmReporte) {
-		this.mntmReporte = mntmReporte;
 	}
 }
