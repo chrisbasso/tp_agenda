@@ -31,7 +31,7 @@ public class PersonaDAOSQL implements PersonaDAO{
 	private static final String delete = "DELETE FROM persona WHERE idPersona = ?";
 	private static final Conexion conexion = Conexion.getConexion();
 
-	public boolean insert(PersonaDTO persona) throws SQLException {
+	public boolean insert(PersonaDTO persona) {
 
 		PreparedStatement statement;
 		Conexion conexion = Conexion.getConexion();
@@ -214,7 +214,7 @@ public class PersonaDAOSQL implements PersonaDAO{
 		return personas;
 	}
 
-	public boolean editar(PersonaDTO persona) throws SQLException {
+	public boolean editar(PersonaDTO persona) {
 		int idLocalidad = persona.getDomicilio().getLocalidad().getIdLocalidad();
 		int idDomicilio = persona.getDomicilio().getIdDomicilio();
 

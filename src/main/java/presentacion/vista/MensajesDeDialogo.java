@@ -8,8 +8,7 @@ public class MensajesDeDialogo extends JFrame{
 	private static final long serialVersionUID = 1L;
 	private static MensajesDeDialogo INSTANCE ;
 
-	public static MensajesDeDialogo getInstance()
-	{
+	public static MensajesDeDialogo getInstance(){
 		if(INSTANCE == null)
 			return new MensajesDeDialogo();
 		else

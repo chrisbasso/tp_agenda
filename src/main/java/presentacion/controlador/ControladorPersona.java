@@ -1,8 +1,7 @@
 package presentacion.controlador;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Date;
+import java.util.List;
 
 import dto.DomicilioDTO;
 import dto.LocalidadDTO;
@@ -14,35 +13,83 @@ import modelo.Persona;
 import modelo.TipoContacto;
 import presentacion.vista.VentanaPersona;
 
-public class ControladorPersona implements ActionListener{
+public class ControladorPersona {
 	private Controlador controladorSuperior;
 	private VentanaPersona ventana;
+	private Persona persona;
 
-	public ControladorPersona(){
-		this.ventana = VentanaPersona.getInstance();		
-	}
-
-	public void agregarPersona() {
-		ventana.setVisible(true);
-		// do something
-		ventana.cerrar();
-	}
-	
-	public void editarPersona(int idPersona) {
-		
-	}
-
-	public void borrarPersona(int idPersona) {
-		
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub		
-	}
-	
-	public void setControladorSuperior(Controlador controladorSuperior) {
+	public ControladorPersona(Controlador controladorSuperior){
 		this.controladorSuperior = controladorSuperior;
+		this.ventana = VentanaPersona.getInstance();
+		cargarActionListeners();
+	}
+	
+	public void asignarModo(String modo) {
+		this.ventana.setTitle(modo);
+		this.ventana.getBtnAccionPersona().setText(modo);
+	}
+	
+	public void mostrarVentana() {
+		ventana.mostrarVentana();
+	}
+	
+	public void cargarPersona(Persona persona) {
+		Object[] registro = { 
+					persona.getNombre(),
+					persona.getTelefono(),
+					persona.getDomicilio().getCalle(),
+					persona.getDomicilio().getAltura(),
+					persona.getDomicilio().getPiso(),
+					persona.getDomicilio().getDepto(),
+					persona.getDomicilio().getLocalidad(),		
+					persona.getEmail(),
+					persona.getFechaNacimiento()
+		};
+		this.ventana.setPersona(registro);		
+	}
+	
+	public void cargarComboLocalidades(String localidad) {		
+		this.ventana.agregarLocalidadAlCombo(localidad);		
+	}
+	
+	public void cargarComboTipoContacto(String tipoContacto) {
+		this.ventana.agregarTipoContactoAlCombo(tipoContacto);
+	}
+	
+	private void cargarActionListeners() {		
+		String accion = this.ventana.getBtnAccionPersona().getText();
+		this.ventana.getBtnAccionPersona().addActionListener(a->reportarEvento(accion));		
+	}	
+	
+	private void reportarEvento(String evento) {
+		switch (evento) {
+		case "Agregar":
+			Persona personaNueva = getPersonaDesdeVentana();	
+			controladorSuperior.agregarContacto(personaNueva);
+			break;
+		case "Editar":
+			Persona personaOriginal = this.persona;
+			Persona personaEditada = getPersonaDesdeVentana();	
+			controladorSuperior.editarContacto(personaOriginal, personaEditada);
+			break;
+		default:
+			break;
+		}
+	}
+
+	private Persona getPersonaDesdeVentana() {		
+		String nombre = this.ventana.getNombre();
+		String telefono = this.ventana.getTelefono();
+		String calle = this.ventana.getCalle();
+		String altura = this.ventana.getAltura();
+		String piso = this.ventana.getPiso();
+		String depto = this.ventana.getDepto();				
+		String email = this.ventana.getEmail();
+		Date fechaNacimiento = this.ventana.getFechaNacimiento();		
+		Localidad localidad = controladorSuperior.localidadPorNombre(this.ventana.getLocalidad());		
+		Domicilio domicilio = new Domicilio(calle, altura, piso, depto, localidad);
+		TipoContacto tipoContacto = controladorSuperior.TipoContactoPorNombre(this.ventana.getTipoContacto());
+		return new Persona (nombre, telefono, domicilio, tipoContacto, email, fechaNacimiento);		
 	}
 	
 	public static PersonaDTO getPersonaDTO(Persona persona) {

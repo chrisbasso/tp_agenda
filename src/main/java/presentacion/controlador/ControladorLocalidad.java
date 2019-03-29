@@ -1,47 +1,75 @@
 package presentacion.controlador;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.SQLException;
 import java.util.List;
-import java.util.Optional;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-import dto.DomicilioDTO;
 import dto.LocalidadDTO;
-import dto.PersonaDTO;
-import dto.TipoContactoDTO;
 import modelo.Agenda;
 import modelo.Localidad;
 import modelo.Persona;
-import modelo.TipoContacto;
-import presentacion.reportes.ReporteAgenda;
-import presentacion.vista.MensajesDeDialogo;
 import presentacion.vista.VentanaLocalidad;
-import presentacion.vista.VentanaPersona;
-import presentacion.vista.VentanaTipoContacto;
-import presentacion.vista.VentanaPrincipal;
-import utils.EmailValidator;
 
-import javax.swing.*;
-
-public class ControladorLocalidad implements ActionListener{
+public class ControladorLocalidad {
 	private Controlador controladorSuperior;
 	private VentanaLocalidad ventana;
+	private List <Localidad> localidades;
 
-	public ControladorLocalidad () {
+	public ControladorLocalidad (Controlador controladorSuperior){
+		this.controladorSuperior = controladorSuperior;
 		this.ventana = VentanaLocalidad.getInstance();
+		cargarActionListeners(); 
 	}
 	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+	public void cargarTabla(Agenda agenda) {
+		this.ventana.inicializarTabla();		
+		this.localidades = agenda.obtenerLocalidades(); 
+		for (Localidad localidad : localidades){
+			Object[] fila = {
+						localidad.getNombreLocalidad()
+						};
+			this.ventana.agregarLocalidadATabla(fila);
+		}
 	}
-
-	public void setControladorSuperior(Controlador controladorSuperior) {
-		this.controladorSuperior = controladorSuperior;
+	
+	public void mostrarVentana() {
+		this.ventana.show();		
+	}
+	
+	public void ocultarVentana() {
+		ventana.hide();
+	}
+	
+	private void cargarActionListeners() {		
+		this.ventana.getBtnAgregarLocalidad().addActionListener(a->reportarEvento("agregar"));
+		this.ventana.getBtnEditarLocalidad().addActionListener(a->reportarEvento("editar"));
+		this.ventana.getBtnBorrar().addActionListener(a->reportarEvento("borrar"));
+	}	
+	
+	private void reportarEvento(String evento) {
+		switch (evento) {
+		case "agregar":
+			// TODO
+			/*
+			 * acciones al agregar una localidad, pasarle el nombre 
+			 *  de localidad al controlador principal 
+			 */
+			break;
+		case "editar":
+			// TODO
+			/*
+			 *  acciones al editar una localidad, pasarle el nombre 
+			 *  de localidad al controlador principal, con el cambio 
+			 */			
+			break;
+		case "borrar":
+			// TODO
+			/*
+			 *  acciones al editar una localidad, pasarle el nombre 
+			 *  de localidad al controlador principal, con el cambio 
+			 */					
+			break;
+		default:
+			break;
+		}
 	}
 
 	public static LocalidadDTO getLocalidadDTO(Localidad localidad) {

@@ -4,7 +4,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 public class VentanaLocalidad extends JFrame {
-
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private static VentanaLocalidad INSTANCE;
@@ -15,8 +14,8 @@ public class VentanaLocalidad extends JFrame {
 	private JButton btnAgregarLocalidad;
 	private JButton btnEditarLocalidad;
 	private JButton btnBorrar;
-	public static VentanaLocalidad getInstance()
-	{
+	
+	public static VentanaLocalidad getInstance(){
 		if(INSTANCE == null)
 			return new VentanaLocalidad();
 		else
@@ -24,7 +23,6 @@ public class VentanaLocalidad extends JFrame {
 	}
 
 	private VentanaLocalidad() {
-		super();
 		setTitle("ABM Localidades");
 		this.setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -66,21 +64,38 @@ public class VentanaLocalidad extends JFrame {
 		txtAgregarLocalidad = new JTextField();
 		txtAgregarLocalidad.setBounds(220, 15, 89, 20);
 		panel.add(txtAgregarLocalidad);
-		txtAgregarLocalidad.setColumns(10);
-		
+		txtAgregarLocalidad.setColumns(10);		
 	}
 
-	public void mostrarVentana()
-	{
+	public void inicializarTabla() {
+		modelLocalidades.setRowCount(0); //Para vaciar la tabla
+		modelLocalidades.setColumnCount(0);
+		modelLocalidades.setColumnIdentifiers(nombreColumnas);
+	}
+	
+	public void agregarLocalidadATabla(Object[] fila) {
+		modelLocalidades.addRow(fila);
+	}
+	
+	public void quitarLocalidadDeTabla(int numeroFila) {
+		modelLocalidades.removeRow(numeroFila);
+	}
+
+	public int obtenerFilaSeleccionada() {
+		return tablaLocalidades.getSelectedRow();		
+	}
+	
+
+	public void cargarLocalidad(String texto) {
+		txtAgregarLocalidad.setText(texto);
+	}
+	
+	public void show(){
 		this.setVisible(true);
 	}
-
-	public JTextField getTxtAgregarLocalidad() {
-		return txtAgregarLocalidad;
-	}
-
-	public void setTxtAgregarLocalidad(JTextField txtAgregarTipoContacto) {
-		this.txtAgregarLocalidad = txtAgregarTipoContacto;
+	
+	public void hide(){
+		this.setVisible(false);
 	}
 
 	public JButton getBtnAgregarLocalidad() {
@@ -95,23 +110,7 @@ public class VentanaLocalidad extends JFrame {
 		return btnBorrar;
 	}
 
-	public DefaultTableModel getModelLocalidades() 
-	{
-		return modelLocalidades;
-	}
-	
-	public JTable getTablaLocalidades()
-	{
-		return tablaLocalidades;
-	}
-
-	public String[] getNombreColumnas() 
-	{
-		return nombreColumnas;
-	}
-	
-	public void cerrar()
-	{
+	public void cerrar(){
 		this.txtAgregarLocalidad.setText(null);
 		this.dispose();
 	}

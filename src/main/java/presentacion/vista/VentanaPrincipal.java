@@ -30,7 +30,7 @@ public class VentanaPrincipal{
 	private JTable tablaPersonas;
 	private DefaultTableModel modelPersonas;
 	private  String[] nombreColumnas = {"Nombre y apellido","Teléfono",
-			"Calle","Altura","Piso","Depto","Localidad","Tipo Contacto", "Email","Fecha de Nacimiento","ID"};
+			"Calle","Altura","Piso","Depto","Localidad","Tipo Contacto", "Email","Fecha de Nacimiento"};
 
 	public static VentanaPrincipal getInstance(){
 		if(INSTANCIA == null) {
@@ -65,8 +65,6 @@ public class VentanaPrincipal{
 		tablaPersonas.getColumnModel().getColumn(0).setResizable(false);
 		tablaPersonas.getColumnModel().getColumn(1).setPreferredWidth(100);
 		tablaPersonas.getColumnModel().getColumn(1).setResizable(false);
-		tablaPersonas.getColumnModel().getColumn(11).setMaxWidth(0);
-		tablaPersonas.getColumnModel().getColumn(11).setResizable(false);
 
 		scrollPersonas.setViewportView(tablaPersonas);		
 		cargarMenues();		
@@ -97,7 +95,25 @@ public class VentanaPrincipal{
 		mntmAbmLocalidad = new JMenuItem("ABM de Localidades");
 		mnConfiguracion.add(mntmAbmLocalidad);
 	}
+	
+	public void inicializarTabla() {
+		modelPersonas.setRowCount(0); //Para vaciar la tabla
+		modelPersonas.setColumnCount(0);
+		modelPersonas.setColumnIdentifiers(nombreColumnas);
+	}
+	
+	public void agregarContactoATabla(Object[] fila) {
+		modelPersonas.addRow(fila);
+	}
+	
+	public void quitarContactoDeTabla(int numeroFila) {
+		modelPersonas.removeRow(numeroFila);
+	}
 
+	public int obtenerFilaSeleccionada() {
+		return tablaPersonas.getSelectedRow();		
+	}
+	
 	public void show(){
 		this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.frame.addWindowListener(new WindowAdapter(){
@@ -115,13 +131,9 @@ public class VentanaPrincipal{
 		});
 		this.frame.setVisible(true);
 	}
-
-	public JTable getTablaPersonas() {
-		return tablaPersonas;
-	}
-
-	public void setTablaPersonas(JTable tablaPersonas) {
-		this.tablaPersonas = tablaPersonas;
+	
+	public void hide() {
+		this.frame.setVisible(false);
 	}
 
 	public JMenuItem getMntmAgregar() {
