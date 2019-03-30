@@ -24,36 +24,31 @@ public class ControladorPersona {
 		cargarActionListeners();
 	}
 	
-	public void asignarModo(String modo) {
-		this.ventana.setTitle(modo);
-		this.ventana.getBtnAccionPersona().setText(modo);
+	public void cargarPersona(Persona persona) {
+		if (persona != null) {
+			Object[] registro = { 
+						persona.getNombre(),
+						persona.getTelefono(),
+						persona.getDomicilio().getCalle(),
+						persona.getDomicilio().getAltura(),
+						persona.getDomicilio().getPiso(),
+						persona.getDomicilio().getDepto(),
+						persona.getDomicilio().getLocalidad(),		
+						persona.getEmail(),
+						persona.getFechaNacimiento()
+			};
+			ventana.setPersona(registro);
+		}else {
+			ventana.setPersona(null);
+		}				
 	}
 	
 	public void mostrarVentana() {
 		ventana.mostrarVentana();
 	}
-	
-	public void cargarPersona(Persona persona) {
-		Object[] registro = { 
-					persona.getNombre(),
-					persona.getTelefono(),
-					persona.getDomicilio().getCalle(),
-					persona.getDomicilio().getAltura(),
-					persona.getDomicilio().getPiso(),
-					persona.getDomicilio().getDepto(),
-					persona.getDomicilio().getLocalidad(),		
-					persona.getEmail(),
-					persona.getFechaNacimiento()
-		};
-		this.ventana.setPersona(registro);		
-	}
-	
-	public void cargarComboLocalidades(String localidad) {		
-		this.ventana.agregarLocalidadAlCombo(localidad);		
-	}
-	
-	public void cargarComboTipoContacto(String tipoContacto) {
-		this.ventana.agregarTipoContactoAlCombo(tipoContacto);
+
+	public void cerrarVentana() {
+		ventana.cerrar();
 	}
 	
 	private void cargarActionListeners() {		
@@ -77,6 +72,19 @@ public class ControladorPersona {
 		}
 	}
 
+	public void asignarModo(String modo) {
+		this.ventana.setTitle(modo);
+		this.ventana.getBtnAccionPersona().setText(modo);
+	}
+	
+	public void cargarComboLocalidades(String localidad) {		
+		this.ventana.agregarLocalidadAlCombo(localidad);		
+	}
+	
+	public void cargarComboTipoContacto(String tipoContacto) {
+		this.ventana.agregarTipoContactoAlCombo(tipoContacto);
+	}
+	
 	private Persona getPersonaDesdeVentana() {		
 		String nombre = this.ventana.getNombre();
 		String telefono = this.ventana.getTelefono();

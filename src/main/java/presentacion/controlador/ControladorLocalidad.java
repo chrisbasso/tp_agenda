@@ -19,9 +19,8 @@ public class ControladorLocalidad {
 		cargarActionListeners(); 
 	}
 	
-	public void cargarTabla(Agenda agenda) {
-		this.ventana.inicializarTabla();		
-		this.localidades = agenda.obtenerLocalidades(); 
+	public void cargarTabla(List <Localidad> loc) {		
+		this.localidades = loc; 
 		for (Localidad localidad : localidades){
 			Object[] fila = {
 						localidad.getNombreLocalidad()
@@ -34,7 +33,7 @@ public class ControladorLocalidad {
 		this.ventana.show();		
 	}
 	
-	public void ocultarVentana() {
+	public void cerrarVentana() {
 		ventana.hide();
 	}
 	
@@ -45,33 +44,31 @@ public class ControladorLocalidad {
 	}	
 	
 	private void reportarEvento(String evento) {
+		Localidad loc = obtenerSeleccionado();
 		switch (evento) {
 		case "agregar":
-			// TODO
-			/*
-			 * acciones al agregar una localidad, pasarle el nombre 
-			 *  de localidad al controlador principal 
-			 */
+			controladorSuperior.agregarLocalidad(loc);
 			break;
 		case "editar":
-			// TODO
-			/*
-			 *  acciones al editar una localidad, pasarle el nombre 
-			 *  de localidad al controlador principal, con el cambio 
-			 */			
+			controladorSuperior.editarLocalidad(loc,loc);
 			break;
 		case "borrar":
-			// TODO
-			/*
-			 *  acciones al editar una localidad, pasarle el nombre 
-			 *  de localidad al controlador principal, con el cambio 
-			 */					
+			controladorSuperior.borrarLocalidad(loc);
 			break;
 		default:
 			break;
 		}
 	}
-
+	
+	private Localidad obtenerSeleccionado() {
+		int indexOf = ventana.obtenerFilaSeleccionada();
+		if(indexOf == -1) {
+			return null;
+		}else {
+			return localidades.get(indexOf);
+		}		
+	}
+	
 	public static LocalidadDTO getLocalidadDTO(Localidad localidad) {
 		// TODO Auto-generated method stub
 		return null;

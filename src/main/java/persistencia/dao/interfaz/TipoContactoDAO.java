@@ -8,7 +8,7 @@ import java.util.List;
 public interface TipoContactoDAO {
 	public boolean insert(TipoContactoDTO tipoContacto);
 	
-	public boolean delete(TipoContactoDTO tipoContacto_a_eliminar) throws MySQLIntegrityConstraintViolationException;
+	public boolean delete(TipoContactoDTO tipoContacto_a_eliminar);
 	
 	public boolean edit(TipoContactoDTO tipoContacto_a_editar);
 	

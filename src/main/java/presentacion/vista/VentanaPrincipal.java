@@ -24,7 +24,8 @@ public class VentanaPrincipal{
 	private JMenuItem mntmBorrar;	
 	private JMenuItem mntmReporte;
 	private JMenuItem mntmAbmLocalidad; 
-	private JMenuItem mntmAbmTipoDeContacto;	
+	private JMenuItem mntmAbmTipoDeContacto;
+	private JMenuItem mntmBaseDeDatos;
 	private JPanel panel;
 	private JScrollPane scrollPersonas; 
 	private JTable tablaPersonas;
@@ -94,6 +95,10 @@ public class VentanaPrincipal{
 		
 		mntmAbmLocalidad = new JMenuItem("ABM de Localidades");
 		mnConfiguracion.add(mntmAbmLocalidad);
+		
+		mntmBaseDeDatos = new JMenuItem("Configurar conexion a la base de datos");
+		mnConfiguracion.add(mntmBaseDeDatos);
+
 	}
 	
 	public void inicializarTabla() {
@@ -114,7 +119,7 @@ public class VentanaPrincipal{
 		return tablaPersonas.getSelectedRow();		
 	}
 	
-	public void show(){
+	public void mostrar(){
 		this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.frame.addWindowListener(new WindowAdapter(){
 			@Override
@@ -132,8 +137,8 @@ public class VentanaPrincipal{
 		this.frame.setVisible(true);
 	}
 	
-	public void hide() {
-		this.frame.setVisible(false);
+	public void cerrar(){
+		this.frame.dispose();
 	}
 
 	public JMenuItem getMntmAgregar() {
@@ -156,7 +161,11 @@ public class VentanaPrincipal{
 		return mntmAbmTipoDeContacto;
 	}
 
-	public JMenuItem getMntmReporte() {
+	public JMenuItem getMntmReporte() {		
 		return mntmReporte;
+	}
+	
+	public JMenuItem getMntmBaseDeDatos() {
+		return mntmBaseDeDatos;
 	}
 }

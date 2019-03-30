@@ -90,14 +90,10 @@ public class VentanaLocalidad extends JFrame {
 		txtAgregarLocalidad.setText(texto);
 	}
 	
-	public void show(){
-		this.setVisible(true);
+	public void mostrar(){
+		setVisible(true);
 	}
 	
-	public void hide(){
-		this.setVisible(false);
-	}
-
 	public JButton getBtnAgregarLocalidad() {
 		return btnAgregarLocalidad;
 	}
@@ -111,7 +107,6 @@ public class VentanaLocalidad extends JFrame {
 	}
 
 	public void cerrar(){
-		this.txtAgregarLocalidad.setText(null);
-		this.dispose();
+		dispose();
 	}
 }

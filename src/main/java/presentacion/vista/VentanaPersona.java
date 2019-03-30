@@ -190,12 +190,12 @@ public class VentanaPersona extends JFrame{
 		setVisible(true);
 	}
 	
-	public void ocultarVentana() {
-		setVisible(false);
+	public void cerrar() {
+		dispose();
 	}
 
 	public void setPersona(Object [] persona) {
-		if (persona.length > 0) {
+		if (persona != null && persona.length > 0) {
 			this.textNombre.setText((String)persona[0]);
 			this.textTelefono.setText((String)persona[1]);
 			this.textCalle.setText((String)persona[2]);

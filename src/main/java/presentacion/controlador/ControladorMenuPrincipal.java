@@ -39,26 +39,26 @@ public class ControladorMenuPrincipal{
 	}
 	
 	public void mostrarVentana() {
-		this.ventana.show();
+		ventana.mostrar();
 	}
 
-	public void ocultarVentana() {
-		this.ventana.hide();
+	public void cerrarVentana() {
+		ventana.cerrar();
 	}
 
 	private void cargarActionListeners() {
-		this.ventana.getMntmAgregar().addActionListener(a->reportarEvento("agregar"));
-		this.ventana.getMntmEditar().addActionListener(a->reportarEvento("editar"));					
-		this.ventana.getMntmBorrar().addActionListener(a->reportarEvento("borrar"));
-		this.ventana.getMntmReporte().addActionListener(a->reportarEvento("reporte"));
-		this.ventana.getMntmAbmLocalidad().addActionListener(a->reportarEvento("abmLocalidad"));
-		this.ventana.getMntmAbmTipoDeContacto().addActionListener(a->reportarEvento("abmTipoContacto"));
+		ventana.getMntmAgregar().addActionListener(a->reportarEvento("agregar"));
+		ventana.getMntmEditar().addActionListener(a->reportarEvento("editar"));					
+		ventana.getMntmBorrar().addActionListener(a->reportarEvento("borrar"));
+		ventana.getMntmReporte().addActionListener(a->reportarEvento("reporte"));
+		ventana.getMntmAbmLocalidad().addActionListener(a->reportarEvento("abmLocalidad"));
+		ventana.getMntmAbmTipoDeContacto().addActionListener(a->reportarEvento("abmTipoContacto"));
+		ventana.getMntmBaseDeDatos().addActionListener(a->reportarEvento("baseDeDatos"));
 	}	
 	
 	private void reportarEvento(String evento) {
 		switch (evento) {
 		case "agregar":
-			ocultarVentana();
 			controladorSuperior.agregarContacto();
 			break;
 		case "editar":
@@ -66,7 +66,7 @@ public class ControladorMenuPrincipal{
 			if( personaAEditar == null){
 				MensajesDeDialogo.getInstance().msgSeleccionarFila();
 			}else {
-				ocultarVentana();
+				cerrarVentana();
 				controladorSuperior.editarContacto(personaAEditar);
 			}			
 			break;
@@ -79,16 +79,16 @@ public class ControladorMenuPrincipal{
 			}			
 			break;		
 		case "abmLocalidad":	
-			ocultarVentana();
 			controladorSuperior.abmLocalidad();
 			break;
 		case "abmTipoContacto":	
-			ocultarVentana();
 			controladorSuperior.abmTipoContacto();
 			break;
 		case "reporte":
-			ocultarVentana();
 			controladorSuperior.reporte();
+			break;
+		case "baseDeDatos":
+			controladorSuperior.baseDeDatos();
 			break;
 		default:
 			break;

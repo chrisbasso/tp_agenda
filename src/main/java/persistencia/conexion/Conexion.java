@@ -6,26 +6,31 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
+import utils.ConfigFile;
+
 public class Conexion{
 	public static Conexion instancia;
 	private Connection connection;
 	private Logger log = Logger.getLogger(Conexion.class);
 	private static String DBURL;
-	private static String DBuser;
-	private static String DBpassword;	
+	private static String DBUSR;
+	private static String DBPASS;
+	private boolean conectable;
 	
 	private Conexion()	{
-		DBURL = "jdbc:mysql://localhost:3306/agenda";		
-		DBuser = "root";
-		DBpassword = "password";
+		DBURL = ConfigFile.getInstance().getURL();		
+		DBUSR = ConfigFile.getInstance().getUSR();
+		DBPASS = ConfigFile.getInstance().getPWD();
 		
 		try		{
 			Class.forName("com.mysql.jdbc.Driver"); // quitar si no es necesario			
-			this.connection = DriverManager.getConnection(DBURL, DBuser, DBpassword);
+			this.connection = DriverManager.getConnection(DBURL, DBUSR, DBPASS);
 			log.info("Conexión exitosa");
+			conectable = true;
 		}
 		catch(Exception e)		{
-			log.error("Conexión fallida", e);			
+			log.error("Conexión fallida", e);
+			conectable = false;
 		}		
 	}	
 	
@@ -50,4 +55,13 @@ public class Conexion{
 		}
 		instancia = null;
 	}	
+	
+	private boolean getConectable() {
+		return conectable;
+	}
+	
+	public static boolean testConexion() {
+		instancia = new Conexion();
+		return instancia.getConectable();
+	}
 }

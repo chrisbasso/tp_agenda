@@ -18,12 +18,16 @@ public class ControladorTipoContacto {
 		this.ventana = VentanaTipoContacto.getInstance();	
 	}
 
-	public void cargarTabla(Agenda agenda) {
+	public void cargarTabla(List <TipoContacto> tc) {
 		// TODO
 	}
 
 	public void mostrarVentana() {
 		// TODO		
+	}
+	
+	public void cerrarVentana() {
+		ventana.hide();
 	}
 	
 	private void cargarActionListeners() {		

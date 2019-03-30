@@ -108,5 +108,4 @@ public class TipoContactoDAOSQL implements TipoContactoDAO {
 		}
 		return tipoContactos;
 	}
-
 }
