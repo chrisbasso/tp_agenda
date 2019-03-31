@@ -17,7 +17,7 @@ public class Agenda{
 
 	public void agregarPersona(Persona persona) {		
 		int posicion = existe(persona); 
-		if(posicion != -1) {
+		if(posicion == -1) {
 			personas.add(persona);
 		}
 	}

@@ -37,11 +37,11 @@ public class ConfigFile {
 	            BufferedReader bufferedReader = new BufferedReader(fileReader);
 	            while((line = bufferedReader.readLine()) != null) {
 	                if(line.startsWith("URL=") && line.length()>5) {
-	                	this.URL = line.substring(5);
+	                	this.URL = line.substring(4);
 	                }else if (line.startsWith("USR=") && line.length()>5) {
-	                	this.USR = line.substring(5);
+	                	this.USR = line.substring(4);
 	                }else if (line.startsWith("PWD=") && line.length()>5) {
-	                	this.PWD = line.substring(5);
+	                	this.PWD = line.substring(4);
 	                }
 	            }  
 	            // Always close files.

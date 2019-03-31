@@ -33,7 +33,7 @@ public class ReporteAgenda
     	try		{
 			this.reporte = (JasperReport) JRLoader.loadObjectFromFile( "reportes" + File.separator + "ReporteAgenda.jasper" );
 			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap, 
-					new JRBeanCollectionDataSource(personas));
+					new JRBeanCollectionDataSource(personas));			
     		log.info("Se cargó correctamente el reporte");
 		}
 		catch( JRException ex ) 
@@ -44,8 +44,8 @@ public class ReporteAgenda
     
     public void mostrar()
 	{
-		this.reporteViewer = new JasperViewer(this.reporteLleno,false);
-		this.reporteViewer.setVisible(true);
+    	this.reporteViewer = new JasperViewer(this.reporteLleno,false);
+       	this.reporteViewer.setVisible(true);
 	}
    
 }	

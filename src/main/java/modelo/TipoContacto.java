@@ -1,25 +1,14 @@
 package modelo;
 
 public class TipoContacto {
-	private String prefijo;
 	private String tipoContacto;
 
-	public TipoContacto(String tipoContacto, String prefijo) {
-		this.prefijo = prefijo;
+	public TipoContacto(String tipoContacto) {
 		this.tipoContacto = tipoContacto;
 	}
 	
 	public TipoContacto() {		
 	}
-
-	public String getPrefijo() {
-		return prefijo;
-	}
-
-	public void setPrefijo(String prefijo) {
-		this.prefijo = prefijo;
-	}
-
 	public String getTipoContacto() {
 		return tipoContacto;
 	}
@@ -39,8 +28,7 @@ public class TipoContacto {
         }
         TipoContacto comparable = (TipoContacto)obj;
 		
-        return (this.prefijo == comparable.prefijo &&
-        		this.tipoContacto == comparable.tipoContacto);
+        return (this.tipoContacto == comparable.tipoContacto);
 	}
 
 }

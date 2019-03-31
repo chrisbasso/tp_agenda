@@ -63,12 +63,10 @@ public class ControladorTipoContacto {
 	}
 
 	public static TipoContactoDTO getTipoContactoDTO(TipoContacto tipoContacto) {
-		// TODO Auto-generated method stub
-		return null;
+		return new TipoContactoDTO (tipoContacto.getTipoContacto());
 	}
 
 	public static TipoContacto getTipoContacto(TipoContactoDTO tipoContacto) {
-		// TODO Auto-generated method stub
-		return null;
+		return new TipoContacto(tipoContacto.getTipoContacto());
 	}
 }

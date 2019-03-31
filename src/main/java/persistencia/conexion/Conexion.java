@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import utils.ConfigFile;
 
 public class Conexion{
-	public static Conexion instancia;
+	private static Conexion instancia;
 	private Connection connection;
 	private Logger log = Logger.getLogger(Conexion.class);
 	private static String DBURL;
@@ -18,7 +18,7 @@ public class Conexion{
 	private boolean conectable;
 	
 	private Conexion()	{
-		DBURL = ConfigFile.getInstance().getURL();		
+		DBURL = "jdbc:mysql://" + ConfigFile.getInstance().getURL() + "/agenda";		
 		DBUSR = ConfigFile.getInstance().getUSR();
 		DBPASS = ConfigFile.getInstance().getPWD();
 		
@@ -46,14 +46,16 @@ public class Conexion{
 	}
 	
 	public void cerrarConexion(){
-		try {
-			this.connection.close();
-			log.info("Conexion cerrada");
-		}
-		catch (SQLException e)	{
-			log.error("Error al cerrar la conexión!", e);
-		}
-		instancia = null;
+		if (conectable) {
+			try {
+				this.connection.close();
+				log.info("Conexion cerrada");
+			}
+			catch (SQLException e)	{
+				log.error("Error al cerrar la conexión!", e);
+			}
+			instancia = null;	
+		}		
 	}	
 	
 	private boolean getConectable() {

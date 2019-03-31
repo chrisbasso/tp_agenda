@@ -55,6 +55,5 @@ public class ControladorDatosDB {
 
 	public void asignarModo(String modo) {
 		this.ventana.setTitle(modo);
-		this.ventana.getBtnAceptar().setText(modo);
 	}	
 }

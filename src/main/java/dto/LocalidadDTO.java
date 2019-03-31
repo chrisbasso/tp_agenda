@@ -10,6 +10,10 @@ public class LocalidadDTO {
 		this.nombreLocalidad = nombreLocalidad;
 	}
 
+	public LocalidadDTO(String nombreLocalidad) {
+		this.nombreLocalidad = nombreLocalidad;
+	}
+
 	public int getIdLocalidad() {
 		return idLocalidad;
 	}

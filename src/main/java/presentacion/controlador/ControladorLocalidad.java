@@ -69,13 +69,11 @@ public class ControladorLocalidad {
 		}		
 	}
 	
-	public static LocalidadDTO getLocalidadDTO(Localidad localidad) {
-		// TODO Auto-generated method stub
-		return null;
+	public static LocalidadDTO getLocalidadDTO(Localidad localidad) {		
+		return new LocalidadDTO(localidad.getNombreLocalidad());		
 	}
 
 	public static Localidad getLocalidad(LocalidadDTO localidadDTO) {
-		// TODO Auto-generated method stub
-		return null;
+		return new Localidad (localidadDTO.getNombreLocalidad());
 	}
 }

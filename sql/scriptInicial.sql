@@ -2,11 +2,10 @@ DROP DATABASE IF EXISTS agenda;
 CREATE DATABASE agenda;
 USE agenda;
 
-
 CREATE TABLE tipo_contacto
 (
   idTipoContacto int(10) NOT NULL AUTO_INCREMENT,
-  tipo varchar(20),
+  tipo varchar(20) UNIQUE,
   PRIMARY KEY (idTipoContacto)
 );
 
@@ -33,12 +32,13 @@ CREATE TABLE persona
 (
   idPersona int(10) NOT NULL AUTO_INCREMENT,
   nombre varchar(45) NOT NULL,
+  apellido varchar(45) NOT NULL,
   telefono varchar(20) NOT NULL,
-  PRIMARY KEY (idPersona),
   idDomicilio int(10),
   idTipoContacto int(10),
   email varchar(80),
   fecha_nacimiento DATE,
+  PRIMARY KEY (idPersona),
   FOREIGN KEY (idTipoContacto) REFERENCES tipo_contacto (idTipoContacto),
   FOREIGN KEY (idDomicilio) REFERENCES domicilio (idDomicilio)
 );

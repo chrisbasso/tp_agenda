@@ -1,23 +1,17 @@
 package presentacion.vista;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import persistencia.conexion.Conexion;
-
-public class VentanaPrincipal{
+public class VentanaPrincipal extends JFrame{
+	private static final long serialVersionUID = 1L;
 	private static VentanaPrincipal INSTANCIA;
-	private JFrame frame;
 	private JMenuBar menuBar;
 	private JMenuItem mntmAgregar;
 	private JMenuItem mntmEditar;	
@@ -30,7 +24,7 @@ public class VentanaPrincipal{
 	private JScrollPane scrollPersonas; 
 	private JTable tablaPersonas;
 	private DefaultTableModel modelPersonas;
-	private  String[] nombreColumnas = {"Nombre y apellido","Teléfono",
+	private  String[] nombreColumnas = {"Nombre","Apellido", "Teléfono",
 			"Calle","Altura","Piso","Depto","Localidad","Tipo Contacto", "Email","Fecha de Nacimiento"};
 
 	public static VentanaPrincipal getInstance(){
@@ -42,17 +36,16 @@ public class VentanaPrincipal{
 		}
 	}
 	
-	private VentanaPrincipal()	{
-		frame = new JFrame();
-		frame.setTitle("Agenda");
-		frame.setResizable(false);
-		frame.setBounds(100, 100, 860, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(null);
+	private VentanaPrincipal()	{		
+		setTitle("Agenda");
+		setResizable(false);
+		setBounds(100, 100, 860, 300);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		getContentPane().setLayout(null);
 
 		panel = new JPanel();
 		panel.setBounds(0, 0, 844, 262);
-		frame.getContentPane().add(panel);
+		getContentPane().add(panel);
 		panel.setLayout(null);
 
 		scrollPersonas = new JScrollPane();
@@ -73,7 +66,7 @@ public class VentanaPrincipal{
 
 	private void cargarMenues() {
 		menuBar = new JMenuBar();
-		frame.setJMenuBar(menuBar);
+		setJMenuBar(menuBar);
 		
 		JMenu mnArchivo = new JMenu("Archivo");
 		menuBar.add(mnArchivo);
@@ -119,26 +112,12 @@ public class VentanaPrincipal{
 		return tablaPersonas.getSelectedRow();		
 	}
 	
-	public void mostrar(){
-		this.frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.frame.addWindowListener(new WindowAdapter(){
-			@Override
-			public void windowClosing(WindowEvent e) {
-				int confirm = JOptionPane.showOptionDialog(
-						null, "Estas seguro que quieres salir de la Agenda!?",
-						"Confirmacion", JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE, null, null, null);
-				if (confirm == 0) {
-					Conexion.getConexion().cerrarConexion();
-					System.exit(0);
-				}
-			}
-		});
-		this.frame.setVisible(true);
+	public void mostrar(){		
+		setVisible(true);
 	}
 	
 	public void cerrar(){
-		this.frame.dispose();
+		dispose();
 	}
 
 	public JMenuItem getMntmAgregar() {

@@ -12,17 +12,20 @@ import modelo.Persona;
 import modelo.TipoContacto;
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.DAOAbstractFactory;
+import persistencia.dao.interfaz.DomicilioDAO;
 import persistencia.dao.interfaz.LocalidadDAO;
 import persistencia.dao.interfaz.PersonaDAO;
 import persistencia.dao.interfaz.TipoContactoDAO;
 import persistencia.dao.mysql.DAOSQLFactory;
 import presentacion.reportes.ReporteAgenda;
+import presentacion.vista.MensajesDeDialogo;
 import utils.ConfigFile;
 
 public class Controlador {
 	private Agenda agenda;
 	private boolean conectable;
 	private PersonaDAO personaDAO;
+	private DomicilioDAO domicilioDAO;
 	private LocalidadDAO localidadDAO;
 	private TipoContactoDAO tipoContactoDAO;
 	
@@ -37,24 +40,33 @@ public class Controlador {
 	}
 
 	public Controlador(){
-		controladorVentanaDatosDB = new ControladorDatosDB(this);
-		controladorVentanaDatosDB.asignarModo("Información de la Base de Datos");
-		while(!conectable) {
-			controladorVentanaDatosDB.mostrarVentana();
-			testConexion();
-		}
+		conectable = Conexion.testConexion();
+		if(!conectable) {
+			MensajesDeDialogo.getInstance().msgDatosConexionBD();
+			guiConexion();
+		}		
 		init();
 	}
 	
-	private void testConexion() {
-		if (!Conexion.testConexion()) {
-			while(controladorVentanaDatosDB.ventanaCargada()) {
-				// wait
-			}			
+	private void guiConexion() {
+		if(controladorVentanaDatosDB == null) {
+			controladorVentanaDatosDB = new ControladorDatosDB(this);
+			controladorVentanaDatosDB.asignarModo("Información de la Base de Datos");	
 		}else {
-			conectable = true;
+			controladorVentanaDatosDB.cerrarVentana();
 		}
-	}
+					
+		while(!conectable) {				
+			controladorVentanaDatosDB.mostrarVentana();
+			if (!Conexion.testConexion()) {
+				while(controladorVentanaDatosDB.ventanaCargada()) {
+					// wait for the user input
+				}			
+			}else {
+				conectable = true;
+			}
+		}
+	}	
 	
 	private void init() {
 		iniciarDAOs();		
@@ -65,9 +77,10 @@ public class Controlador {
 
 	private void iniciarDAOs() {
 		DAOAbstractFactory factory = new DAOSQLFactory(); 
-		this.personaDAO = factory.createPersonaDAO();
-		this.localidadDAO = factory.createLocalidadDAO();
-		this.tipoContactoDAO = factory.createTipoContactoDAO();
+		personaDAO = factory.createPersonaDAO();
+		domicilioDAO = factory.createDomicilioDAO();
+		localidadDAO = factory.createLocalidadDAO();
+		tipoContactoDAO = factory.createTipoContactoDAO();
 	}
 	
 	private void iniciarAgenda() {
@@ -113,32 +126,22 @@ public class Controlador {
 		controladorVentanaMenuPrincipal.mostrarVentana();
 	}
 	
-	//-----------------Eventos de DatosDB----------------- //
-	public void actualizarDatosDB(String URL, String USER, String PWD) {
-		ConfigFile.getInstance().update(URL, USER, PWD);
-	}
-	
-	public void cerrarAplicacion() {
-		System.exit(0);
-	}	
-	//-----------------Fin de DatosDB----------------- //
-	
 	//-----------------Eventos de Menu principal----------------- //
 	public void agregarContacto() {
 		controladorVentanaPersona.cargarPersona(null);
-		cargarCombos();
+		cargarCombosVentanaPersona();
 		controladorVentanaPersona.asignarModo("Agregar");
 		controladorVentanaPersona.mostrarVentana();		
 	}
 	
 	public void editarContacto(Persona persona) {
 		controladorVentanaPersona.cargarPersona(persona);
-		cargarCombos();
+		cargarCombosVentanaPersona();
 		controladorVentanaPersona.asignarModo("Editar");
 		controladorVentanaPersona.mostrarVentana();		
 	}
 	
-	private void cargarCombos() {
+	private void cargarCombosVentanaPersona() {
 		for(Localidad localidad : agenda.obtenerLocalidades()) {
 			controladorVentanaPersona.cargarComboLocalidades(localidad.getNombreLocalidad());
 		}
@@ -148,8 +151,9 @@ public class Controlador {
 	}
 
 	public void borrarContacto(Persona persona) {
-		agenda.borrarPersona(persona);
+		agenda.borrarPersona(persona);		
 		personaDAO.delete(ControladorPersona.getPersonaDTO(persona));
+		domicilioDAO.delete(ControladorPersona.getPersonaDTO(persona).getDomicilio().getIdDomicilio());
 		cargarVentanaPrincipal(); 
 	}
 
@@ -172,28 +176,40 @@ public class Controlador {
 	}
 	
 	public void baseDeDatos() {
-		
+		controladorVentanaDatosDB = new ControladorDatosDB(this);
+		controladorVentanaDatosDB.asignarModo("Información de la Base de Datos");			
+		controladorVentanaDatosDB.mostrarVentana();		
 	}	
 	//-----------------Fin Eventos Menu principal----------------- //
 	
 	//-----------------Eventos de Persona----------------- //
 	public void agregarContacto(Persona personaNueva) {
 		agenda.agregarPersona(personaNueva);
+		domicilioDAO.insert(ControladorPersona.getPersonaDTO(personaNueva).getDomicilio());
 		personaDAO.insert(ControladorPersona.getPersonaDTO(personaNueva));
 	}
 	
 	public void editarContacto(Persona personaOriginal,Persona personaEditada) {
 		agenda.editarPersona(personaOriginal, personaEditada);
+		domicilioDAO.editar(ControladorPersona.getPersonaDTO(personaEditada).getDomicilio());
 		personaDAO.editar(ControladorPersona.getPersonaDTO(personaEditada));
 	}	
 	
 	public Localidad localidadPorNombre(String localidad) {
-		// TODO Auto-generated method stub
+		for(Localidad loc : agenda.obtenerLocalidades()) {
+			if (loc.getNombreLocalidad().equals(localidad)) {
+				return loc;
+			}
+		}
 		return null;
 	}
 
 	public TipoContacto TipoContactoPorNombre(String tipoContacto) {
-		// TODO Auto-generated method stub
+		for(TipoContacto tipoCon : agenda.obtenerTipoContactoes()) {
+			if (tipoCon.getTipoContacto().equals(tipoContacto)) {
+				return tipoCon;
+			}
+		}
 		return null;
 	}
 	//-----------------Fin Eventos Persona----------------- //
@@ -231,8 +247,17 @@ public class Controlador {
 		tipoContactoDAO.delete(ControladorTipoContacto.getTipoContactoDTO(tipoContacto));
 	}
 	//-----------------Fin Tipo Contacto----------------- //
-	
-	//-----------------Llamadas de Reporte----------------- //
 
-	//-----------------Fin Reporte----------------- //
+	//-----------------Eventos de DatosDB----------------- //
+	public void actualizarDatosDB(String URL, String USER, String PWD) {
+		ConfigFile.getInstance().update(URL, USER, PWD);
+		MensajesDeDialogo.getInstance().msgDatosConexionBDModificados();
+		System.exit(0);
+	}
+	
+	public void cerrarAplicacion() {
+		Conexion.getConexion().cerrarConexion();
+		System.exit(0);
+	}	
+	//-----------------Fin de DatosDB----------------- //
 }

@@ -1,23 +1,13 @@
 package modelo;
 
 public class Localidad {
-	private String prefijoLocalidad;
 	private String nombreLocalidad;
 
-	public Localidad(String localidad, String prefijo) {
-		this.prefijoLocalidad = prefijo;
-		this.nombreLocalidad = localidad;
+	public Localidad(String nombre) {
+		this.nombreLocalidad = nombre;
 	}
 	
 	public Localidad() {		
-	}
-
-	public String getPrefijo() {
-		return prefijoLocalidad;
-	}
-
-	public void setPrefijo(String prefijo) {
-		this.prefijoLocalidad = prefijo;
 	}
 
 	public String getNombreLocalidad() {
@@ -38,7 +28,6 @@ public class Localidad {
         }
         Localidad comparable = (Localidad)obj;
 		
-        return (this.prefijoLocalidad == comparable.prefijoLocalidad &&
-        		this.nombreLocalidad == comparable.nombreLocalidad);
+        return (this.nombreLocalidad == comparable.nombreLocalidad);
 	}
 }

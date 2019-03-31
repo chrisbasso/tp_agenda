@@ -11,6 +11,7 @@ import modelo.Domicilio;
 import modelo.Localidad;
 import modelo.Persona;
 import modelo.TipoContacto;
+import presentacion.vista.MensajesDeDialogo;
 import presentacion.vista.VentanaPersona;
 
 public class ControladorPersona {
@@ -65,7 +66,11 @@ public class ControladorPersona {
 		case "Editar":
 			Persona personaOriginal = this.persona;
 			Persona personaEditada = getPersonaDesdeVentana();	
-			controladorSuperior.editarContacto(personaOriginal, personaEditada);
+			if(personaOriginal.equals(personaEditada)) {
+				MensajesDeDialogo.getInstance().msgSinCambios();
+			}else {
+				controladorSuperior.editarContacto(personaOriginal, personaEditada);
+			}			
 			break;
 		default:
 			break;
@@ -87,6 +92,7 @@ public class ControladorPersona {
 	
 	private Persona getPersonaDesdeVentana() {		
 		String nombre = this.ventana.getNombre();
+		String apellido = this.ventana.getApellido();
 		String telefono = this.ventana.getTelefono();
 		String calle = this.ventana.getCalle();
 		String altura = this.ventana.getAltura();
@@ -95,13 +101,15 @@ public class ControladorPersona {
 		String email = this.ventana.getEmail();
 		Date fechaNacimiento = this.ventana.getFechaNacimiento();		
 		Localidad localidad = controladorSuperior.localidadPorNombre(this.ventana.getLocalidad());		
+		
 		Domicilio domicilio = new Domicilio(calle, altura, piso, depto, localidad);
 		TipoContacto tipoContacto = controladorSuperior.TipoContactoPorNombre(this.ventana.getTipoContacto());
-		return new Persona (nombre, telefono, domicilio, tipoContacto, email, fechaNacimiento);		
+		return new Persona (nombre, apellido, telefono, domicilio, tipoContacto, email, fechaNacimiento);		
 	}
 	
 	public static PersonaDTO getPersonaDTO(Persona persona) {
 		String nombre = persona.getNombre();
+		String apellido = persona.getApellido();
 		String telefono = persona.getTelefono();
 		String calle = persona.getDomicilio().getCalle();
 		String altura = persona.getDomicilio().getAltura();
@@ -115,12 +123,13 @@ public class ControladorPersona {
 		LocalidadDTO localidadDTO = ControladorLocalidad.getLocalidadDTO(localidad);
 		DomicilioDTO domicilioDTO = new DomicilioDTO(0, calle, altura, piso, depto, localidadDTO);
 		TipoContactoDTO tipoContactoDTO = ControladorTipoContacto.getTipoContactoDTO(tipoContacto);
-		PersonaDTO personaDTO = new PersonaDTO(nombre, telefono, domicilioDTO, tipoContactoDTO, email, fechaNacimiento);
+		PersonaDTO personaDTO = new PersonaDTO(nombre, apellido, telefono, domicilioDTO, tipoContactoDTO, email, fechaNacimiento);
 		return personaDTO; 
 	}
 	
 	public static Persona getPersona(PersonaDTO personaDTO) {
 		String nombre = personaDTO.getNombre();
+		String apellido = personaDTO.getApellido();
 		String telefono = personaDTO.getTelefono();
 		String calle = personaDTO.getDomicilio().getCalle();
 		String altura = personaDTO.getDomicilio().getAltura();
@@ -132,7 +141,7 @@ public class ControladorPersona {
 		Localidad localidad = ControladorLocalidad.getLocalidad(personaDTO.getDomicilio().getLocalidad());
 		Domicilio domicilio = new Domicilio(calle, altura, piso, depto, localidad);
 		TipoContacto tipoContacto = ControladorTipoContacto.getTipoContacto(personaDTO.getTipoContacto());
-		Persona persona = new Persona (nombre, telefono, domicilio, tipoContacto, email, fechaNacimiento);
+		Persona persona = new Persona (nombre, apellido, telefono, domicilio, tipoContacto, email, fechaNacimiento);
 		return persona; 
 	}	
 }

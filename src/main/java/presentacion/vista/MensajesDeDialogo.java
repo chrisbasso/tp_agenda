@@ -27,6 +27,10 @@ public class MensajesDeDialogo extends JFrame{
 		JOptionPane.showMessageDialog(null, "Editado correctamente.");	
 	}
 	
+	public void msgSinCambios() {
+		JOptionPane.showMessageDialog(null, "No se realizaron cambios.");
+	}
+	
 	public void msgSeleccionarFila() {
 		JOptionPane.showMessageDialog(null, "Debe Seleccionar una fila");	
 	}
@@ -34,4 +38,17 @@ public class MensajesDeDialogo extends JFrame{
 	public void msgCampoVacio() {
 		JOptionPane.showMessageDialog(null, "Campo vacio no aceptado");	
 	}
+	
+	public void msgDatosConexionBD() {
+		JOptionPane.showMessageDialog(null, "No se pudo establecer una conexion a la base de datos");	
+	}
+	
+	public void msgDatosConexionBDModificados() {
+		JOptionPane.showMessageDialog(null, "Por favor, luego de este mensaje, vuelva a abrir la aplicación");	
+	}
+	
+	public void msgCierreAplicacion() {
+		JOptionPane.showMessageDialog(null, "Se cierra la aplicación");	
+	}
+
 }

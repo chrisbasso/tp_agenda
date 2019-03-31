@@ -3,13 +3,16 @@ package dto;
 public class TipoContactoDTO {
 	private int idTipoContacto;
 	private String tipoContacto;
-	
 
 	public TipoContactoDTO(int idTipoContacto, String tipoContacto) {
 		this.idTipoContacto = idTipoContacto;
 		this.tipoContacto = tipoContacto;
 	}
 
+	public TipoContactoDTO(String tipoContacto) {
+		this.tipoContacto = tipoContacto;
+	}
+	
 	public int getIdTipoContacto() {
 		return idTipoContacto;
 	}

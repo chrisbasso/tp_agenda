@@ -7,15 +7,18 @@
 	<queryString language="SQL">
 		<![CDATA[]]>
 	</queryString>
+	
 	<field name="telefono" class="java.lang.String">
 		<fieldDescription><![CDATA[telefono]]></fieldDescription>
 	</field>
 	<field name="nombre" class="java.lang.String">
 		<fieldDescription><![CDATA[nombre]]></fieldDescription>
 	</field>
+	
 	<background>
 		<band splitType="Stretch"/>
 	</background>
+	
 	<title>
 		<band height="45" splitType="Stretch">
 			<frame>

@@ -1,18 +1,21 @@
 package modelo;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Persona {
 	private String nombre;
+	private String apellido;
 	private String telefono;
 	private Domicilio domicilio;
 	private TipoContacto tipoContacto;
 	private String email;
 	private Date fechaNacimiento;
 	
-	public Persona(String nombre, String telefono, Domicilio domicilio, TipoContacto tipoContacto,
+	public Persona(String nombre, String apellido, String telefono, Domicilio domicilio, TipoContacto tipoContacto,
 			String email, Date fechaNacimiento) {
 		this.nombre = nombre;
+		this.apellido = apellido;
 		this.telefono = telefono;
 		this.domicilio = domicilio;
 		this.tipoContacto = tipoContacto;
@@ -28,6 +31,12 @@ public class Persona {
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}	
+	public String getApellido() {
+		return apellido;
+	}
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
 	}
 	public String getTelefono() {
 		return telefono;

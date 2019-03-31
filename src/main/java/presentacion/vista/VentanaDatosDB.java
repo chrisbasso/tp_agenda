@@ -1,18 +1,12 @@
 package presentacion.vista;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
-
-import persistencia.conexion.Conexion;
 
 public class VentanaDatosDB extends JDialog {
 	private static final long serialVersionUID = 1L;
@@ -49,7 +43,7 @@ public class VentanaDatosDB extends JDialog {
 		contentPane.add(panel);
 		panel.setLayout(null);
 
-		JLabel lblURL = new JLabel("URL");
+		JLabel lblURL = new JLabel("URL y puerto");
 		lblURL.setBounds(10, 11, 113, 14);
 		panel.add(lblURL);
 
@@ -57,6 +51,7 @@ public class VentanaDatosDB extends JDialog {
 		textURL.setBounds(149, 8, 164, 20);
 		panel.add(textURL);
 		textURL.setColumns(10);
+		textURL.setToolTipText("localhost:3306");
 
 		JLabel lblUsuario = new JLabel("Usuario");
 		lblUsuario.setBounds(10, 52, 113, 14);
@@ -66,6 +61,7 @@ public class VentanaDatosDB extends JDialog {
 		textUSER.setBounds(149, 49, 164, 20);
 		panel.add(textUSER);
 		textUSER.setColumns(10);
+		textUSER.setToolTipText("root");
 
 		JLabel lblPassword = new JLabel("Contraseña");
 		lblPassword.setBounds(10, 91, 137, 14);
@@ -75,7 +71,8 @@ public class VentanaDatosDB extends JDialog {
 		textPWD.setBounds(149, 89, 164, 20);
 		panel.add(textPWD);
 		textPWD.setColumns(10);
-
+		textPWD.setToolTipText("password");
+		
 		btnAceptar = new JButton("Aceptar");
 		btnAceptar.setBounds(170, 195, 89, 23);
 		panel.add(btnAceptar);
@@ -118,5 +115,4 @@ public class VentanaDatosDB extends JDialog {
 	public JButton getBtnSalir(){
 		return btnSalir;
 	}
-
 }

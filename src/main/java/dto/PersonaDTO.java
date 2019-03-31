@@ -5,15 +5,17 @@ import java.util.Date;
 public class PersonaDTO {
 	private int idPersona;
 	private String nombre;
+	private String apellido;
 	private String telefono;
 	private DomicilioDTO domicilio;
 	private TipoContactoDTO tipoContacto;
 	private String email;
 	private Date fechaNacimiento;
 
-	public PersonaDTO(String nombre, String telefono, DomicilioDTO domicilio, TipoContactoDTO tipoContacto, String email,Date fechaNacimiento)
+	public PersonaDTO(String nombre, String apellido, String telefono, DomicilioDTO domicilio, TipoContactoDTO tipoContacto, String email,Date fechaNacimiento)
 	{
 		this.nombre = nombre;
+		this.apellido = apellido;
 		this.telefono = telefono;
 		this.domicilio = domicilio;
 		this.tipoContacto = tipoContacto;
@@ -21,9 +23,10 @@ public class PersonaDTO {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public PersonaDTO(int idPersona, String nombre, String telefono, DomicilioDTO domicilio, TipoContactoDTO tipoContacto,  String email,Date fechaNacimiento) {
+	public PersonaDTO(int idPersona, String nombre, String apellido, String telefono, DomicilioDTO domicilio, TipoContactoDTO tipoContacto,  String email,Date fechaNacimiento) {
 		this.idPersona = idPersona;
 		this.nombre = nombre;
+		this.apellido = apellido;
 		this.telefono = telefono;
 		this.domicilio = domicilio;
 		this.tipoContacto = tipoContacto;
@@ -43,6 +46,15 @@ public class PersonaDTO {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
 	public String getTelefono() {
 		return telefono;
 	}

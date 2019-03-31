@@ -1,9 +1,16 @@
 package presentacion.controlador;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
+
+import javax.swing.JOptionPane;
+
+import org.apache.log4j.Logger;
 
 import modelo.Agenda;
 import modelo.Persona;
+import persistencia.conexion.Conexion;
 import presentacion.vista.MensajesDeDialogo;
 import presentacion.vista.VentanaPrincipal;
 
@@ -11,19 +18,20 @@ public class ControladorMenuPrincipal{
 	private Controlador controladorSuperior;
 	private VentanaPrincipal ventana;
 	private List <Persona> personas; 
-
+	
 	public ControladorMenuPrincipal(Controlador controladorSuperior){
 		this.controladorSuperior = controladorSuperior;
-		this.ventana = VentanaPrincipal.getInstance();
+		ventana = VentanaPrincipal.getInstance();
 		cargarActionListeners();
 	}
 	
 	public void cargarTabla(Agenda agenda) {
-		this.ventana.inicializarTabla();		
-		this.personas = agenda.obtenerPersonas(); 
+		ventana.inicializarTabla();		
+		personas = agenda.obtenerPersonas(); 
 		for (Persona persona : personas){
 			Object[] fila = {
 						persona.getNombre(),
+						persona.getApellido(),
 						persona.getTelefono(),
 						persona.getDomicilio().getCalle(),
 						persona.getDomicilio().getAltura(),
@@ -54,6 +62,18 @@ public class ControladorMenuPrincipal{
 		ventana.getMntmAbmLocalidad().addActionListener(a->reportarEvento("abmLocalidad"));
 		ventana.getMntmAbmTipoDeContacto().addActionListener(a->reportarEvento("abmTipoContacto"));
 		ventana.getMntmBaseDeDatos().addActionListener(a->reportarEvento("baseDeDatos"));
+		ventana.addWindowListener(new WindowAdapter(){
+			@Override
+			public void windowClosing(WindowEvent e) {
+				int confirm = JOptionPane.showOptionDialog(
+						null, "Estas seguro que quieres salir de la Agenda!?",
+						"Confirmacion", JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, null, null);
+				if (confirm == 0) {
+					reportarEvento("cerrar");
+				}
+			}
+		});
 	}	
 	
 	private void reportarEvento(String evento) {
@@ -89,6 +109,9 @@ public class ControladorMenuPrincipal{
 			break;
 		case "baseDeDatos":
 			controladorSuperior.baseDeDatos();
+			break;
+		case "cerrar":
+			controladorSuperior.cerrarAplicacion();
 			break;
 		default:
 			break;
