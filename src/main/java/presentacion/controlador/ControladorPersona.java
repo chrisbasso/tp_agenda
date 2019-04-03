@@ -1,16 +1,19 @@
 package presentacion.controlador;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Date;
-import java.util.List;
 
-import dto.DomicilioDTO;
-import dto.LocalidadDTO;
-import dto.PersonaDTO;
-import dto.TipoContactoDTO;
+import javax.swing.JOptionPane;
+
 import modelo.Domicilio;
 import modelo.Localidad;
 import modelo.Persona;
 import modelo.TipoContacto;
+import persistencia.dto.DomicilioDTO;
+import persistencia.dto.LocalidadDTO;
+import persistencia.dto.PersonaDTO;
+import persistencia.dto.TipoContactoDTO;
 import presentacion.vista.MensajesDeDialogo;
 import presentacion.vista.VentanaPersona;
 
@@ -29,14 +32,16 @@ public class ControladorPersona {
 		if (persona != null) {
 			Object[] registro = { 
 						persona.getNombre(),
+						persona.getApellido(),
 						persona.getTelefono(),
 						persona.getDomicilio().getCalle(),
 						persona.getDomicilio().getAltura(),
 						persona.getDomicilio().getPiso(),
 						persona.getDomicilio().getDepto(),
-						persona.getDomicilio().getLocalidad(),		
 						persona.getEmail(),
-						persona.getFechaNacimiento()
+						persona.getFechaNacimiento(),
+						persona.getTipoContacto().getTipoContacto(),
+						persona.getDomicilio().getLocalidad().getNombreLocalidad()
 			};
 			ventana.setPersona(registro);
 		}else {
@@ -54,14 +59,26 @@ public class ControladorPersona {
 	
 	private void cargarActionListeners() {		
 		String accion = this.ventana.getBtnAccionPersona().getText();
-		this.ventana.getBtnAccionPersona().addActionListener(a->reportarEvento(accion));		
+		this.ventana.getBtnAccionPersona().addActionListener(a->reportarEvento(accion));
+		ventana.addWindowListener(new WindowAdapter(){
+			@Override
+			public void windowClosing(WindowEvent e) {
+				int confirm = JOptionPane.showOptionDialog(
+						null, "Estas seguro que quieres salir de la Agenda!?",
+						"Confirmacion", JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, null, null);
+				if (confirm == 0) {
+					reportarEvento("cerrar");
+				}
+			}
+		});
 	}	
 	
 	private void reportarEvento(String evento) {
 		switch (evento) {
 		case "Agregar":
 			Persona personaNueva = getPersonaDesdeVentana();	
-			controladorSuperior.agregarContacto(personaNueva);
+			controladorSuperior.agregarContactoNuevo(personaNueva);
 			break;
 		case "Editar":
 			Persona personaOriginal = this.persona;
@@ -69,8 +86,11 @@ public class ControladorPersona {
 			if(personaOriginal.equals(personaEditada)) {
 				MensajesDeDialogo.getInstance().msgSinCambios();
 			}else {
-				controladorSuperior.editarContacto(personaOriginal, personaEditada);
+				controladorSuperior.editarContactoBD(personaOriginal, personaEditada);
 			}			
+			break;
+		case "cerrar":
+			controladorSuperior.cerrarAplicacion();
 			break;
 		default:
 			break;
@@ -106,42 +126,4 @@ public class ControladorPersona {
 		TipoContacto tipoContacto = controladorSuperior.TipoContactoPorNombre(this.ventana.getTipoContacto());
 		return new Persona (nombre, apellido, telefono, domicilio, tipoContacto, email, fechaNacimiento);		
 	}
-	
-	public static PersonaDTO getPersonaDTO(Persona persona) {
-		String nombre = persona.getNombre();
-		String apellido = persona.getApellido();
-		String telefono = persona.getTelefono();
-		String calle = persona.getDomicilio().getCalle();
-		String altura = persona.getDomicilio().getAltura();
-		String piso = persona.getDomicilio().getPiso();
-		String depto = persona.getDomicilio().getDepto();
-		Localidad localidad = persona.getDomicilio().getLocalidad();		
-		String email = persona.getEmail();
-		Date fechaNacimiento = persona.getFechaNacimiento();
-		TipoContacto tipoContacto = persona.getTipoContacto();
-		
-		LocalidadDTO localidadDTO = ControladorLocalidad.getLocalidadDTO(localidad);
-		DomicilioDTO domicilioDTO = new DomicilioDTO(0, calle, altura, piso, depto, localidadDTO);
-		TipoContactoDTO tipoContactoDTO = ControladorTipoContacto.getTipoContactoDTO(tipoContacto);
-		PersonaDTO personaDTO = new PersonaDTO(nombre, apellido, telefono, domicilioDTO, tipoContactoDTO, email, fechaNacimiento);
-		return personaDTO; 
-	}
-	
-	public static Persona getPersona(PersonaDTO personaDTO) {
-		String nombre = personaDTO.getNombre();
-		String apellido = personaDTO.getApellido();
-		String telefono = personaDTO.getTelefono();
-		String calle = personaDTO.getDomicilio().getCalle();
-		String altura = personaDTO.getDomicilio().getAltura();
-		String piso = personaDTO.getDomicilio().getPiso();
-		String depto = personaDTO.getDomicilio().getDepto();				
-		String email = personaDTO.getEmail();
-		Date fechaNacimiento = personaDTO.getFechaNacimiento();
-		
-		Localidad localidad = ControladorLocalidad.getLocalidad(personaDTO.getDomicilio().getLocalidad());
-		Domicilio domicilio = new Domicilio(calle, altura, piso, depto, localidad);
-		TipoContacto tipoContacto = ControladorTipoContacto.getTipoContacto(personaDTO.getTipoContacto());
-		Persona persona = new Persona (nombre, apellido, telefono, domicilio, tipoContacto, email, fechaNacimiento);
-		return persona; 
-	}	
 }

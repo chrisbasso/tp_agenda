@@ -9,25 +9,40 @@ import java.util.List;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import org.apache.log4j.Logger;
 
-import dto.TipoContactoDTO;
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.TipoContactoDAO;
+import persistencia.dto.DomicilioDTO;
+import persistencia.dto.TipoContactoDTO;
 
 import javax.swing.*;
 
-public class TipoContactoDAOSQL implements TipoContactoDAO {
+public class TipoContactoDAOSQL implements TipoContactoDAO {	
+	private static final Logger LOGGER = Logger.getLogger(TipoContactoDAOSQL.class);
+	private static Conexion conexion = Conexion.getConexion();
 	
-	private static final Logger LOGGER = Logger.getLogger(Conexion.class);
-
-	private static final String insert = "INSERT INTO tipo_contacto(idTipoContacto, tipo) VALUES(?, ?)";
-	private static final String delete = "DELETE FROM tipo_contacto WHERE idTipoContacto = ?";
-	private static final String update = "UPDATE tipo_contacto SET tipo = ? WHERE idTipoContacto = ?";
-	private static final String readall = "SELECT * FROM tipo_contacto";
+	private static final String insert = 
+			"INSERT INTO tipo_contacto(idTipoContacto, tipo)"+
+			"VALUES(?, ?)";
+	
+	private static final String delete = 
+			"DELETE FROM tipo_contacto " +
+			"WHERE idTipoContacto = ?";
+	
+	private static final String update = 
+			"UPDATE tipo_contacto " +
+			"SET tipo = ? " +
+			"WHERE idTipoContacto = ?";
+	
+	private static final String readall = 
+			"SELECT * FROM tipo_contacto";
+	
+	private static final String selectById = 
+			"SELECT * FROM tipo_contacto " +
+			"WHERE idTipoContacto = ?";
 	
 	@Override
 	public boolean insert(TipoContactoDTO tipoContacto) {
-		PreparedStatement statement;
-		Conexion conexion = Conexion.getConexion();
+		PreparedStatement statement;	
 		
 		try 
 		{
@@ -43,18 +58,17 @@ public class TipoContactoDAOSQL implements TipoContactoDAO {
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
-		}
-		
+		}		
 		return false;
 	}
 
 	@Override
-	public boolean delete(TipoContactoDTO tipoContacto_a_eliminar){
+	public boolean delete(int idTipoContacto){
 		PreparedStatement statement;
-		Conexion conexion = Conexion.getConexion();
+		
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(delete);
-			statement.setString(1, Integer.toString(tipoContacto_a_eliminar.getIdTipoContacto()));
+			statement.setInt(1, idTipoContacto);
 			if (statement.executeUpdate() > 0)
 				return true;
 		} catch (MySQLIntegrityConstraintViolationException e){
@@ -107,5 +121,26 @@ public class TipoContactoDAOSQL implements TipoContactoDAO {
 			e.printStackTrace();
 		}
 		return tipoContactos;
+	}
+	
+	public TipoContactoDTO obtenerPorId(int idTipoContacto) {
+		PreparedStatement statement;
+		ResultSet resultSet;
+		try {
+			statement = conexion.getSQLConexion().prepareStatement(selectById);
+			statement.setInt(1, idTipoContacto);
+
+			LOGGER.info(statement.toString());
+			resultSet = statement.executeQuery();
+			TipoContactoDTO tipoContactoDTO = new TipoContactoDTO(
+					resultSet.getInt("idTipoContacto"),
+					resultSet.getString("tipo")
+					); 
+			
+			return tipoContactoDTO;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		throw new NullPointerException();		
 	}
 }

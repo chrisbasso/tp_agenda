@@ -1,17 +1,18 @@
 package persistencia.dao.interfaz;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-import dto.TipoContactoDTO;
-
 import java.util.List;
+
+import persistencia.dto.TipoContactoDTO;
 
 public interface TipoContactoDAO {
 	public boolean insert(TipoContactoDTO tipoContacto);
 	
-	public boolean delete(TipoContactoDTO tipoContacto_a_eliminar);
+	public boolean delete(int idTipoContacto);
 	
 	public boolean edit(TipoContactoDTO tipoContacto_a_editar);
 	
 	public List<TipoContactoDTO> readAll();
+	
+	public TipoContactoDTO obtenerPorId(int id);
 
 }

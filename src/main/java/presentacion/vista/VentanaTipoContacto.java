@@ -6,14 +6,13 @@ import javax.swing.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 public class VentanaTipoContacto extends JFrame {
-
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private static VentanaTipoContacto INSTANCE;
 	private DefaultTableModel modelTipoContactos;
-	private  String[] nombreColumnas = {"Nombre de Tipo de Contacto"};
+	private  String[] nombreColumnas = {"Tipo de Contacto"};
 	private JTable tablaTipoContactos;
-	private JTextField txtAgregarTipoContacto;
+	private JTextField txtTipoContacto;
 	private JButton btnAgregarTipoContacto;
 	private JButton btnEditarTipoContacto;
 	private JButton btnBorrar;
@@ -26,7 +25,6 @@ public class VentanaTipoContacto extends JFrame {
 	}
 
 	private VentanaTipoContacto() {
-		super();
 		setTitle("ABM Tipo de Contacto");
 		this.setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -66,26 +64,41 @@ public class VentanaTipoContacto extends JFrame {
 		btnBorrar.setBounds(220, 78, 89, 23);
 		panel.add(btnBorrar);
 		
-		txtAgregarTipoContacto = new JTextField();
-		txtAgregarTipoContacto.setBounds(220, 15, 89, 20);
-		panel.add(txtAgregarTipoContacto);
-		txtAgregarTipoContacto.setColumns(10);
-		this.txtAgregarTipoContacto.setText(null);
-		
+		txtTipoContacto = new JTextField();
+		txtTipoContacto.setBounds(220, 15, 89, 20);
+		panel.add(txtTipoContacto);
+		txtTipoContacto.setColumns(10);		
+	}
+	
+	public void inicializarTabla() {
+		modelTipoContactos.setRowCount(0); //Para vaciar la tabla
+		modelTipoContactos.setColumnCount(0);
+		modelTipoContactos.setColumnIdentifiers(nombreColumnas);
+	}
+	
+	public void agregarTipoContactoATabla(Object[] fila) {
+		modelTipoContactos.addRow(fila);
 	}
 
-	public void mostrarVentana(){
-		this.setVisible(true);
+	public void editarTipoContactoATabla(Object[] fila, int indice) {
+		modelTipoContactos.setValueAt(fila, indice, 0);
+	}
+	public void quitarTipoContactoDeTabla(int numeroFila) {
+		modelTipoContactos.removeRow(numeroFila);
 	}
 
-	public JTextField getTxtAgregarTipoContacto() {
-		return txtAgregarTipoContacto;
+	public int obtenerFilaSeleccionada() {
+		return tablaTipoContactos.getSelectedRow();		
 	}
 
-	public void setTxtAgregarTipoContacto(JTextField txtAgregarTipoContacto) {
-		this.txtAgregarTipoContacto = txtAgregarTipoContacto;
+	public void cargarTipoContacto(String texto) {
+		txtTipoContacto.setText(texto);
 	}
-
+	
+	public void mostrar(){
+		setVisible(true);
+	}
+	
 	public JButton getBtnAgregarTipoContacto() {
 		return btnAgregarTipoContacto;
 	}
@@ -97,26 +110,12 @@ public class VentanaTipoContacto extends JFrame {
 	public JButton getBtnBorrar() {
 		return btnBorrar;
 	}
+	
+	public String getTxtTipoContacto() {
+		return txtTipoContacto.getText();
+	}	
 
-	public DefaultTableModel getModelTipoContactos() {
-		return modelTipoContactos;
+	public void cerrar(){
+		dispose();
 	}
-	
-	public JTable getTablaTipoContactos(){
-		return tablaTipoContactos;
-	}
-
-	public String[] getNombreColumnas() {
-		return nombreColumnas;
-	}
-	
-	public void cerrar() {
-		this.txtAgregarTipoContacto.setText(null);
-		this.dispose();
-	}
-	
-	/*
-	 * public void centrarVentana( JFrame ventanaPadre) {
-	 * this.setLocationRelativeTo(ventanaPadre); }
-	 */
 }

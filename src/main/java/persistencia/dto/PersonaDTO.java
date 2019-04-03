@@ -1,4 +1,4 @@
-package dto;
+package persistencia.dto;
 
 import java.util.Date;
 
@@ -7,29 +7,29 @@ public class PersonaDTO {
 	private String nombre;
 	private String apellido;
 	private String telefono;
-	private DomicilioDTO domicilio;
-	private TipoContactoDTO tipoContacto;
+	private int idDomicilio;
+	private int idTipoContacto;
 	private String email;
 	private Date fechaNacimiento;
 
-	public PersonaDTO(String nombre, String apellido, String telefono, DomicilioDTO domicilio, TipoContactoDTO tipoContacto, String email,Date fechaNacimiento)
+	public PersonaDTO(String nombre, String apellido, String telefono, int idDomicilio, int idTipoContacto, String email,Date fechaNacimiento)
 	{
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.telefono = telefono;
-		this.domicilio = domicilio;
-		this.tipoContacto = tipoContacto;
+		this.idDomicilio = idDomicilio;
+		this.idTipoContacto = idTipoContacto;
 		this.email = email;
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public PersonaDTO(int idPersona, String nombre, String apellido, String telefono, DomicilioDTO domicilio, TipoContactoDTO tipoContacto,  String email,Date fechaNacimiento) {
+	public PersonaDTO(int idPersona, String nombre, String apellido, String telefono, int idDomicilio, int idTipoContacto, String email,Date fechaNacimiento) {
 		this.idPersona = idPersona;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.telefono = telefono;
-		this.domicilio = domicilio;
-		this.tipoContacto = tipoContacto;
+		this.idDomicilio = idDomicilio;
+		this.idTipoContacto = idTipoContacto;
 		this.email = email;
 		this.fechaNacimiento = fechaNacimiento;
 	}
@@ -61,30 +61,26 @@ public class PersonaDTO {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
-	public TipoContactoDTO getTipoPersona() {
-		return tipoContacto;
+	public int getIdTipoContacto() {
+		return idTipoContacto;
 	}
 
-	public DomicilioDTO getDomicilio() {
-		return this.domicilio;
+	public int getIdDomicilio() {
+		return idDomicilio;
 	}
 
-	public void setDomicilio(DomicilioDTO domicilio) {
-		this.domicilio = domicilio;
+	public void setIdDomicilio(int domicilio) {
+		idDomicilio = domicilio;
 	}
 
-	public void setTipoContacto(TipoContactoDTO tipoContacto) {
-		this.tipoContacto = tipoContacto;
+	public void setIdTipoContacto(int tipoContacto) {
+		idTipoContacto = tipoContacto;
 	}
 
-	public TipoContactoDTO getTipo_Persona() {
-		return tipoContacto;
+	public int getTipoContacto() {
+		return idTipoContacto;
 	}
-
-	public TipoContactoDTO getTipoContacto() {
-		return tipoContacto;
-	}
-
+	
 	public String getEmail() {
 		return email;
 	}

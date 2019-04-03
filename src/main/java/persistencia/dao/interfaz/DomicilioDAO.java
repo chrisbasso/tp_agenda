@@ -1,7 +1,8 @@
 package persistencia.dao.interfaz;
 
-import dto.DomicilioDTO;
-import modelo.Localidad;
+import java.util.List;
+
+import persistencia.dto.DomicilioDTO;
 
 public interface DomicilioDAO {
 
@@ -10,5 +11,11 @@ public interface DomicilioDAO {
 	public boolean delete(int idDomicilio);
 
 	public boolean editar(DomicilioDTO domicilio);
+	
+	public int idDomicilio(DomicilioDTO domicilio);
+	
+	public DomicilioDTO obtenerPorId(int id);
+	
+	public List <DomicilioDTO> readAll();
 
 }

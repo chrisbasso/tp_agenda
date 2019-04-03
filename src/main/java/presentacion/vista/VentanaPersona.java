@@ -190,6 +190,7 @@ public class VentanaPersona extends JFrame{
 	
 	public void agregarLocalidadAlCombo(String localidad) {
 		comboLocalidad.addItem(localidad);
+		System.out.println(localidad);
 	}
 	
 	public void agregarTipoContactoAlCombo(String tipoContacto) {
@@ -207,13 +208,16 @@ public class VentanaPersona extends JFrame{
 	public void setPersona(Object [] persona) {
 		if (persona != null && persona.length > 0) {
 			this.textNombre.setText((String)persona[0]);
-			this.textTelefono.setText((String)persona[1]);
-			this.textCalle.setText((String)persona[2]);
-			this.textAltura.setText((String)persona[3]);
-			this.textPiso.setText((String)persona[4]);
-			this.textDepto.setText((String)persona[5]);
-			this.textEmail.setText((String)persona[6]);
-			this.fechaNac.setDate((Date)persona[7]);
+			this.textApellido.setText((String)persona[1]);
+			this.textTelefono.setText((String)persona[2]);
+			this.textCalle.setText((String)persona[3]);
+			this.textAltura.setText((String)persona[4]);
+			this.textPiso.setText((String)persona[5]);
+			this.textDepto.setText((String)persona[6]);
+			this.textEmail.setText((String)persona[7]);
+			this.fechaNac.setDate((Date)persona[8]);
+			this.comboTipoContacto.setSelectedItem(persona[8]);
+			this.comboLocalidad.setSelectedItem(persona[9]);
 			btnAccionPersona.setText("Editar");
 		}else{
 			this.textNombre.setText("");

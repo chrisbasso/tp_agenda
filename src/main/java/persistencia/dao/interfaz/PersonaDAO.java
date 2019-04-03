@@ -1,15 +1,14 @@
 package persistencia.dao.interfaz;
 
-import dto.PersonaDTO;
-
-import java.sql.SQLException;
 import java.util.List;
+
+import persistencia.dto.PersonaDTO;
 
 public interface PersonaDAO
 {
 	public boolean insert(PersonaDTO persona);
 
-	public boolean delete(PersonaDTO persona_a_eliminar);
+	public boolean delete(int idPersona);
 
 	public List<PersonaDTO> readAll();
 

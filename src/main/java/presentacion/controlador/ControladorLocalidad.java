@@ -1,11 +1,14 @@
 package presentacion.controlador;
 
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.List;
 
-import dto.LocalidadDTO;
-import modelo.Agenda;
+import javax.swing.JOptionPane;
+
 import modelo.Localidad;
-import modelo.Persona;
+import persistencia.dto.LocalidadDTO;
+import presentacion.vista.MensajesDeDialogo;
 import presentacion.vista.VentanaLocalidad;
 
 public class ControladorLocalidad {
@@ -15,45 +18,81 @@ public class ControladorLocalidad {
 
 	public ControladorLocalidad (Controlador controladorSuperior){
 		this.controladorSuperior = controladorSuperior;
-		this.ventana = VentanaLocalidad.getInstance();
+		ventana = VentanaLocalidad.getInstance();
 		cargarActionListeners(); 
 	}
 	
-	public void cargarTabla(List <Localidad> loc) {		
-		this.localidades = loc; 
+	public void cargarTabla(List <Localidad> localidades) {		
+		this.localidades = localidades; 
 		for (Localidad localidad : localidades){
 			Object[] fila = {
 						localidad.getNombreLocalidad()
 						};
-			this.ventana.agregarLocalidadATabla(fila);
+			ventana.agregarLocalidadATabla(fila);
 		}
 	}
 	
 	public void mostrarVentana() {
-		this.ventana.show();		
+		ventana.mostrar();		
 	}
 	
 	public void cerrarVentana() {
-		ventana.hide();
+		ventana.cerrar();
 	}
 	
 	private void cargarActionListeners() {		
-		this.ventana.getBtnAgregarLocalidad().addActionListener(a->reportarEvento("agregar"));
-		this.ventana.getBtnEditarLocalidad().addActionListener(a->reportarEvento("editar"));
-		this.ventana.getBtnBorrar().addActionListener(a->reportarEvento("borrar"));
+		ventana.getBtnAgregarLocalidad().addActionListener(a->reportarEvento("agregar"));
+		ventana.getBtnEditarLocalidad().addActionListener(a->reportarEvento("editar"));
+		ventana.getBtnBorrar().addActionListener(a->reportarEvento("borrar"));
+		ventana.addWindowListener(new WindowAdapter(){
+			@Override
+			public void windowClosing(WindowEvent e) {
+				int confirm = JOptionPane.showOptionDialog(
+						null, "Estas seguro que quieres salir de la Agenda!?",
+						"Confirmacion", JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, null, null);
+				if (confirm == 0) {
+					reportarEvento("cerrar");
+				}
+			}
+		});
 	}	
 	
 	private void reportarEvento(String evento) {
-		Localidad loc = obtenerSeleccionado();
+		Localidad locSeleccionada = obtenerSeleccionado();
 		switch (evento) {
 		case "agregar":
-			controladorSuperior.agregarLocalidad(loc);
+			if (ventana.getTxtLocalidad() != "") {
+				controladorSuperior.agregarLocalidadBD(ventana.getTxtLocalidad());
+				Object[] fila = {
+						ventana.getTxtLocalidad()
+						};
+				ventana.agregarLocalidadATabla(fila);
+			}else {
+				MensajesDeDialogo.getInstance().msgSinCambios();
+			}			
 			break;
 		case "editar":
-			controladorSuperior.editarLocalidad(loc,loc);
+			if (locSeleccionada != null) {
+				controladorSuperior.editarLocalidadBD(locSeleccionada, ventana.getTxtLocalidad());
+				int filaSeleccionada = ventana.obtenerFilaSeleccionada();
+				Object[] fila = {
+						ventana.getTxtLocalidad()
+						};
+				ventana.editarLocalidadATabla(fila, filaSeleccionada);
+			}else {
+				MensajesDeDialogo.getInstance().msgSinCambios();
+			}
 			break;
 		case "borrar":
-			controladorSuperior.borrarLocalidad(loc);
+			if (locSeleccionada != null) {
+				controladorSuperior.borrarLocalidadBD(locSeleccionada);
+			}else {
+				MensajesDeDialogo.getInstance().msgSinCambios();
+			}	
+			break;
+		case "cerrar":
+			controladorSuperior.cerrarAplicacion();
 			break;
 		default:
 			break;
@@ -69,11 +108,4 @@ public class ControladorLocalidad {
 		}		
 	}
 	
-	public static LocalidadDTO getLocalidadDTO(Localidad localidad) {		
-		return new LocalidadDTO(localidad.getNombreLocalidad());		
-	}
-
-	public static Localidad getLocalidad(LocalidadDTO localidadDTO) {
-		return new Localidad (localidadDTO.getNombreLocalidad());
-	}
 }

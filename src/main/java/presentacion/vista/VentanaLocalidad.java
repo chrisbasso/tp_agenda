@@ -10,7 +10,7 @@ public class VentanaLocalidad extends JFrame {
 	private DefaultTableModel modelLocalidades;
 	private  String[] nombreColumnas = {"Localidad"};
 	private JTable tablaLocalidades;
-	private JTextField txtAgregarLocalidad;
+	private JTextField txtLocalidad;
 	private JButton btnAgregarLocalidad;
 	private JButton btnEditarLocalidad;
 	private JButton btnBorrar;
@@ -43,7 +43,6 @@ public class VentanaLocalidad extends JFrame {
 
 		modelLocalidades = new DefaultTableModel(null,nombreColumnas);
 		tablaLocalidades = new JTable(modelLocalidades);
-
 		tablaLocalidades.getColumnModel().getColumn(0).setPreferredWidth(103);
 		tablaLocalidades.getColumnModel().getColumn(0).setResizable(false);
 
@@ -61,10 +60,10 @@ public class VentanaLocalidad extends JFrame {
 		btnBorrar.setBounds(220, 78, 89, 23);
 		panel.add(btnBorrar);
 		
-		txtAgregarLocalidad = new JTextField();
-		txtAgregarLocalidad.setBounds(220, 15, 89, 20);
-		panel.add(txtAgregarLocalidad);
-		txtAgregarLocalidad.setColumns(10);		
+		txtLocalidad = new JTextField();
+		txtLocalidad.setBounds(220, 15, 89, 20);
+		panel.add(txtLocalidad);
+		txtLocalidad.setColumns(10);		
 	}
 
 	public void inicializarTabla() {
@@ -76,7 +75,10 @@ public class VentanaLocalidad extends JFrame {
 	public void agregarLocalidadATabla(Object[] fila) {
 		modelLocalidades.addRow(fila);
 	}
-	
+
+	public void editarLocalidadATabla(Object[] fila, int indice) {
+		modelLocalidades.setValueAt(fila, indice, 0);
+	}
 	public void quitarLocalidadDeTabla(int numeroFila) {
 		modelLocalidades.removeRow(numeroFila);
 	}
@@ -84,10 +86,9 @@ public class VentanaLocalidad extends JFrame {
 	public int obtenerFilaSeleccionada() {
 		return tablaLocalidades.getSelectedRow();		
 	}
-	
 
 	public void cargarLocalidad(String texto) {
-		txtAgregarLocalidad.setText(texto);
+		txtLocalidad.setText(texto);
 	}
 	
 	public void mostrar(){
@@ -105,6 +106,10 @@ public class VentanaLocalidad extends JFrame {
 	public JButton getBtnBorrar() {
 		return btnBorrar;
 	}
+	
+	public String getTxtLocalidad() {
+		return txtLocalidad.getText();
+	}	
 
 	public void cerrar(){
 		dispose();

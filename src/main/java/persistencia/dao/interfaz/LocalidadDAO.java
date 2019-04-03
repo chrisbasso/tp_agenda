@@ -1,17 +1,18 @@
 package persistencia.dao.interfaz;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-import dto.LocalidadDTO;
-
 import java.util.List;
+
+import persistencia.dto.LocalidadDTO;
 
 public interface LocalidadDAO {
 
-	public boolean insert(String localidad);
+	public boolean insert(LocalidadDTO localidad);
 
-	public boolean delete(int idLocalidad) throws MySQLIntegrityConstraintViolationException;
+	public boolean delete(int idLocalidad);
 
 	public boolean editar(LocalidadDTO localidad);
 
+	public LocalidadDTO obtenerPorId(int id);
+	
 	public List<LocalidadDTO> readAll();
 }

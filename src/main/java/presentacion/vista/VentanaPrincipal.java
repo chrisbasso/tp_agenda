@@ -77,8 +77,12 @@ public class VentanaPrincipal extends JFrame{
 		mnArchivo.add(mntmEditar);
 		mntmBorrar = new JMenuItem("Borrar contacto");
 		mnArchivo.add(mntmBorrar);
-		mntmReporte = new JMenuItem("Reporte");
-		mnArchivo.add(mntmReporte);
+				
+		JMenu mnReportes = new JMenu("Reportes");
+		menuBar.add(mnReportes);
+		
+		mntmReporte = new JMenuItem("Por apellido y dominio email");
+		mnReportes.add(mntmReporte);
 		
 		JMenu mnConfiguracion = new JMenu("Configuración");
 		menuBar.add(mnConfiguracion);

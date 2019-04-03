@@ -1,4 +1,4 @@
-package dto;
+package persistencia.dto;
 
 public class LocalidadDTO {
 	private int idLocalidad;

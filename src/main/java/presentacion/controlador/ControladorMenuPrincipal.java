@@ -79,7 +79,7 @@ public class ControladorMenuPrincipal{
 	private void reportarEvento(String evento) {
 		switch (evento) {
 		case "agregar":
-			controladorSuperior.agregarContacto();
+			controladorSuperior.mostrarVentanaAgregarContacto();
 			break;
 		case "editar":
 			Persona personaAEditar = obtenerSeleccionado(); 
@@ -87,7 +87,7 @@ public class ControladorMenuPrincipal{
 				MensajesDeDialogo.getInstance().msgSeleccionarFila();
 			}else {
 				cerrarVentana();
-				controladorSuperior.editarContacto(personaAEditar);
+				controladorSuperior.mostrarVentanaEditarContacto(personaAEditar);
 			}			
 			break;
 		case "borrar":
@@ -99,16 +99,16 @@ public class ControladorMenuPrincipal{
 			}			
 			break;		
 		case "abmLocalidad":	
-			controladorSuperior.abmLocalidad();
+			controladorSuperior.mostrarVentanaABMLocalidad();
 			break;
 		case "abmTipoContacto":	
-			controladorSuperior.abmTipoContacto();
+			controladorSuperior.mostrarVentanaABMTipoContacto();
 			break;
 		case "reporte":
-			controladorSuperior.reporte();
+			controladorSuperior.mostrarReporte();
 			break;
 		case "baseDeDatos":
-			controladorSuperior.baseDeDatos();
+			controladorSuperior.mostrarVentanaBaseDeDatos();
 			break;
 		case "cerrar":
 			controladorSuperior.cerrarAplicacion();

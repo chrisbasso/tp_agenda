@@ -1,4 +1,4 @@
-package dto;
+package persistencia.dto;
 
 public class DomicilioDTO {
 
@@ -7,17 +7,24 @@ public class DomicilioDTO {
 	private String altura;
 	private String piso;
 	private String depto;
-	private LocalidadDTO localidad;
+	private int idLocalidad;
 
-	public DomicilioDTO(int idDomicilio, String calle, String altura, String piso, String depto, LocalidadDTO localidad) {
+	public DomicilioDTO(int idDomicilio, String calle, String altura, String piso, String depto, int idLocalidad) {
 		this.idDomicilio = idDomicilio;
 		this.calle = calle;
 		this.altura = altura;
 		this.piso = piso;
 		this.depto = depto;
-		this.localidad = localidad;
+		this.idLocalidad = idLocalidad;
 	}
-
+	
+	public DomicilioDTO(String calle, String altura, String piso, String depto, int idLocalidad) {
+		this.calle = calle;
+		this.altura = altura;
+		this.piso = piso;
+		this.depto = depto;
+		this.idLocalidad = idLocalidad;
+	}
 	public int getIdDomicilio() {
 		return idDomicilio;
 	}
@@ -58,11 +65,11 @@ public class DomicilioDTO {
 		this.depto = depto;
 	}
 
-	public LocalidadDTO getLocalidad() {
-		return localidad;
+	public int getIdLocalidad() {
+		return idLocalidad;
 	}
 
-	public void setLocalidad(LocalidadDTO localidad) {
-		this.localidad = localidad;
+	public void setIdLocalidad(int idLocalidad) {
+		this.idLocalidad = idLocalidad;
 	}
 }
