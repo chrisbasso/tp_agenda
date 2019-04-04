@@ -99,7 +99,7 @@ public class DomicilioDAOSQL implements DomicilioDAO {
 			statement = conexion.getSQLConexion().prepareStatement(readAll);
 			resultSet = statement.executeQuery();
 			LOGGER.info(statement.toString());
-
+			LOGGER.info("Tamaño " + resultSet.getFetchSize());
 			while (resultSet.next()) {				
 				domicilios.add(new DomicilioDTO(
 						resultSet.getString("calle"),
@@ -151,8 +151,10 @@ public class DomicilioDAOSQL implements DomicilioDAO {
 			statement = conexion.getSQLConexion().prepareStatement(selectById);
 			statement.setInt(1, idDomicilio);
 
-			LOGGER.info(statement.toString());
+			LOGGER.info(statement.toString());			
 			resultSet = statement.executeQuery();
+			LOGGER.info("Tamaño " + resultSet.getFetchSize());
+			
 			DomicilioDTO domicilioDTO = new DomicilioDTO(
 					resultSet.getString("calle"),
 					resultSet.getString("altura"),

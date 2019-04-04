@@ -8,12 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+
 import persistencia.conexion.Conexion;
 import persistencia.dao.interfaz.PersonaDAO;
-import persistencia.dto.DomicilioDTO;
-import persistencia.dto.LocalidadDTO;
 import persistencia.dto.PersonaDTO;
-import persistencia.dto.TipoContactoDTO;
 
 public class PersonaDAOSQL implements PersonaDAO{
 	private static final Conexion conexion = Conexion.getConexion();
@@ -77,12 +75,12 @@ public class PersonaDAOSQL implements PersonaDAO{
 		PreparedStatement statement;
 		ResultSet resultSet;
 		ArrayList<PersonaDTO> personas = new ArrayList<>();
-		Conexion conexion = Conexion.getConexion();
+		
 		try {
 			statement = conexion.getSQLConexion().prepareStatement(readall);
 			resultSet = statement.executeQuery();
 			LOGGER.info(statement.toString());
-
+			LOGGER.info("Tamaño " + resultSet.getFetchSize());
 			while (resultSet.next()) {				
 				personas.add(new PersonaDTO(
 						resultSet.getInt("idPersona"),
