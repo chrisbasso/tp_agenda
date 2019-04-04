@@ -98,6 +98,10 @@ public class Controlador implements ActionListener
 			JOptionPane.showMessageDialog(null, "Debe completar el nombre");
 			return;
 		}
+		if(ventanaPersona.getTxtApellido().getText().isEmpty()){
+			JOptionPane.showMessageDialog(null, "Debe completar el apellido");
+			return;
+		}
 		if(ventanaPersona.getTxtTelefono().getText().isEmpty()){
 			JOptionPane.showMessageDialog(null, "Debe completar el telefono");
 			return;
@@ -218,12 +222,14 @@ public class Controlador implements ActionListener
 
 		return new PersonaDTO(0,
 				ventanaPersona.getTxtNombre().getText(),
+				ventanaPersona.getTxtApellido().getText(),
 				ventanaPersona.getTxtTelefono().getText(), nuevoDomicilio, tipoContactoDTO,
 				ventanaPersona.getTxtEmail().getText(), ventanaPersona.getFechaNac().getDate());
 	}
 
 	private void setPersonaValues(PersonaDTO persona) {
 		persona.setNombre(ventanaPersona.getTxtNombre().getText());
+		persona.setApellido(ventanaPersona.getTxtApellido().getText());
 		persona.setTelefono(ventanaPersona.getTxtTelefono().getText());
 		persona.getDomicilio().setCalle(ventanaPersona.getTxtCalle().getText());
 		persona.getDomicilio().setAltura(ventanaPersona.getTextAltura().getText());
@@ -393,6 +399,7 @@ public class Controlador implements ActionListener
 		for (int i = 0; i < this.personas.size(); i ++)
 		{
 			Object[] fila = {this.personas.get(i).getNombre(),
+					this.personas.get(i).getApellido(),
 					this.personas.get(i).getTelefono(),
 					this.personas.get(i).getDomicilio().getCalle(),
 					this.personas.get(i).getDomicilio().getAltura(),

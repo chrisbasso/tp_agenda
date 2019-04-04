@@ -12,6 +12,7 @@ public class VentanaPersona extends JFrame
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtNombre;
+	private JTextField txtApellido;
 	private JTextField txtTelefono;
 	private JButton btnAgregarPersona;
 	private JTextField textCalle;
@@ -39,14 +40,14 @@ public class VentanaPersona extends JFrame
 		setTitle("Agregar contacto");
 		this.setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 404, 365);
+		setBounds(100, 100, 509, 365);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBounds(10, 11, 373, 310);
+		panel.setBounds(10, 11, 481, 310);
 		contentPane.add(panel);
 		panel.setLayout(null);
 
@@ -59,9 +60,16 @@ public class VentanaPersona extends JFrame
 		panel.add(lblTelfono);
 
 		txtNombre = new JTextField();
-		txtNombre.setBounds(149, 8, 164, 20);
+		txtNombre.setToolTipText("Apellido");
+		txtNombre.setBounds(317, 9, 164, 20);
 		panel.add(txtNombre);
 		txtNombre.setColumns(10);
+		
+		txtApellido = new JTextField();
+		txtApellido.setToolTipText("Nombre");
+		txtApellido.setBounds(149, 8, 164, 20);
+		panel.add(txtApellido);
+		txtApellido.setColumns(10);
 
 		txtTelefono = new JTextField();
 		txtTelefono.setBounds(149, 49, 164, 20);
@@ -69,7 +77,7 @@ public class VentanaPersona extends JFrame
 		txtTelefono.setColumns(10);
 
 		btnAgregarPersona = new JButton("Agregar");
-		btnAgregarPersona.setBounds(272, 270, 89, 23);
+		btnAgregarPersona.setBounds(329, 236, 120, 23);
 		panel.add(btnAgregarPersona);
 
 		JLabel lblTipoDeContacto = new JLabel("Tipo de contacto");
@@ -81,7 +89,7 @@ public class VentanaPersona extends JFrame
 		panel.add(lblDomicilio);
 
 		JLabel lblFechaDeNacimiento = new JLabel("Fecha de nacimiento");
-		lblFechaDeNacimiento.setBounds(10, 270, 137, 14);
+		lblFechaDeNacimiento.setBounds(10, 270, 150, 14);
 		panel.add(lblFechaDeNacimiento);
 
 		JLabel lblEmail = new JLabel("Email");
@@ -101,7 +109,7 @@ public class VentanaPersona extends JFrame
 		panel.add(lblPiso);
 
 		JLabel lblDepto = new JLabel("Depto.");
-		lblDepto.setBounds(264, 120, 46, 14);
+		lblDepto.setBounds(264, 120, 89, 14);
 		panel.add(lblDepto);
 
 		JLabel lblLocalidad = new JLabel("Localidad");
@@ -109,7 +117,7 @@ public class VentanaPersona extends JFrame
 		panel.add(lblLocalidad);
 
 		fechaNac = new JDateChooser(new Date());
-		fechaNac.setBounds(149, 270, 89, 20);
+		fechaNac.setBounds(185, 270, 113, 20);
 		panel.add(fechaNac);
 
 		textEmail = new JTextField();
@@ -135,7 +143,7 @@ public class VentanaPersona extends JFrame
 				}
 			}
 		});
-		textAltura.setBounds(305, 89, 46, 20);
+		textAltura.setBounds(346, 90, 46, 20);
 		panel.add(textAltura);
 		textAltura.setColumns(10);
 
@@ -156,7 +164,7 @@ public class VentanaPersona extends JFrame
 		textPiso.setColumns(10);
 
 		textDepto = new JTextField();
-		textDepto.setBounds(305, 117, 46, 20);
+		textDepto.setBounds(356, 118, 46, 20);
 		panel.add(textDepto);
 		textDepto.setColumns(10);
 
@@ -180,6 +188,11 @@ public class VentanaPersona extends JFrame
 	{
 		return txtNombre;
 	}
+
+	public JTextField getTxtApellido() {
+		return txtApellido;
+	}
+
 
 	public JTextField getTxtTelefono()
 	{
@@ -238,6 +251,7 @@ public class VentanaPersona extends JFrame
 		this.persona = persona;
 		if (persona != null) {
 			this.txtNombre.setText(persona.getNombre());
+			this.txtApellido.setText(persona.getApellido());
 			this.txtTelefono.setText(persona.getTelefono());
 			this.textCalle.setText(persona.getDomicilio().getCalle());
 			this.textAltura.setText(persona.getDomicilio().getAltura());
@@ -248,6 +262,7 @@ public class VentanaPersona extends JFrame
 			btnAgregarPersona.setText("Editar");
 		}else{
 			this.txtNombre.setText("");
+			this.txtApellido.setText("");
 			this.txtTelefono.setText("");
 			this.textCalle.setText("");
 			this.textAltura.setText("");
