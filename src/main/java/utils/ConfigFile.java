@@ -11,6 +11,7 @@ public class ConfigFile {
 		private String URL;
 		private String USR;
 		private String PWD;
+		private String DEPLOYED;
 		private String fileName;
 		
 		private ConfigFile() {
@@ -42,6 +43,8 @@ public class ConfigFile {
 	                	this.USR = line.substring(4);
 	                }else if (line.startsWith("PWD=") && line.length()>5) {
 	                	this.PWD = line.substring(4);
+	                }else if (line.startsWith("DEPLOYED=") && line.length()>5) {
+	                	this.DEPLOYED = line.substring(9);
 	                }
 	            }  
 	            // Always close files.
@@ -51,7 +54,7 @@ public class ConfigFile {
 	        }
 		}
 		
-		public void update(String URL, String USR, String PWD) {
+		public void update(String URL, String USR, String PWD, String DEP) {
 
 	        try {
 	            // Assume default encoding.
@@ -66,6 +69,8 @@ public class ConfigFile {
 	            bufferedWriter.write("USR=" + USR);
 	            bufferedWriter.newLine();
 	            bufferedWriter.write("PWD=" + PWD);
+	            bufferedWriter.newLine();
+	            bufferedWriter.write("DEPLOYED=" + DEP);
 
 	            // Always close files.
 	            bufferedWriter.close();
@@ -86,5 +91,10 @@ public class ConfigFile {
 		public String getPWD() {
 			return PWD;
 		}
+		
+		public String getDEPLOYED() {
+			return DEPLOYED;
+		}
+
 }
 	       

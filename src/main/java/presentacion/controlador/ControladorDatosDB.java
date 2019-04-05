@@ -51,7 +51,7 @@ public class ControladorDatosDB {
 	private void reportarEvento(String evento) {
 		switch (evento) {
 		case "aceptar":
-			ConfigFile.getInstance().update(ventana.getURL(), ventana.getUSER(), ventana.getPWD());
+			ConfigFile.getInstance().update(ventana.getURL(), ventana.getUSER(), ventana.getPWD(), "TRUE");
 			MensajesDeDialogo.getInstance().msgDatosConexionBDModificados();
 			System.exit(0);
 			break;

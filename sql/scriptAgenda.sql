@@ -33,6 +33,7 @@ CREATE TABLE persona
 (
   idPersona int(10) NOT NULL AUTO_INCREMENT,
   nombre varchar(45) NOT NULL,
+  apellido varchar(45) NOT NULL,
   telefono varchar(20) NOT NULL,
   PRIMARY KEY (idPersona),
   idDomicilio int(10),

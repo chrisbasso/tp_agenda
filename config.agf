@@ -1,3 +1,4 @@
 URL=localhost:3306
 USR=root
 PWD=password
+DEPLOYED=TRUE
