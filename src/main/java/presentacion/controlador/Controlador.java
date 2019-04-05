@@ -45,6 +45,7 @@ public class Controlador implements ActionListener
 		this.vista.getBtnReporte().addActionListener(r->mostrarReporte(r));
 		this.vista.getBtnAbmTipoDeContacto().addActionListener(t->ventanaABMTipoContacto(t));
 		this.vista.getBtnAbmLocalidad().addActionListener(t->ventanaABMLocalidad(t));
+		this.vista.getBtnConexBaseDatos().addActionListener(t->ventanaBaseDatos());
 		
 		this.ventanaPersona = VentanaPersona.getInstance();
 		this.ventanaTipoContacto = VentanaTipoContacto.getInstance();
@@ -455,6 +456,12 @@ public class Controlador implements ActionListener
 		}
 	}
 
+	public void ventanaBaseDatos() {
+		ControladorDatosDB controladorVentanaDatosDB = ControladorDatosDB.getInstance();
+		controladorVentanaDatosDB.asignarModo("Información de la Base de Datos");		
+		controladorVentanaDatosDB.mostrarVentana();
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub

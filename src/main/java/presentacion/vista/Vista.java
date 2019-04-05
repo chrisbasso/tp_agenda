@@ -23,6 +23,7 @@ public class Vista
 	private JButton btnEditar;
 	private JButton btnAbmTipoDeContacto;
 	private JButton btnAbmLocalidad;
+	private JButton btnConexBaseDatos;
 	private DefaultTableModel modelPersonas;
 	private  String[] nombreColumnas = {"Nombre","Apellido", "Teléfono",
 			"Calle","Altura","Piso","Depto","Localidad","Tipo Contacto", "Email","Fecha de Nacimiento"};
@@ -82,8 +83,12 @@ public class Vista
 		panel.add(btnAbmTipoDeContacto);
 
 		btnAbmLocalidad = new JButton("ABM de Localidades");
-		btnAbmLocalidad.setBounds(606, 228, 139, 23);
+		btnAbmLocalidad.setBounds(556, 228, 139, 23);
 		panel.add(btnAbmLocalidad);
+		
+		btnConexBaseDatos = new JButton("Conexion BD");
+		btnConexBaseDatos.setBounds(706, 228, 139, 23);
+		panel.add(btnConexBaseDatos);
 	}
 
 	public void show()
@@ -149,5 +154,8 @@ public class Vista
 		return nombreColumnas;
 	}
 
+	public JButton getBtnConexBaseDatos() {
+		return btnConexBaseDatos;
+	}
 
 }

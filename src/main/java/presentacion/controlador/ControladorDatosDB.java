@@ -3,7 +3,10 @@ package presentacion.controlador;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import persistencia.conexion.Conexion;
+import presentacion.vista.MensajesDeDialogo;
 import presentacion.vista.VentanaDatosDB;
+import utils.ConfigFile;
 
 public class ControladorDatosDB {
 	private static ControladorDatosDB INSTANCIA;
@@ -48,11 +51,14 @@ public class ControladorDatosDB {
 	private void reportarEvento(String evento) {
 		switch (evento) {
 		case "aceptar":
-			controladorSuperior.actualizarDatosDB(ventana.getURL(),ventana.getUSER(),ventana.getPWD());
+			ConfigFile.getInstance().update(ventana.getURL(), ventana.getUSER(), ventana.getPWD());
+			MensajesDeDialogo.getInstance().msgDatosConexionBDModificados();
+			System.exit(0);
 			break;
 		case "salir":
 			ventana.cerrar();
-			controladorSuperior.cerrarAplicacion();
+			Conexion.getConexion().cerrarConexion();
+			System.exit(0);
 			break;
 		default:
 			break;
