@@ -13,9 +13,9 @@ public class ConexionDeploy {
 	private boolean conectable;
 	
 	private ConexionDeploy()	{
-		DBURL = "jdbc:mysql://localhost";		
+		DBURL = "jdbc:mysql://localhost:3306";		
 		DBUSR = "root";
-		DBPASS = "password";
+		DBPASS = "pass";
 		
 		try		{
 			Class.forName("com.mysql.jdbc.Driver"); // quitar si no es necesario			
